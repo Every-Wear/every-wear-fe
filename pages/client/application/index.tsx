@@ -34,16 +34,16 @@ export const Application = () => {
 
   return (
     <FormBox>
-      {formList.map((x, idx) => {
+      {formList.map((form, idx) => {
         if (currentStauts !== idx) return;
         return (
           <section key={idx}>
-            <h2>{x.title}를 입력해주세요</h2>
+            <h2>{form.title}를 입력해주세요</h2>
             <CustomInput
-              type={x.inputType}
-              value={x.value}
+              type={form.inputType}
+              value={form.value}
               onChange={(e: React.FormEvent<HTMLInputElement>) =>
-                x.setValue(e.currentTarget.value)
+                form.setValue(e.currentTarget.value)
               }
             />
           </section>
