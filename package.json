@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev -p 8080",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
@@ -19,5 +19,8 @@
     "react-dom": "18.2.0",
     "styled-components": "^5.3.11",
     "typescript": "5.0.4"
+  },
+  "devDependencies": {
+    "babel-plugin-styled-components": "^2.1.3"
   }
 }
