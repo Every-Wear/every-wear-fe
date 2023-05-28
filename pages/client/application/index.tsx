@@ -6,25 +6,44 @@ import { ApplicationButton, CustomInput, FormBox } from "./index.styled";
 export const Application = () => {
   const router = useRouter();
 
-  const [currentStatus, setCurrentStatus] = useState<number>(0);
+  type StatusType = "날짜" | "장소" | "목적";
+  type FormType = "date" | "text";
+
+  interface FromInterface {
+    title: StatusType;
+    inputType: FormType;
+    value: string;
+    setValue: (state: string) => void;
+  }
+
+  const [currentStatus, setCurrentStatus] = useState<StatusType>("날짜");
   const [time, setTime] = useState<string>("");
   const [location, setLocation] = useState<string>("");
   const [usage, setUsage] = useState<string>("");
 
-  const formList = [
-    { title: "날짜", inputType: "date", value: time, setValue: setTime },
+  const formList: FromInterface[] = [
+    {
+      title: "날짜",
+      inputType: "date",
+      value: time,
+      setValue: setTime,
+    },
     {
       title: "장소",
       inputType: "text",
       value: location,
       setValue: setLocation,
     },
-    { title: "목적", inputType: "text", value: usage, setValue: setUsage },
+    {
+      title: "목적",
+      inputType: "text",
+      value: usage,
+      setValue: setUsage,
+    },
   ];
 
-  const nextForm = (state: number) => {
-    if (state === 2) return;
-    setCurrentStatus(state + 1);
+  const nextForm = (status: StatusType) => {
+    setCurrentStatus(status);
   };
 
   const submitApplication = (time: string, location: string, usage: string) => {
@@ -35,7 +54,7 @@ export const Application = () => {
   return (
     <FormBox>
       {formList.map((form, idx) => {
-        if (currentStatus !== idx) return;
+        if (currentStatus !== form.title) return;
         return (
           <section key={idx}>
             <h2>{form.title}를 입력해주세요</h2>
@@ -46,18 +65,18 @@ export const Application = () => {
                 form.setValue(e.currentTarget.value)
               }
             />
+            <ApplicationButton
+              onClick={() =>
+                currentStatus === "목적"
+                  ? submitApplication(time, location, usage)
+                  : nextForm(formList[idx + 1].title)
+              }
+            >
+              {currentStatus === "목적" ? "신청" : "다음"}
+            </ApplicationButton>
           </section>
         );
       })}
-      <ApplicationButton
-        onClick={() =>
-          currentStatus > 1
-            ? submitApplication(time, location, usage)
-            : nextForm(currentStatus)
-        }
-      >
-        {currentStatus > 1 ? "신청" : "다음"}
-      </ApplicationButton>
     </FormBox>
   );
 };
