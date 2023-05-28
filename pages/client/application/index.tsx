@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
 
-import { ApplticionButton, CustomInput, FormBox } from "./index.styled";
+import { ApplicationButton, CustomInput, FormBox } from "./index.styled";
 
 export const Application = () => {
   const router = useRouter();
@@ -49,7 +49,7 @@ export const Application = () => {
           </section>
         );
       })}
-      <ApplticionButton
+      <ApplicationButton
         onClick={() =>
           currentStauts > 1
             ? submitApplication(time, location, usage)
@@ -57,7 +57,7 @@ export const Application = () => {
         }
       >
         {currentStauts > 1 ? "신청" : "다음"}
-      </ApplticionButton>
+      </ApplicationButton>
     </FormBox>
   );
 };

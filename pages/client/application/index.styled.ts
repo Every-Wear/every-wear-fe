@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const ApplticionButton = styled.button`
+export const ApplicationButton = styled.button`
   width: 100%;
   border: 1px solid #fff;
   padding: 20px 0;
