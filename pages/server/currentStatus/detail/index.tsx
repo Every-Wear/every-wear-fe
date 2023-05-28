@@ -1,9 +1,6 @@
-import { useRouter } from "next/router";
-import Layout from "@/serverComponents/layout";
+import { Layout } from "@/serverComponents/index";
 
 export default function CurrentStatusDetail() {
-  const router = useRouter();
-
   return (
     <Layout>
       <div>

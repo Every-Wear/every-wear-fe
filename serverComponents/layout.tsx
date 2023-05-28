@@ -1,5 +1,4 @@
-import styled from "styled-components";
-import { ReactElement, useState } from "react";
+import { ReactElement } from "react";
 import BottomNavBar from "./bottomNavBar";
 
 interface LayoutType {

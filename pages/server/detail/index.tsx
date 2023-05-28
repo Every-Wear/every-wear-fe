@@ -1,7 +1,6 @@
-import { useRouter } from "next/router";
-import Modal from "@/serverComponents/modal";
 import { useState } from "react";
-import Layout from "@/serverComponents/layout";
+import { useRouter } from "next/router";
+import { Modal, Layout } from "@/serverComponents/index";
 
 export default function HomeDetail() {
   const router = useRouter();

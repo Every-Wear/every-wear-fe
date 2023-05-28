@@ -1,11 +1,8 @@
 import { useRouter } from "next/router";
-import styled from "styled-components";
-import { useState } from "react";
-import Layout from "@/serverComponents/layout";
+import { Layout } from "@/serverComponents/index";
 
 export default function CurrentStatus() {
   const router = useRouter();
-
   return (
     <Layout>
       <ul>
