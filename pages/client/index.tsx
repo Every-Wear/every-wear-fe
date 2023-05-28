@@ -26,7 +26,7 @@ export const Client = () => {
         >
           매칭현황
         </NavButton>
-        <NavButton type="button" onClick={() => router.push("/client/my")}>
+        <NavButton type="button" onClick={() => router.push("/client/mypage")}>
           마이페이지
         </NavButton>
       </nav>
