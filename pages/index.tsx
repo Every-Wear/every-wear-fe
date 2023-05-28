@@ -13,7 +13,7 @@ export default function Home() {
 
   return (
     <>
-      <LoginButton type="button" onClick={() => router.push("/offer")}>
+      <LoginButton type="button" onClick={() => router.push("/server")}>
         코디네이터
       </LoginButton>
       <LoginButton type="button" onClick={() => router.push("/client")}>

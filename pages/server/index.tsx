@@ -6,7 +6,7 @@ export default function Home() {
 
   return (
     <>
-      <div>오퍼</div>
+      <div>서버</div>
     </>
   );
 }
