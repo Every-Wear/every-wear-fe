@@ -16,7 +16,7 @@ export const Matching = () => {
   return (
     <div>
       <div>스탭버튼</div>
-      <h2>신청형황</h2>
+      <h2>신청현황</h2>
       <ul>
         <li>1월 31일 12:30</li>
         <li>영등포역</li>
