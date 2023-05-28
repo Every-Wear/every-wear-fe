@@ -6,7 +6,7 @@ import { ApplicationButton, CustomInput, FormBox } from "./index.styled";
 export const Application = () => {
   const router = useRouter();
 
-  const [currentStauts, setCurrentStauts] = useState<number>(0);
+  const [currentStatus, setCurrentStatus] = useState<number>(0);
   const [time, setTime] = useState<string>("");
   const [location, setLocation] = useState<string>("");
   const [usage, setUsage] = useState<string>("");
@@ -24,7 +24,7 @@ export const Application = () => {
 
   const nextForm = (state: number) => {
     if (state === 2) return;
-    setCurrentStauts(state + 1);
+    setCurrentStatus(state + 1);
   };
 
   const submitApplication = (time: string, location: string, usage: string) => {
@@ -35,7 +35,7 @@ export const Application = () => {
   return (
     <FormBox>
       {formList.map((form, idx) => {
-        if (currentStauts !== idx) return;
+        if (currentStatus !== idx) return;
         return (
           <section key={idx}>
             <h2>{form.title}를 입력해주세요</h2>
@@ -51,12 +51,12 @@ export const Application = () => {
       })}
       <ApplicationButton
         onClick={() =>
-          currentStauts > 1
+          currentStatus > 1
             ? submitApplication(time, location, usage)
-            : nextForm(currentStauts)
+            : nextForm(currentStatus)
         }
       >
-        {currentStauts > 1 ? "신청" : "다음"}
+        {currentStatus > 1 ? "신청" : "다음"}
       </ApplicationButton>
     </FormBox>
   );
