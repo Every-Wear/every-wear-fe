@@ -12,25 +12,20 @@ export const Client = () => {
   const router = useRouter();
 
   return (
-    <>
-      <nav>
-        <NavButton
-          type="button"
-          onClick={() => router.push("/client/application")}
-        >
-          매칭신청
-        </NavButton>
-        <NavButton
-          type="button"
-          onClick={() => router.push("/client/matching")}
-        >
-          매칭현황
-        </NavButton>
-        <NavButton type="button" onClick={() => router.push("/client/mypage")}>
-          마이페이지
-        </NavButton>
-      </nav>
-    </>
+    <nav>
+      <NavButton
+        type="button"
+        onClick={() => router.push("/client/application")}
+      >
+        매칭신청
+      </NavButton>
+      <NavButton type="button" onClick={() => router.push("/client/matching")}>
+        매칭현황
+      </NavButton>
+      <NavButton type="button" onClick={() => router.push("/client/mypage")}>
+        마이페이지
+      </NavButton>
+    </nav>
   );
 };
 
