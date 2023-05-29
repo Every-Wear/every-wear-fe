@@ -70,7 +70,7 @@ const Application = () => {
     <ApplicationPage>
       {formList.map((form, idx) => {
         return (
-          <AplicationForm
+          <ApplicationForm
             form={form}
             key={form.title}
             formIndex={idx}
@@ -85,8 +85,8 @@ const Application = () => {
   );
 };
 
-// ------------------------------ AplicationForm Comonent ---------------------------------
-interface AplicationFormInterface {
+// ------------------------------ ApplicationForm Comonent ---------------------------------
+interface ApplicationFormInterface {
   form: FromInterface;
   formIndex: number;
   lastFormIndex: number;
@@ -94,13 +94,13 @@ interface AplicationFormInterface {
   buttonHandler: (index: number) => void;
 }
 
-const AplicationForm = ({
+const ApplicationForm = ({
   form,
   formIndex,
   lastFormIndex,
   currentFormIndex,
   buttonHandler,
-}: AplicationFormInterface): JSX.Element | null => {
+}: ApplicationFormInterface): JSX.Element | null => {
   const AplicationButtonText =
     currentFormIndex === lastFormIndex ? "신청" : "다음";
 
