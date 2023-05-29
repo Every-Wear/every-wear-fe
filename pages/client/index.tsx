@@ -8,7 +8,7 @@ const NavButton = styled.button`
   font-size: 20px;
 `;
 
-export const Client = () => {
+const Client = () => {
   const router = useRouter();
 
   return (

@@ -16,6 +16,6 @@ export const CustomInput = styled.input`
   border: 1px solid #ccc;
 `;
 
-export const FormBox = styled.div`
+export const ApplicationPage = styled.div`
   width: 100%;
 `;
