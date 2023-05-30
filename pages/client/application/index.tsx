@@ -8,10 +8,20 @@ import {
   CustomInput,
 } from "@/pages/client/application/index.styled";
 
-type StatusType = "날짜" | "장소" | "목적";
-type FormType = "date" | "text";
+const STATUS_TYPE = {
+  날짜: "날짜",
+  장소: "장소",
+  목적: "목적",
+} as const;
+type StatusType = keyof typeof STATUS_TYPE;
 
-interface FromInterface {
+const FORM_TYPE = {
+  date: "date",
+  text: "text",
+} as const;
+type FormType = keyof typeof FORM_TYPE;
+
+interface FormInterface {
   title: StatusType;
   inputType: FormType;
   value: string;
@@ -21,27 +31,27 @@ interface FromInterface {
 const Application = () => {
   const router = useRouter();
 
-  const [isCurrentFormIndex, setIsCurrentFormIndex] = useState<number>(0);
+  const [currentFormIndex, setCurrentFormIndex] = useState<number>(0);
   const [time, setTime] = useState<string>("");
   const [location, setLocation] = useState<string>("");
   const [usage, setUsage] = useState<string>("");
 
-  const formList: FromInterface[] = [
+  const formList: FormInterface[] = [
     {
-      title: "날짜",
-      inputType: "date",
+      title: STATUS_TYPE["날짜"],
+      inputType: FORM_TYPE["date"],
       value: time,
       setValue: setTime,
     },
     {
-      title: "장소",
-      inputType: "text",
+      title: STATUS_TYPE["장소"],
+      inputType: FORM_TYPE["text"],
       value: location,
       setValue: setLocation,
     },
     {
-      title: "목적",
-      inputType: "text",
+      title: STATUS_TYPE["목적"],
+      inputType: FORM_TYPE["text"],
       value: usage,
       setValue: setUsage,
     },
@@ -49,8 +59,8 @@ const Application = () => {
 
   const lastFormindex = formList.length - 1;
 
-  const nextForm = (status: number) => {
-    setIsCurrentFormIndex(status + 1);
+  const goToNextForm = (status: number) => {
+    setCurrentFormIndex(status + 1);
   };
 
   const submitApplication = (time: string, location: string, usage: string) => {
@@ -62,7 +72,7 @@ const Application = () => {
     if (currentIndex === lastFormindex) {
       submitApplication(time, location, usage);
     } else {
-      nextForm(currentIndex);
+      goToNextForm(currentIndex);
     }
   };
 
@@ -75,7 +85,7 @@ const Application = () => {
             key={form.title}
             formIndex={idx}
             lastFormIndex={formList.length - 1}
-            currentFormIndex={isCurrentFormIndex}
+            currentFormIndex={currentFormIndex}
             buttonHandler={submitButtonHandler}
           />
         );
@@ -87,7 +97,7 @@ const Application = () => {
 
 // ------------------------------ ApplicationForm Comonent ---------------------------------
 interface ApplicationFormInterface {
-  form: FromInterface;
+  form: FormInterface;
   formIndex: number;
   lastFormIndex: number;
   currentFormIndex: number;
