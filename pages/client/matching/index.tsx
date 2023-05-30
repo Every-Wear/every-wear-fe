@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import Image from "next/image";
 
 import { get_matchings } from "@/api/modules/matching";
-import { MatchingsStatusType } from "@/api/modules/matching";
+import { MatchingStatusType } from "@/api/modules/matching";
 
 import { HistoryBackButton } from "@/clientComponents";
 import { StatusButton } from "@/pages/client/matching/index.styled";
@@ -11,7 +11,7 @@ import { StatusButton } from "@/pages/client/matching/index.styled";
 interface MatchingInfoInterface {
   _id: string;
   publishUserId: string;
-  statusType: MatchingsStatusType;
+  statusType: MatchingStatusType;
   clothesType: string; // 만약 백엔드 enum이 있다면 상수로 교체
   limitPrice: number;
   preferPlace: string;
@@ -83,12 +83,14 @@ const Matching = () => {
   };
 
   // const currentProgress = matchingInfo?.statusType;
-  const limitPrice = matchingInfo?.limitPrice;
-  const preferPlace = matchingInfo?.preferPlace;
-  const clothesType = matchingInfo?.clothesType;
-  const preferStyle = matchingInfo?.preferStyle;
-  const preferGender = matchingInfo?.preferGender;
-  const remark = matchingInfo?.remark;
+  const currentMatchingInfo = {
+    limitPrice: matchingInfo?.limitPrice,
+    preferPlace: matchingInfo?.preferPlace,
+    clothesType: matchingInfo?.clothesType,
+    preferStyle: matchingInfo?.preferStyle,
+    preferGender: matchingInfo?.preferGender,
+    remark: matchingInfo?.remark,
+  };
 
   return (
     <div>
@@ -103,12 +105,12 @@ const Matching = () => {
       </div>
       <h2>신청현황</h2>
       <ul>
-        <li>장소 : {preferPlace}</li>
-        <li>성별 : {preferGender}</li>
-        <li>스타일 : {preferStyle}</li>
-        <li>구매필요 : {clothesType}</li>
-        <li>한도금액 : {limitPrice}</li>
-        <li>비고 : {remark}</li>
+        <li>장소 : {currentMatchingInfo["preferPlace"]}</li>
+        <li>성별 : {currentMatchingInfo["preferGender"]}</li>
+        <li>스타일 : {currentMatchingInfo["preferStyle"]}</li>
+        <li>구매필요 : {currentMatchingInfo["clothesType"]}</li>
+        <li>한도금액 : {currentMatchingInfo["limitPrice"]}</li>
+        <li>비고 : {currentMatchingInfo["remark"]}</li>
         <li>진행상태 : {currentProgress}</li>
       </ul>
       {currentProgress === "매칭완료" && (
