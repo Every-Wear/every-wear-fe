@@ -3,10 +3,10 @@ import { useRouter } from "next/router";
 import Image from "next/image";
 
 import { get_matchings } from "@/api/modules/matching";
-import { MatchingStatusType } from "@/api/modules/matching";
 
-import { HistoryBackButton } from "@/clientComponents";
+import { HistoryBackButton } from "@/pages/components/clientComponents";
 import { StatusButton } from "@/pages/client/matching/index.styled";
+import { MatchingStatusType } from "@/types/types";
 
 interface MatchingInfoInterface {
   _id: string;
