@@ -34,10 +34,9 @@ export default function HomeDetail() {
   };
 
   const confirmMatching = async () => {
-    // 매칭 로직
-    const data = await change_waiting_to_matching(matchingId);
-    console.log(data);
     matchingModalHandler();
+    const { data } = await change_waiting_to_matching(matchingId);
+    if (!data) return alert("매칭 오류");
     currentStatusModalHandler();
   };
 
