@@ -1,28 +1,50 @@
-import { useRouter } from "next/router";
-import { Layout } from "@/serverComponents/index";
+import { useEffect, useState } from "react";
+import Link from "next/link";
+import { Layout } from "@/pages/components/serverComponents/index";
+import { MATCHING_STATUS_TYPE, get_matchings } from "@/api/modules/matching";
+import { MatchingInfoInterface } from "@/types/types";
 
 export default function ServerHome() {
-  const router = useRouter();
+  const [matchingLists, setMatchingLists] = useState<MatchingInfoInterface[]>(
+    [],
+  );
 
-  const goToDetail = () => {
-    router.push(`/server/detail`);
+  const getMatchingLists = async () => {
+    const { data } = await get_matchings(MATCHING_STATUS_TYPE.매칭대기중);
+    const temp: MatchingInfoInterface[] = [];
+    if (!data || !data.matchings) return;
+    data.matchings.forEach((list: MatchingInfoInterface) => {
+      temp.push(list);
+    });
+    setMatchingLists(temp);
   };
+
+  useEffect(() => {
+    getMatchingLists();
+  }, []);
 
   return (
     <Layout>
       <div>
-        <ul>
-          <li>지역 : 서울</li>
-          <li>날짜 : 2023/05/21</li>
-          <li>시간 : 오후 3시</li>
-          <button onClick={goToDetail}>자세히 보기</button>
-        </ul>
-        <ul>
-          <li>지역 : 광주</li>
-          <li>날짜 : 2023/05/21</li>
-          <li>시간 : 오후 3시</li>
-          <button onClick={goToDetail}>자세히 보기</button>
-        </ul>
+        {matchingLists.map((list, idx) => {
+          if (!matchingLists) return <div>현재 매칭 리스트가 없습니다.</div>;
+          return (
+            <ul key={idx}>
+              <li>지역: {list.preferPlace}</li>
+              <li>용도: {list.clothesType}</li>
+              <li>선호 성별: {list.preferGender}</li>
+              <Link
+                href={{
+                  pathname: `/server/detail`,
+                  query: { uuid: list.uuid },
+                }}
+                as={`/server/detail`}
+              >
+                더보기
+              </Link>
+            </ul>
+          );
+        })}
       </div>
     </Layout>
   );
