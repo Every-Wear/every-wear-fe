@@ -1,5 +1,5 @@
+import { Layout } from "@/pages/components/serverComponents";
 import { useRouter } from "next/router";
-import { Layout } from "@/serverComponents/index";
 
 export default function CurrentStatus() {
   const router = useRouter();

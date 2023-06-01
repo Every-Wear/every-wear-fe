@@ -1,4 +1,4 @@
-import { Layout } from "@/serverComponents/index";
+import { Layout } from "@/pages/components/serverComponents";
 
 export default function CurrentStatusDetail() {
   return (
