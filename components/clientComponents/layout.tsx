@@ -5,7 +5,7 @@ import { Header } from "@/components/commonComponents/index";
 import { colors } from "@/styles/theme";
 
 interface LayoutType {
-  children: ReactElement;
+  children: ReactElement | ReactElement[];
 }
 
 const LayoutWrap = styled.div`
