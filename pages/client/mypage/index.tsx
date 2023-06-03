@@ -1,4 +1,4 @@
-import { HistoryBackButton } from "@/clientComponents/index";
+import { HistoryBackButton } from "@/components/clientComponents/index";
 
 const Mypage = () => {
   return (
