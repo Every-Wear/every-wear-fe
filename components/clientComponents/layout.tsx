@@ -1,7 +1,7 @@
 import { ReactElement } from "react";
 import styled from "styled-components";
 
-import { Header } from "@/components/comonComponents/index";
+import { Header } from "@/components/commonComponents/index";
 import { colors } from "@/styles/theme";
 
 interface LayoutType {
