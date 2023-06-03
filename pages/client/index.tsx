@@ -1,47 +1,53 @@
 import { useRouter } from "next/router";
-import styled from "styled-components";
 
 import {
   Layout,
   ClientButton,
   IntroLabel,
+  BottomButtonLayout,
 } from "@/components/clientComponents/index";
-
-const MainPageGnb = styled.nav`
-  width: 100%;
-  position: fixed;
-  bottom: 0;
-  left: 0;
-`;
 
 const Client = () => {
   const router = useRouter();
 
-  const goToPage = (route: string) => {
-    router.push(route);
-  };
-
-  const navButtonList = [
-    { title: "매칭신청", onClick: () => goToPage("/client/application") },
-    { title: "매칭현황", onClick: () => goToPage("/client/matching") },
-    { title: "마이페이지", onClick: () => goToPage("/client/mypage") },
+  const clientPageButtonList: {
+    title: string;
+    goToPage: () => void;
+    label: string;
+  }[] = [
+    {
+      title: "코디 신청",
+      goToPage: () => router.push("/client/application"),
+      label: "코디네이터 매칭 신청페이지 이동 버튼",
+    },
+    {
+      title: "매칭 현황",
+      goToPage: () => router.push("/client/matching"),
+      label: "코디네이터 매칭현황 확인 페이지 이동 버튼",
+    },
+    {
+      title: "마이페이지",
+      goToPage: () => router.push("/client/mypage"),
+      label: "마이페이지 이동 버튼",
+    },
   ];
 
   return (
     <Layout>
-      <IntroLabel labelText="페이지 로딩이 완료되었습니다. 버튼을 통해 원하시는 페이지로 이동해주세요" />
-      <MainPageGnb>
-        {navButtonList.map(button => (
+      <IntroLabel labelText="에브리웨어 메인페이지입니다. 버튼을 통해 원하시는 페이지로 이동해주세요" />
+      <BottomButtonLayout>
+        {clientPageButtonList.map(button => (
           <ClientButton
             border={true}
             bgColor="black"
             key={button.title}
-            onClickHandler={button.onClick}
+            onClickHandler={button.goToPage}
+            label={button.label}
           >
             {button.title}
           </ClientButton>
         ))}
-      </MainPageGnb>
+      </BottomButtonLayout>
     </Layout>
   );
 };

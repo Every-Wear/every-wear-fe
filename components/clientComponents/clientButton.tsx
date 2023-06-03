@@ -9,12 +9,14 @@ interface ClientButtonInterfaca {
   onClickHandler: () => void;
   bgColor?: keyof ColorType;
   fontColor?: keyof ColorType;
+  label: string;
 }
 
 const ClientButtonWrap = styled.button`
   width: 100%;
   padding: 32px 0;
   text-align: center;
+  font-weight: bold;
   font-size: ${clientFonts.md};
   border-top: ${(props: { border: boolean }) =>
     props.border && "1px solid #fff"};
@@ -26,6 +28,7 @@ const ClientButton = ({
   bgColor = "blue",
   fontColor = "white",
   border = false,
+  label,
 }: ClientButtonInterfaca) => {
   return (
     <ClientButtonWrap
@@ -33,6 +36,7 @@ const ClientButton = ({
       onClick={onClickHandler}
       border={border}
       style={{ background: colors[bgColor], color: colors[fontColor] }}
+      aria-label={label}
     >
       {children}
     </ClientButtonWrap>

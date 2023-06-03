@@ -7,8 +7,8 @@ export interface ColorType {
 }
 
 export interface FontType {
-  sm?: string;
-  md?: string;
-  lg?: string;
-  xlg?: string;
+  sm: string;
+  md: string;
+  lg: string;
+  xlg: string;
 }

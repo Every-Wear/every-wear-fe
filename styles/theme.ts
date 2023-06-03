@@ -18,4 +18,6 @@ export const serverFonts: FontType = {
 export const clientFonts: FontType = {
   sm: "1.5rem",
   md: "2rem",
+  lg: "2rem",
+  xlg: "2rem",
 };
