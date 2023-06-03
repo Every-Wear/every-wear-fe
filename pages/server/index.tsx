@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { Layout } from "@/serverComponents/index";
+import { Layout } from "@/components/serverComponents/index";
 
 export default function ServerHome() {
   const router = useRouter();
