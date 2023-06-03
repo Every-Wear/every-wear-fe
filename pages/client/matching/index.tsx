@@ -4,7 +4,7 @@ import Image from "next/image";
 
 import { get_matchings } from "@/api/modules/matching";
 
-import { HistoryBackButton } from "@/pages/components/clientComponents";
+import { HistoryBackButton } from "@/components/clientComponents";
 import { StatusButton } from "@/pages/client/matching/index.styled";
 import { MatchingStatusType } from "@/types/types";
 

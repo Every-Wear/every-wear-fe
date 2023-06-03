@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
 
-import { HistoryBackButton } from "@/pages/components/clientComponents";
+import { HistoryBackButton } from "@/components/clientComponents";
 import {
   ApplicationPage,
   ApplicationButton,

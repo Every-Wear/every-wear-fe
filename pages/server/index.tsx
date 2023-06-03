@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { Layout } from "@/pages/components/serverComponents/index";
 import { MATCHING_STATUS_TYPE, get_matchings } from "@/api/modules/matching";
 import { MatchingInfoInterface } from "@/types/types";
+import { Layout } from '@/components/clientComponents';
 
 export default function ServerHome() {
   const [matchingLists, setMatchingLists] = useState<MatchingInfoInterface[]>(
