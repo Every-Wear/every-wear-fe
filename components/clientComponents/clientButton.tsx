@@ -3,7 +3,7 @@ import { colors, clientFonts } from "@/styles/theme";
 
 import { ColorType } from "@/styles/styledType";
 
-interface ClientButtonInterfaca {
+interface ClientButtonInterface {
   children: string;
   border?: boolean;
   onClickHandler: () => void;
@@ -19,7 +19,7 @@ const ClientButtonWrap = styled.button`
   font-weight: bold;
   font-size: ${clientFonts.md};
   border-top: ${(props: { border: boolean }) =>
-    props.border && "1px solid #fff"};
+    props.border && `1px solid ${colors.white}`};
 `;
 
 const ClientButton = ({
@@ -29,7 +29,7 @@ const ClientButton = ({
   fontColor = "white",
   border = false,
   label,
-}: ClientButtonInterfaca) => {
+}: ClientButtonInterface) => {
   return (
     <ClientButtonWrap
       type="button"
