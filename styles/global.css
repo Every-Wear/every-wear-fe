@@ -11,7 +11,6 @@ html {
   font-size: 16px;
   letter-spacing: -0.8px;
   word-spacing: 0.5px;
-  font-family: "KoddiUD OnGothic";
 }
 
 html,
@@ -97,6 +96,7 @@ audio,
 video,
 button,
 input {
+  font-family: "KoddiUD OnGothic";
   margin: 0;
   padding: 0;
   border: 0;
