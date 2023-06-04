@@ -9,6 +9,7 @@ import {
   ClientText,
   ClientSubText,
   IntroLabel,
+  HistoryBackButton,
 } from "@/components/clientComponents";
 import {
   MatchingProgressTitleWrap,
@@ -116,6 +117,7 @@ const Matching = () => {
           </ClientButton>
         )}
       </div>
+      <HistoryBackButton />
     </Layout>
   );
 };

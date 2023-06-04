@@ -1,6 +1,6 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/router";
-import styled from "styled-components";
+import { isAxiosError } from "axios";
 
 import { post_matching } from "@/api/modules/matching";
 
@@ -10,9 +10,18 @@ import {
   ClientButton,
   ClientText,
   MatchingFormList,
+  HistoryBackButton,
 } from "@/components/clientComponents";
+import {
+  FormWrap,
+  ChoiceInput,
+  ApplicationButton,
+  PurposeButtonWrap,
+  GenderButtonWrap,
+} from "./index.styled";
 
-import { clientFonts, colors } from "@/styles/theme";
+import { colors } from "@/styles/theme";
+import { changeButtonText } from "@/utils/stringFormat";
 
 interface FormInterface {
   title: string;
@@ -57,20 +66,12 @@ const Choice = () => {
 
   const lastFormindex = formList.length - 1;
 
-  const goToNextForm = () => {
-    setCurrentFormIndex(currentFormIndex + 1);
-  };
-
-  const submitApplication = async () => {
+  const submitApplicationHandler = async () => {
     try {
       await post_matching(time, location, purpose, gender);
-      alert(
-        `신청 API호출 시간 : ${time} / 지역 : ${location} / 용도 : ${purpose} / 코디성별 : ${gender}`,
-      );
       router.push("/client/matching");
     } catch (err) {
-      alert("신청서 제출에 실패했습니다");
-      return new Error();
+      if (isAxiosError(err)) alert(err.response?.data.error);
     }
   };
 
@@ -86,48 +87,60 @@ const Choice = () => {
         <ClientButton
           bgColor="white"
           fontColor="black"
-          onClickHandler={submitApplication}
+          onClickHandler={submitApplicationHandler}
           label="다음"
         >
           신청
         </ClientButton>
+        <HistoryBackButton />
       </Layout>
     );
   }
 
   return (
     <Layout>
-      {formList.map((form, idx) => (
-        <div key={idx}>
-          {form.placeHolder ? (
-            <ApplicationInputForm
-              form={form}
-              key={form.title}
-              formIndex={idx}
-              currentFormIndex={currentFormIndex}
-              placeHolder={form.placeHolder}
-            />
-          ) : (
-            <ApplicationButtonForm
-              form={form}
-              key={form.title}
-              formIndex={idx}
-              currentFormIndex={currentFormIndex}
-              placeHolder={form.placeHolder}
-            />
-          )}
-          <BottomButtonLayout>
-            <ClientButton
-              bgColor="white"
-              fontColor="black"
-              onClickHandler={goToNextForm}
-              label="다음"
-            >
-              다음
-            </ClientButton>
-          </BottomButtonLayout>
-        </div>
-      ))}
+      {formList.map((form, idx): any => {
+        if (currentFormIndex !== idx) return null;
+
+        const goToNextForm = () => {
+          if (form.value === "") return alert("정보를 입력해주세요");
+          setCurrentFormIndex(currentFormIndex + 1);
+        };
+
+        return (
+          <div key={idx}>
+            {form.placeHolder ? (
+              <ApplicationInputForm
+                form={form}
+                key={form.title}
+                formIndex={idx}
+                currentFormIndex={currentFormIndex}
+                placeHolder={form.placeHolder}
+              />
+            ) : (
+              <ApplicationButtonForm
+                form={form}
+                key={form.title}
+                formIndex={idx}
+                currentFormIndex={currentFormIndex}
+                placeHolder={form.placeHolder}
+              />
+            )}
+            <BottomButtonLayout>
+              <ClientButton
+                disable={form.value === ""}
+                bgColor="white"
+                fontColor="black"
+                onClickHandler={goToNextForm}
+                label="다음"
+              >
+                다음
+              </ClientButton>
+              <HistoryBackButton />
+            </BottomButtonLayout>
+          </div>
+        );
+      })}
     </Layout>
   );
 };
@@ -139,29 +152,6 @@ interface ApplicationFormInterface {
   currentFormIndex?: number;
   placeHolder: string | undefined;
 }
-
-const FormWrap = styled.div`
-  width: 100%;
-  padding: 50px 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 30px;
-  padding-bottom: 150px;
-`;
-
-const ChoiceInput = styled.input`
-  width: 100%;
-  background-color: #303239;
-  padding: 26px 24px;
-  font-weight: bold;
-  color: ${colors.white};
-  font-size: ${clientFonts.md};
-
-  &:focus {
-    border: 2px solid ${colors.blue};
-    outline: none;
-  }
-`;
 
 const ApplicationInputForm = ({
   form,
@@ -185,88 +175,45 @@ const ApplicationInputForm = ({
   );
 };
 
-// ------------------------------ ApplicationButtonForm Comonent ---------------------------------
+// ------------------------------ ApplicationButtonForm Component ---------------------------------
 interface ApplicationButtonInterface {
   value: string;
+  type: boolean;
   onClickHandler: (value: string) => void;
+  buttonList: string[];
 }
-const ApplicationButton = styled.button`
-  width: 100%;
-  padding: 32px 0;
-  text-align: center;
-  font-weight: bold;
-  font-size: ${clientFonts.md};
-  color: ${colors.white};
-`;
 
-const PurposeButtonWrap = styled.div`
-  width: 100%;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr 1fr 1fr;
-  gap: 10px;
-`;
-
-const GenderButtonWrap = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-`;
-
-const PurposeButton = ({
+const ApplicationButtonList = ({
+  type,
   value,
   onClickHandler,
+  buttonList,
 }: ApplicationButtonInterface) => {
-  const purposeList = ["면접", "출퇴근", "결혼식", "운동복", "일상복", "파티"];
+  const buttons = buttonList.map(form => {
+    const onAcitve = value === form;
+
+    return (
+      <ApplicationButton
+        key={form}
+        value={form}
+        style={{ background: onAcitve ? colors.blue : colors.gray }}
+        onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+          onClickHandler(e.currentTarget.value);
+        }}
+      >
+        {changeButtonText(form)}
+      </ApplicationButton>
+    );
+  });
 
   return (
-    <PurposeButtonWrap>
-      {purposeList.map(form => {
-        const onAcitve = value === form;
-
-        return (
-          <ApplicationButton
-            key={form}
-            value={form}
-            style={{ background: onAcitve ? colors.blue : colors.gray }}
-            onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
-              onClickHandler(e.currentTarget.value);
-            }}
-          >
-            {form}
-          </ApplicationButton>
-        );
-      })}
-    </PurposeButtonWrap>
-  );
-};
-
-const GenderButton = ({
-  value,
-  onClickHandler,
-}: ApplicationButtonInterface) => {
-  const genderList = ["man", "woman"];
-
-  return (
-    <GenderButtonWrap>
-      {genderList.map(form => {
-        const onAcitve = value === form;
-
-        return (
-          <ApplicationButton
-            key={form}
-            value={form}
-            style={{ background: onAcitve ? colors.blue : colors.gray }}
-            onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
-              onClickHandler(e.currentTarget.value);
-            }}
-          >
-            {form}
-          </ApplicationButton>
-        );
-      })}
-    </GenderButtonWrap>
+    <>
+      {type ? (
+        <PurposeButtonWrap>{buttons}</PurposeButtonWrap>
+      ) : (
+        <GenderButtonWrap>{buttons}</GenderButtonWrap>
+      )}
+    </>
   );
 };
 
@@ -275,17 +222,23 @@ const ApplicationButtonForm = ({
   formIndex,
   currentFormIndex,
 }: ApplicationFormInterface): JSX.Element | null => {
-  const purpose: boolean = form.title === "의상 구매 목적이 무엇인가요?";
+  const type: boolean = form.title === "의상 구매 목적이 무엇인가요?";
+
+  const purpose = ["면접", "출퇴근", "결혼식", "운동복", "일상복", "파티"];
+  const gender = ["man", "woman"];
+
+  const buttonList = type ? purpose : gender;
 
   if (currentFormIndex !== formIndex) return null;
   return (
     <FormWrap key={form.title}>
       <ClientText>{form.title}</ClientText>
-      {purpose ? (
-        <PurposeButton value={form.value} onClickHandler={form.setValue} />
-      ) : (
-        <GenderButton value={form.value} onClickHandler={form.setValue} />
-      )}
+      <ApplicationButtonList
+        type={type}
+        value={form.value}
+        onClickHandler={form.setValue}
+        buttonList={buttonList}
+      />
     </FormWrap>
   );
 };

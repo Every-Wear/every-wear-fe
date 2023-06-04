@@ -5,6 +5,7 @@ import {
   ClientButton,
   IntroLabel,
   BottomButtonLayout,
+  ClientText,
 } from "@/components/clientComponents/index";
 
 import { ClientButtonInterface } from "@/types/clientType";
@@ -33,6 +34,12 @@ const Client = () => {
   return (
     <Layout>
       <IntroLabel labelText="에브리웨어 메인페이지입니다. 버튼을 통해 원하시는 페이지로 이동해주세요" />
+      <div style={{ marginTop: "100px" }}>
+        <ClientText center>
+          안녕하세요 <br />
+          에브리웨어입니다
+        </ClientText>
+      </div>
       <BottomButtonLayout>
         {clientPageButtonList.map(button => (
           <ClientButton

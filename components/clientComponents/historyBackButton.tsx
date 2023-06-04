@@ -1,11 +1,16 @@
 import { useRouter } from "next/router";
 import styled from "styled-components";
 
+import { colors, clientFonts } from "@/styles/theme";
+
 const BackButton = styled.button`
   width: 100%;
-  border: 1px solid #fff;
-  padding: 20px 0;
-  font-size: 20px;
+  padding: 32px 0;
+  text-align: center;
+  font-weight: bold;
+  font-size: ${clientFonts.md};
+  background-color: ${colors.black};
+  color: ${colors.white};
 `;
 
 const HistoryBackButton = () => {

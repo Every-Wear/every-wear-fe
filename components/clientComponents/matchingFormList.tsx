@@ -4,6 +4,7 @@ import {
   MatchingInfoListWrap,
   InfoText,
 } from "@/pages/client/matching/index.styled";
+import { changeButtonText } from "@/utils/stringFormat";
 
 interface MatchingFormListInterface {
   time: string;
@@ -30,7 +31,7 @@ const MatchingFormList = ({
       {matchingList.map(matching => (
         <InfoText key={matching.title}>
           <ClientSubText>{matching.title}</ClientSubText>
-          <ClientText>{matching.content}</ClientText>
+          <ClientText>{changeButtonText(matching.content)}</ClientText>
         </InfoText>
       ))}
     </MatchingInfoListWrap>
