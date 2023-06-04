@@ -2,7 +2,10 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Image from "next/image";
 
-import { get_my_matching } from "@/api/modules/matching";
+import {
+  get_my_matching,
+  delete_matching_detail,
+} from "@/api/modules/matching";
 import {
   Layout,
   ClientButton,
@@ -21,6 +24,7 @@ import {
 import { postGeoLocationData } from "@/utils/geoLocation";
 import { MATCHING_STATUS_TYPE, MatchingStatusType } from "@/types/types";
 import { ClientMatchingInfoInterface } from "@/types/clientType";
+import { changeButtonText } from "@/utils/stringFormat";
 
 const Matching = () => {
   const router = useRouter();
@@ -39,6 +43,8 @@ const Matching = () => {
     matchingInfo?.statusType === MATCHING_STATUS_TYPE.매칭대기중 ||
     matchingInfo?.statusType === MATCHING_STATUS_TYPE.매칭중;
 
+  const uuid: string = matchingInfo.uuid ?? "";
+
   const getCurrentMatching = async (
     matchingInfo: ClientMatchingInfoInterface,
   ) => {
@@ -49,10 +55,13 @@ const Matching = () => {
     setQrCodeSrc(data?.matching.qrCodeValue);
   };
 
-  const currentMatchingCancelHandler = () => {
-    if (confirm("취소하시겠습니까?")) {
-      alert("취소되었습니다.");
+  const currentMatchingCancelHandler = async () => {
+    try {
+      await delete_matching_detail(uuid, "죄송합니다");
+      alert("신청이 취소되었습니다.");
       router.push("/client");
+    } catch (err) {
+      throw new Error();
     }
   };
 
@@ -62,31 +71,34 @@ const Matching = () => {
   }, []);
 
   useEffect(() => {
-    if (getInfoId || !matchingInfo?._id) return;
     if (matchingInfo?.statusType === MATCHING_STATUS_TYPE.진행완료) {
+      console.log("1");
       clearInterval(getInfoId ?? 0);
     }
-    if (matchingInfo?.statusType !== MATCHING_STATUS_TYPE.진행완료) {
+    if (
+      !getInfoId &&
+      matchingInfo?.statusType !== MATCHING_STATUS_TYPE.진행완료
+    ) {
       const interverId = setInterval(
         () => getCurrentMatching(matchingInfo),
-        2000,
+        5000,
       );
       setGetInfoId(interverId);
     }
   }, [getInfoId, matchingInfo]);
 
   useEffect(() => {
-    if (postGeoId || !matchingInfo?._id) return;
     if (matchingInfo?.statusType === MATCHING_STATUS_TYPE.진행완료) {
       clearInterval(postGeoId ?? 0);
     }
-    if (matchingInfo?.statusType === MATCHING_STATUS_TYPE.진행중) {
-      const interverId = setInterval(
-        () => postGeoLocationData("a02cc714-a572-4a2f-b742-1a1e398724c0"),
-        2000,
-      );
+    if (
+      !postGeoId &&
+      matchingInfo?.statusType === MATCHING_STATUS_TYPE.진행중
+    ) {
+      const interverId = setInterval(() => postGeoLocationData(uuid), 30000);
       setPostGeoId(interverId);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [postGeoId, matchingInfo]);
 
   if (!matchingInfo?._id) {
@@ -133,10 +145,18 @@ const MatchingProgressTitle = ({
   return (
     <MatchingProgressTitleWrap>
       <ClientText>{currentProgress}</ClientText>
-      <ClientSubText>
-        코디네이터와 통화 후 <br />
-        예약이 확정되요
-      </ClientSubText>
+      {(currentProgress === "매칭대기중" || currentProgress === "매칭중") && (
+        <ClientSubText>
+          코디네이터와 통화 후 <br />
+          예약이 확정되요
+        </ClientSubText>
+      )}
+      {currentProgress === "매칭완료" && (
+        <ClientSubText>
+          코디네이터에게 <br />
+          QR코드를 보여주세요
+        </ClientSubText>
+      )}
       {currentProgress === "매칭완료" && (
         <QRcodeBox>
           <Image
@@ -170,7 +190,7 @@ const MatchingInfoList = ({
       {infoList.map(info => (
         <InfoText key={info.title}>
           <ClientSubText>{info.title}</ClientSubText>
-          <ClientText>{info.content}</ClientText>
+          <ClientText>{changeButtonText(info.content)}</ClientText>
         </InfoText>
       ))}
     </MatchingInfoListWrap>

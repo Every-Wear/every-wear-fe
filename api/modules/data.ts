@@ -6,7 +6,7 @@ export const post_geo_data = async (
   longitude: string,
 ) => {
   const response = await instance({
-    method: "get",
+    method: "post",
     url: `datas/geo/${uuid}`,
     data: {
       latitude: latitude,
