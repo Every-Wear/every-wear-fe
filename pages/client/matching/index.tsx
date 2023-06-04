@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Image from "next/image";
+
 import { get_my_matching } from "@/api/modules/matching";
 import {
   Layout,
@@ -80,7 +81,7 @@ const Matching = () => {
     }
     if (matchingInfo?.statusType === MATCHING_STATUS_TYPE.진행중) {
       const interverId = setInterval(
-        () => postGeoLocationData("4e07a102-b6c3-426f-9f6c-71fba2162942"),
+        () => postGeoLocationData("a02cc714-a572-4a2f-b742-1a1e398724c0"),
         2000,
       );
       setPostGeoId(interverId);
@@ -122,8 +123,10 @@ const MatchingProgressTitle = ({
   return (
     <MatchingProgressTitleWrap>
       <ClientText>{currentProgress}</ClientText>
-      <ClientSubText>코디네이터와 통화 후</ClientSubText>
-      <ClientSubText>예약이 확정되요</ClientSubText>
+      <ClientSubText>
+        코디네이터와 통화 후 <br />
+        예약이 확정되요
+      </ClientSubText>
       {currentProgress === "매칭완료" && (
         <QRcodeBox>
           <Image
@@ -146,7 +149,7 @@ const MatchingInfoList = ({
   matchingInfo: ClientMatchingInfoInterface;
 }) => {
   const infoList = [
-    { title: "구매 날짜", content: matchingInfo.createdAt ?? "" },
+    { title: "구매 날짜", content: matchingInfo.preferTime ?? "" },
     { title: "구매 장소", content: matchingInfo.preferPlace ?? "" },
     { title: "구매 목적", content: matchingInfo.clothesType ?? "" },
     { title: "코디네이터 성별", content: matchingInfo.preferGender ?? "" },

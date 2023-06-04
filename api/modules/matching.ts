@@ -1,6 +1,29 @@
 import { instance } from "@/api/instance";
 import { MatchingStatusType } from "@/types/types";
 
+const post_matching = async (
+  time: string,
+  location: string,
+  purpose: string,
+  gender: string,
+) => {
+  const response = await instance({
+    method: "post",
+    url: `matching`,
+    data: {
+      clothesType: "상의, 하의",
+      limitPrice: 0,
+      preferPlace: location,
+      preferTime: time,
+      preferStyle: purpose,
+      preferGender: gender,
+      remark: "비고",
+    },
+  });
+
+  return response;
+};
+
 const get_matchings = async (matchingsStatus: MatchingStatusType) => {
   const response = await instance({
     method: "get",
@@ -27,4 +50,4 @@ const get_my_matching = async () => {
   return response;
 };
 
-export { get_matchings, get_matching_detail, get_my_matching };
+export { post_matching, get_matchings, get_matching_detail, get_my_matching };
