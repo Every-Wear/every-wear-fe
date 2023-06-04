@@ -5,7 +5,7 @@ import styled from "styled-components";
 import HomeIcon from "./homeIcon";
 import CurrentStatusIcon from "./currentStatusIcon";
 import MyPageIcon from "./myPageIcon";
-import { ColorInterface } from "@/types/types";
+import { ColorInterface } from "@/types/serverType";
 
 export default function BottomNavBar() {
   const router = useRouter();

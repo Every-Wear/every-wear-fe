@@ -1,4 +1,4 @@
-import { ColorInterface } from "@/types/types";
+import { ColorInterface } from "@/types/serverType";
 
 export default function HomeIcon({ color }: ColorInterface) {
   return (

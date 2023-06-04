@@ -1,5 +1,5 @@
+import { MATCHING_STATUS_TYPE } from "@/types/types";
 import { instance } from "../instance";
-import { MATCHING_STATUS_TYPE } from "./matching";
 
 const change_waiting_to_matching = async (uuid: string) => {
   const response = await instance({

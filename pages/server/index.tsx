@@ -1,22 +1,23 @@
 import { useEffect, useState } from "react";
-import { MATCHING_STATUS_TYPE, get_matchings } from "@/api/modules/matching";
-import { MatchingInfoInterface } from "@/types/types";
+import { get_matchings } from "@/api/modules/matching";
 import Image from "next/image";
 import styled from "styled-components";
 import { Layout } from "@/components/serverComponents";
 import { colors, serverFonts } from "@/styles/theme";
 import MatchingList from "@/components/serverComponents/matchingList";
+import { ServerMatchingInfoInterface } from "@/types/serverType";
+import { MATCHING_STATUS_TYPE } from "@/types/types";
 
 export default function ServerHome() {
-  const [matchingLists, setMatchingLists] = useState<MatchingInfoInterface[]>(
-    [],
-  );
+  const [matchingLists, setMatchingLists] = useState<
+    ServerMatchingInfoInterface[]
+  >([]);
 
   const getMatchingLists = async () => {
     const { data } = await get_matchings(MATCHING_STATUS_TYPE.매칭대기중);
-    const temp: MatchingInfoInterface[] = [];
+    const temp: ServerMatchingInfoInterface[] = [];
     if (!data || !data.matchings) return;
-    data.matchings.forEach((list: MatchingInfoInterface) => {
+    data.matchings.forEach((list: ServerMatchingInfoInterface) => {
       temp.push(list);
     });
     setMatchingLists(temp);

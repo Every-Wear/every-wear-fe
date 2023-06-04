@@ -18,11 +18,11 @@ const Header = () => {
     <HeaderWrap>
       <Logo>
         <Image
-          src={"assets/logo.svg"}
+          src={"/assets/logo.svg"}
           alt="에브리웨어"
           width={151}
           height={20}
-          aria-label="에브리웨어"
+          aria-label="안녕하세요 에브리웨어입니다."
         />
       </Logo>
     </HeaderWrap>

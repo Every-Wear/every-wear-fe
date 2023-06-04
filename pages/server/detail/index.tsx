@@ -1,14 +1,15 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { get_matching_detail } from "@/api/modules/matching";
-import { MatchingInfoInterface } from "@/types/types";
 import { change_waiting_to_matching } from "@/api/modules/matchingStatus";
 import { Layout, Modal } from "@/components/serverComponents";
+import { ServerMatchingInfoInterface } from "@/types/serverType";
 
 export default function HomeDetail() {
   const router = useRouter();
   const [matchingId, setMatchingId] = useState<string>("");
-  const [matchingInfo, setMatchingInfo] = useState<MatchingInfoInterface>();
+  const [matchingInfo, setMatchingInfo] =
+    useState<ServerMatchingInfoInterface>();
   const [isMatchingModalOpen, setIsMatchingModalOpen] =
     useState<boolean>(false);
   const [isCurrentStatusModalOpen, setIsCurrentStatusModalOpen] =

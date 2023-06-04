@@ -1,14 +1,10 @@
-import { HistoryBackButton } from "@/components/clientComponents/index";
+import { Layout, HistoryBackButton } from "@/components/clientComponents/index";
 
 const Mypage = () => {
   return (
-    <div>
-      <div>강서구 스트릿 스타일링 완료</div>
-      <div>강서구 스트릿 스타일링 완료</div>
-      <div>강서구 스트릿 스타일링 완료</div>
-      <div>강서구 스트릿 스타일링 완료</div>
+    <Layout>
       <HistoryBackButton />
-    </div>
+    </Layout>
   );
 };
 

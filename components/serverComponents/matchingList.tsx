@@ -1,5 +1,5 @@
 import { colors, serverFonts } from "@/styles/theme";
-import { MatchingInfoInterface } from "@/types/types";
+import { ServerMatchingInfoInterface } from "@/types/serverType";
 import Link from "next/link";
 import styled from "styled-components";
 
@@ -15,7 +15,11 @@ const SubText = styled.div`
   color: ${colors.gray200};
 `;
 
-export default function MatchingList(list: MatchingInfoInterface) {
+interface MatchingListInterface {
+  list: ServerMatchingInfoInterface;
+}
+
+export default function MatchingList({ list }: MatchingListInterface) {
   return (
     <div>
       <MatchingTitle>
