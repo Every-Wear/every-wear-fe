@@ -7,26 +7,21 @@ import {
   IntroLabel,
 } from "@/components/clientComponents/index";
 
-import { ColorType } from "@/styles/styledType";
+import { ClientButtonInterface } from "@/types/clientType";
 
 const Application = () => {
   const router = useRouter();
 
-  const clientPageButtonList: {
-    title: string;
-    goToPage: () => void;
-    label: string;
-    bgColor: keyof ColorType;
-  }[] = [
+  const clientPageButtonList: ClientButtonInterface[] = [
     {
       title: "음성 인식",
-      goToPage: () => router.push("/client/application/voice"),
+      onClick: () => router.push("/client/application/voice"),
       label: "음성인식을 통한 코디네이터 매칭 신청 페이지 이동",
       bgColor: "yellow",
     },
     {
       title: "직접 입력",
-      goToPage: () => router.push("/client/application/choice"),
+      onClick: () => router.push("/client/application/choice"),
       label: "직접 입력을 통한 코디네이터 매칭 신청 페이지 이동",
       bgColor: "white",
     },
@@ -40,7 +35,7 @@ const Application = () => {
           <ClientButton
             bgColor={button.bgColor}
             key={button.title}
-            onClickHandler={button.goToPage}
+            onClickHandler={button.onClick}
             label={button.label}
             fontColor="black"
           >

@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-import { clientFonts } from "@/styles/theme";
+import { clientFonts, colors } from "@/styles/theme";
 
 interface ClientSubTextInterface {
   center?: boolean;
@@ -11,6 +11,7 @@ const ClientSubTextWrap = styled.span`
   width: 100%;
   font-weight: 500;
   display: block;
+  color: ${colors.sub_white};
   font-size: ${clientFonts.sm};
   text-align: ${(props: { center: boolean }) =>
     props.center ? "center" : null};

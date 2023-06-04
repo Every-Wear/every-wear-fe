@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-import { clientFonts } from "@/styles/theme";
+import { clientFonts, colors } from "@/styles/theme";
 
 interface ClientTextInterface {
   center?: boolean;
@@ -10,6 +10,7 @@ interface ClientTextInterface {
 const ClientTextWrap = styled.p`
   width: 100%;
   font-weight: 700;
+  color: ${colors.white};
   font-size: ${clientFonts.md};
   text-align: ${(props: { center: boolean }) =>
     props.center ? "center" : null};

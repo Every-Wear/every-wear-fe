@@ -10,7 +10,8 @@ interface LayoutType {
 
 const LayoutWrap = styled.div`
   background-color: ${colors.black};
-  height: 100vh;
+  min-height: 100vh;
+  height: 100%;
 `;
 
 export default function Layout({ children }: LayoutType) {

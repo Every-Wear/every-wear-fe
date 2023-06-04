@@ -5,6 +5,7 @@ export const colors: ColorType = {
   blue: "#1F57E7",
   yellow: "#FCE444",
   white: "#FFFFFF",
+  sub_white: "#B3B3B3",
   gray: "#303239",
 };
 

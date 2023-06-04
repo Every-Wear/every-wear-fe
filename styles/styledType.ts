@@ -3,6 +3,7 @@ export interface ColorType {
   blue: string;
   yellow: string;
   white: string;
+  sub_white: string;
   gray: string;
 }
 

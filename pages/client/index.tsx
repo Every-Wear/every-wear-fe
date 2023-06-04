@@ -7,27 +7,25 @@ import {
   BottomButtonLayout,
 } from "@/components/clientComponents/index";
 
+import { ClientButtonInterface } from "@/types/clientType";
+
 const Client = () => {
   const router = useRouter();
 
-  const clientPageButtonList: {
-    title: string;
-    goToPage: () => void;
-    label: string;
-  }[] = [
+  const clientPageButtonList: ClientButtonInterface[] = [
     {
       title: "코디 신청",
-      goToPage: () => router.push("/client/application"),
+      onClick: () => router.push("/client/application"),
       label: "코디네이터 매칭 신청페이지 이동 버튼",
     },
     {
       title: "매칭 현황",
-      goToPage: () => router.push("/client/matching"),
+      onClick: () => router.push("/client/matching"),
       label: "코디네이터 매칭현황 확인 페이지 이동 버튼",
     },
     {
       title: "마이페이지",
-      goToPage: () => router.push("/client/mypage"),
+      onClick: () => router.push("/client/mypage"),
       label: "마이페이지 이동 버튼",
     },
   ];
@@ -41,7 +39,7 @@ const Client = () => {
             border={true}
             bgColor="black"
             key={button.title}
-            onClickHandler={button.goToPage}
+            onClickHandler={button.onClick}
             label={button.label}
           >
             {button.title}
