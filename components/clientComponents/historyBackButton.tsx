@@ -11,6 +11,7 @@ const BackButton = styled.button`
   font-size: ${clientFonts.md};
   background-color: ${colors.black};
   color: ${colors.white};
+  border-top: 1px solid ${colors.white};
 `;
 
 const HistoryBackButton = () => {

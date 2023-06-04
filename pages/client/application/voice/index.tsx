@@ -13,9 +13,8 @@ import {
   ClientButton,
   ClientText,
   MatchingFormList,
+  HistoryBackButton,
 } from "@/components/clientComponents";
-
-import { clientFonts, colors } from "@/styles/theme";
 
 interface FormInterface {
   title: string;
@@ -67,9 +66,6 @@ const Voice = () => {
   const submitApplication = async () => {
     try {
       await post_matching(time, location, purpose, gender);
-      alert(
-        `신청 API호출 시간 : ${time} / 지역 : ${location} / 용도 : ${purpose} / 코디성별 : ${gender}`,
-      );
       router.push("/client/matching");
     } catch (err) {
       alert("신청서 제출에 실패했습니다");
@@ -118,6 +114,7 @@ const Voice = () => {
             >
               다음
             </ClientButton>
+            <HistoryBackButton />
           </BottomButtonLayout>
         </div>
       ))}
@@ -139,50 +136,41 @@ const FormWrap = styled.div`
   display: flex;
   flex-direction: column;
   gap: 30px;
-  padding-bottom: 150px;
-`;
-
-const ChoiceInput = styled.input`
-  width: 100%;
-  background-color: #303239;
-  padding: 26px 24px;
-  font-weight: bold;
-  color: ${colors.white};
-  font-size: ${clientFonts.md};
-
-  &:focus {
-    border: 2px solid ${colors.blue};
-    outline: none;
-  }
+  padding-bottom: 250px;
 `;
 
 const ApplicationInputForm = ({
   form,
   formIndex,
   currentFormIndex,
-  placeHolder = "입력",
 }: ApplicationFormInterface): JSX.Element | null => {
   const { transcript, listening, resetTranscript } = useSpeechRecognition();
   const content = transcript;
 
   useEffect(() => {
     if (currentFormIndex !== formIndex) return;
-    console.log(content);
-    form.setValue(content);
+    form.setValue(transcript);
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [content]);
-  console.log(form);
+  }, [transcript]);
 
   if (currentFormIndex !== formIndex) return null;
 
   return (
     <FormWrap key={form.title}>
       <ClientText>{form.title}</ClientText>
-      <p style={{ color: "#fff" }}>Microphone: {listening ? "on" : "off"}</p>
-      <button onClick={SpeechRecognition.startListening}>Start</button>
-      <button onClick={SpeechRecognition.stopListening}>Stop</button>
-      <button onClick={resetTranscript}>Reset</button>
-      <p style={{ color: "#fff" }}>{transcript}</p>
+      <ClientButton
+        onClickHandler={SpeechRecognition.startListening}
+        label="녹음하기 버튼을 클릭후 말씀해주세요"
+      >
+        녹음하기
+      </ClientButton>
+      <ClientButton
+        onClickHandler={SpeechRecognition.resetTranscript}
+        label="리셋하기"
+      >
+        리셋하기
+      </ClientButton>
     </FormWrap>
   );
 };
