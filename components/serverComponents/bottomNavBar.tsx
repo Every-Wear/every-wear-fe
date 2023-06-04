@@ -1,16 +1,73 @@
+import { colors } from "@/styles/theme";
 import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+import styled from "styled-components";
+import HomeIcon from "./homeIcon";
+import CurrentStatusIcon from "./currentStatusIcon";
+import MyPageIcon from "./myPageIcon";
+import { ColorInterface } from "@/types/types";
 
 export default function BottomNavBar() {
   const router = useRouter();
 
+  const [pathName, setPathName] = useState<string>("");
+
+  useEffect(() => {
+    const currentPath = router.pathname.split("/").pop();
+    currentPath && setPathName(currentPath);
+  }, [router.pathname]);
+
+  const changeColor = (navTitle: string): string => {
+    return pathName === navTitle ? colors.blue : colors.gray100;
+  };
+
+  const NavContainer = styled.nav`
+    width: 100%;
+    height: 60px;
+    display: flex;
+    justify-content: space-evenly;
+    position: fixed;
+    bottom: 10px;
+    padding-top: 10px;
+    background-color: ${colors.black};
+    border-top: 1px solid ${colors.gray};
+  `;
+
+  const NavButton = styled.button<{ props: ColorInterface }>`
+    width: 100%;
+    color: ${(props: ColorInterface) => props.color};
+    border: 0;
+    background-color: transparent;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    gap: 4px;
+    font-size: 10px;
+  `;
+
   return (
-    <nav>
-      <button onClick={() => router.push("/server")}>홈</button>
-      <button onClick={() => router.push("/server/currentStatus")}>
+    <NavContainer>
+      <NavButton
+        color={changeColor("server")}
+        onClick={() => router.push("/server")}
+      >
+        <HomeIcon color={changeColor("server")} />홈
+      </NavButton>
+      <NavButton
+        color={changeColor("currentStatus")}
+        onClick={() => router.push("/server/currentStatus")}
+      >
+        <CurrentStatusIcon color={changeColor("currentStatus")} />
         매칭현황
-      </button>
-      <button onClick={() => router.push("/server/history")}>매칭내역</button>
-      <button onClick={() => router.push("/server/mypage")}>마이페이지</button>
-    </nav>
+      </NavButton>
+      <NavButton
+        color={changeColor("mypage")}
+        onClick={() => router.push("/server/mypage")}
+      >
+        <MyPageIcon color={changeColor("mypage")} />
+        마이페이지
+      </NavButton>
+    </NavContainer>
   );
 }

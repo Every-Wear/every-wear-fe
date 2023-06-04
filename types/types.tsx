@@ -16,3 +16,7 @@ export interface MatchingInfoInterface {
   createdAt: string;
   qrCodeValue: string;
 }
+
+export interface ColorInterface {
+  color: string;
+}

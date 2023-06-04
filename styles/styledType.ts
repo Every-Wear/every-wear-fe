@@ -4,6 +4,8 @@ export interface ColorType {
   yellow: string;
   white: string;
   gray: string;
+  gray100: string;
+  gray200: string;
 }
 
 export interface FontType {

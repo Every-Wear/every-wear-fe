@@ -6,6 +6,8 @@ export const colors: ColorType = {
   yellow: "#FCE444",
   white: "#FFFFFF",
   gray: "#303239",
+  gray100: "#A5ADBC",
+  gray200: "#B1B5B7",
 };
 
 export const serverFonts: FontType = {

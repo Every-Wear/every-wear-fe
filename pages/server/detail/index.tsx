@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { Modal, Layout } from "@/pages/components/serverComponents/index";
 import { get_matching_detail } from "@/api/modules/matching";
 import { MatchingInfoInterface } from "@/types/types";
 import { change_waiting_to_matching } from "@/api/modules/matchingStatus";
+import { Layout, Modal } from "@/components/serverComponents";
 
 export default function HomeDetail() {
   const router = useRouter();
