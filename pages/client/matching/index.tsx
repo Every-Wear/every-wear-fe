@@ -43,7 +43,7 @@ const Matching = () => {
     const { data } = await get_my_matching();
     setMatchingInfo(data.matching);
 
-    if (matchingInfo._id !== undefined) return;
+    if (!matchingInfo._id) return;
     setQrCodeSrc(data.matching.qrCodeValue);
   };
 
@@ -56,6 +56,7 @@ const Matching = () => {
 
   useEffect(() => {
     getCurrentMatching(matchingInfo);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -70,7 +71,7 @@ const Matching = () => {
       );
       setGetInfoId(interverId);
     }
-  }, [getInfoId]);
+  }, [getInfoId, matchingInfo]);
 
   useEffect(() => {
     if (postGeoId !== null) return;
