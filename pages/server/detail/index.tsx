@@ -17,7 +17,7 @@ export default function HomeDetail() {
 
   const getDetail = async (uuid: string) => {
     const { data } = await get_matching_detail(uuid);
-    if (!data || !data.matching) return;
+    if (!data.matching) return;
     setMatchingInfo(data.matching);
   };
 
@@ -36,8 +36,11 @@ export default function HomeDetail() {
 
   const confirmMatching = async () => {
     matchingModalHandler();
-    const { data } = await change_waiting_to_matching(matchingId);
-    if (!data) return alert("매칭 오류");
+    try {
+      await change_waiting_to_matching(matchingId);
+    } catch (e) {
+      return alert("매칭 오류");
+    }
     currentStatusModalHandler();
   };
 
@@ -49,12 +52,12 @@ export default function HomeDetail() {
 
   useEffect(() => {
     const { uuid } = router.query;
-    if (!uuid) return;
+    if (!uuid) router.push("/server");
     if (typeof uuid === "string") {
       getDetail(uuid);
       setMatchingId(uuid);
     }
-  }, [router.query]);
+  }, [router]);
 
   return (
     <Layout>

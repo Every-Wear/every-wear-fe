@@ -16,7 +16,7 @@ export default function ServerHome() {
   const getMatchingLists = async () => {
     const { data } = await get_matchings(MATCHING_STATUS_TYPE.매칭대기중);
     const temp: ServerMatchingInfoInterface[] = [];
-    if (!data || !data.matchings) return;
+    if (data.matching.length === 0) return;
     data.matchings.forEach((list: ServerMatchingInfoInterface) => {
       temp.push(list);
     });
@@ -74,35 +74,33 @@ export default function ServerHome() {
   `;
   return (
     <Layout>
-      <div>
-        <WelcomeCardWrapper>
-          <WelcomeTextWrapper>
-            <WelcomeCardMainText>코디네이터 지침가이드</WelcomeCardMainText>
-            <WelcomeCardSubText>시각장애인의 눈이 되는 법</WelcomeCardSubText>
-          </WelcomeTextWrapper>
-          <Image
-            src="/assets/welcomeButton.svg"
-            width={64}
-            height={32}
-            style={{
-              position: "absolute",
-              bottom: "14px",
-              right: "24px",
-            }}
-            alt="코디네이터 지침가이드 버튼"
-          />
-        </WelcomeCardWrapper>
-        <MatchingSection>
-          <MatchingTextWrapper>
-            <MatchingTotalText>{matchingLists.length}개 의뢰</MatchingTotalText>
-            <MatchingOrderText>최신 신청순</MatchingOrderText>
-          </MatchingTextWrapper>
-          {matchingLists.map((list, idx) => {
-            if (!matchingLists) return <div>현재 매칭 리스트가 없습니다.</div>;
-            return <MatchingList list={list} key={idx} />;
-          })}
-        </MatchingSection>
-      </div>
+      <WelcomeCardWrapper>
+        <WelcomeTextWrapper>
+          <WelcomeCardMainText>코디네이터 지침가이드</WelcomeCardMainText>
+          <WelcomeCardSubText>시각장애인의 눈이 되는 법</WelcomeCardSubText>
+        </WelcomeTextWrapper>
+        <Image
+          src="/assets/welcomeButton.svg"
+          width={64}
+          height={32}
+          style={{
+            position: "absolute",
+            bottom: "14px",
+            right: "24px",
+          }}
+          alt="코디네이터 지침가이드 버튼"
+        />
+      </WelcomeCardWrapper>
+      <MatchingSection>
+        <MatchingTextWrapper>
+          <MatchingTotalText>{matchingLists.length}개 의뢰</MatchingTotalText>
+          <MatchingOrderText>최신 신청순</MatchingOrderText>
+        </MatchingTextWrapper>
+        {matchingLists.map((list, idx) => {
+          if (!matchingLists) return <div>현재 매칭 리스트가 없습니다.</div>;
+          return <MatchingList list={list} key={idx} />;
+        })}
+      </MatchingSection>
     </Layout>
   );
 }

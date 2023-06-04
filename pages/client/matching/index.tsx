@@ -1,32 +1,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Image from "next/image";
-
-<<<<<<< HEAD
-import { get_matchings } from "@/api/modules/matching";
-
-import { HistoryBackButton } from "@/components/clientComponents";
-import { StatusButton } from "@/pages/client/matching/index.styled";
-import { MatchingStatusType } from "@/types/types";
-
-interface MatchingInfoInterface {
-  _id: string;
-  publishUserId: string;
-  statusType: MatchingStatusType;
-  clothesType: string; // 만약 백엔드 enum이 있다면 상수로 교체
-  limitPrice: number;
-  preferPlace: string;
-  preferStyle: string; // 만약 백엔드 enum이 있다면 상수로 교체
-  preferGender: "woman" | "man";
-  remark: string;
-  uuid: string;
-  createdAt: string;
-  qrCodeValue: string;
-}
-=======
 import { get_my_matching } from "@/api/modules/matching";
->>>>>>> 5e1ca36762a40129f6388c15950981a65bf59ebb
-
 import {
   Layout,
   ClientButton,
@@ -41,18 +16,16 @@ import {
   InfoText,
 } from "@/pages/client/matching/index.styled";
 
-import {
-  MatchingStatusType,
-  MatchingInfoInterface,
-  MATCHING_STATUS_TYPE,
-} from "@/types/clientType";
-
 import { postGeoLocationData } from "@/utils/geoLocation";
+import { MATCHING_STATUS_TYPE, MatchingStatusType } from "@/types/types";
+import { ClientMatchingInfoInterface } from "@/types/clientType";
 
 const Matching = () => {
   const router = useRouter();
 
-  const [matchingInfo, setMatchingInfo] = useState<MatchingInfoInterface>({});
+  const [matchingInfo, setMatchingInfo] = useState<ClientMatchingInfoInterface>(
+    {},
+  );
   const [qrCodeSrc, setQrCodeSrc] = useState<string>("");
   const [getInfoId, setGetInfoId] = useState<NodeJS.Timer | null>(null);
   const [postGeoId, setPostGeoId] = useState<NodeJS.Timer | null>(null);
@@ -64,7 +37,9 @@ const Matching = () => {
     matchingInfo?.statusType === MATCHING_STATUS_TYPE.매칭대기중 ||
     matchingInfo?.statusType === MATCHING_STATUS_TYPE.매칭중;
 
-  const getCurrentMatching = async (matchingInfo: MatchingInfoInterface) => {
+  const getCurrentMatching = async (
+    matchingInfo: ClientMatchingInfoInterface,
+  ) => {
     const { data } = await get_my_matching();
     setMatchingInfo(data.matching);
 
@@ -167,7 +142,7 @@ const MatchingProgressTitle = ({
 const MatchingInfoList = ({
   matchingInfo,
 }: {
-  matchingInfo: MatchingInfoInterface;
+  matchingInfo: ClientMatchingInfoInterface;
 }) => {
   const infoList = [
     { title: "구매 날짜", content: matchingInfo.createdAt ?? "" },

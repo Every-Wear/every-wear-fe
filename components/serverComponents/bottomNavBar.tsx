@@ -10,11 +10,15 @@ import { ColorInterface } from "@/types/serverType";
 export default function BottomNavBar() {
   const router = useRouter();
 
-  const [pathName, setPathName] = useState<string>("");
+  const [pathName, setPathName] = useState<string>("server");
 
   useEffect(() => {
-    const currentPath = router.pathname.split("/").pop();
-    currentPath && setPathName(currentPath);
+    const currentPath = router.pathname.split("/");
+    if (!currentPath) return;
+    if (currentPath.includes("currentStatus"))
+      return setPathName("currentStatus");
+    if (currentPath.includes("mypage")) return setPathName("mypage");
+    else setPathName("server");
   }, [router.pathname]);
 
   const changeColor = (navTitle: string): string => {
