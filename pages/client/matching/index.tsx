@@ -1,9 +1,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Image from "next/image";
-
 import { get_my_matching } from "@/api/modules/matching";
-
 import {
   Layout,
   ClientButton,
@@ -18,18 +16,16 @@ import {
   InfoText,
 } from "@/pages/client/matching/index.styled";
 
-import {
-  MatchingStatusType,
-  MatchingInfoInterface,
-  MATCHING_STATUS_TYPE,
-} from "@/types/clientType";
-
 import { postGeoLocationData } from "@/utils/geoLocation";
+import { MATCHING_STATUS_TYPE, MatchingStatusType } from "@/types/types";
+import { ClientMatchingInfoInterface } from "@/types/clientType";
 
 const Matching = () => {
   const router = useRouter();
 
-  const [matchingInfo, setMatchingInfo] = useState<MatchingInfoInterface>({});
+  const [matchingInfo, setMatchingInfo] = useState<ClientMatchingInfoInterface>(
+    {},
+  );
   const [qrCodeSrc, setQrCodeSrc] = useState<string>("");
   const [getInfoId, setGetInfoId] = useState<NodeJS.Timer | null>(null);
   const [postGeoId, setPostGeoId] = useState<NodeJS.Timer | null>(null);
@@ -41,7 +37,9 @@ const Matching = () => {
     matchingInfo?.statusType === MATCHING_STATUS_TYPE.매칭대기중 ||
     matchingInfo?.statusType === MATCHING_STATUS_TYPE.매칭중;
 
-  const getCurrentMatching = async (matchingInfo: MatchingInfoInterface) => {
+  const getCurrentMatching = async (
+    matchingInfo: ClientMatchingInfoInterface,
+  ) => {
     const { data } = await get_my_matching();
     setMatchingInfo(data.matching);
 
@@ -144,7 +142,7 @@ const MatchingProgressTitle = ({
 const MatchingInfoList = ({
   matchingInfo,
 }: {
-  matchingInfo: MatchingInfoInterface;
+  matchingInfo: ClientMatchingInfoInterface;
 }) => {
   const infoList = [
     { title: "구매 날짜", content: matchingInfo.createdAt ?? "" },

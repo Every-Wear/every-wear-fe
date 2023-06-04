@@ -5,6 +5,8 @@ export interface ColorType {
   white: string;
   sub_white: string;
   gray: string;
+  gray100: string;
+  gray200: string;
 }
 
 export interface FontType {

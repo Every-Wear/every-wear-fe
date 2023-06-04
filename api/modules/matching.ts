@@ -1,8 +1,7 @@
 import { instance } from "@/api/instance";
+import { MatchingStatusType } from "@/types/types";
 
-import { MatchingStatusType } from "@/types/clientType";
-
-export const get_matchings = async (matchingsStatus: MatchingStatusType) => {
+const get_matchings = async (matchingsStatus: MatchingStatusType) => {
   const response = await instance({
     method: "get",
     url: `matchings?status=${matchingsStatus}`,
@@ -11,7 +10,15 @@ export const get_matchings = async (matchingsStatus: MatchingStatusType) => {
   return response;
 };
 
-export const get_my_matching = async () => {
+const get_matching_detail = async (uuid: string) => {
+  const response = await instance({
+    method: "get",
+    url: `matching/${uuid}`,
+  });
+  return response;
+};
+
+const get_my_matching = async () => {
   const response = await instance({
     method: "get",
     url: `matching/my`,
@@ -19,3 +26,5 @@ export const get_my_matching = async () => {
 
   return response;
 };
+
+export { get_matchings, get_matching_detail, get_my_matching };

@@ -7,6 +7,8 @@ export const colors: ColorType = {
   white: "#FFFFFF",
   sub_white: "#B3B3B3",
   gray: "#303239",
+  gray100: "#A5ADBC",
+  gray200: "#B1B5B7",
 };
 
 export const serverFonts: FontType = {
