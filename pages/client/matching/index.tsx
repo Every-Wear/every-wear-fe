@@ -42,10 +42,10 @@ const Matching = () => {
     matchingInfo: ClientMatchingInfoInterface,
   ) => {
     const { data } = await get_my_matching();
-    setMatchingInfo(data.matching);
+    setMatchingInfo(data?.matching);
 
-    if (!matchingInfo._id) return;
-    setQrCodeSrc(data.matching.qrCodeValue);
+    if (matchingInfo?._id) return;
+    setQrCodeSrc(data?.matching.qrCodeValue);
   };
 
   const currentMatchingCancelHandler = () => {
@@ -61,11 +61,11 @@ const Matching = () => {
   }, []);
 
   useEffect(() => {
-    if (getInfoId !== null) return;
-    if (matchingInfo?.statusType === MATCHING_STATUS_TYPE.매칭완료) {
+    if (getInfoId || !matchingInfo?._id) return;
+    if (matchingInfo?.statusType === MATCHING_STATUS_TYPE.진행완료) {
       clearInterval(getInfoId ?? 0);
     }
-    if (matchingInfo?.statusType !== MATCHING_STATUS_TYPE.매칭완료) {
+    if (matchingInfo?.statusType !== MATCHING_STATUS_TYPE.진행완료) {
       const interverId = setInterval(
         () => getCurrentMatching(matchingInfo),
         2000,
@@ -75,8 +75,8 @@ const Matching = () => {
   }, [getInfoId, matchingInfo]);
 
   useEffect(() => {
-    if (postGeoId !== null) return;
-    if (matchingInfo?.statusType === MATCHING_STATUS_TYPE.매칭완료) {
+    if (postGeoId || !matchingInfo?._id) return;
+    if (matchingInfo?.statusType === MATCHING_STATUS_TYPE.진행완료) {
       clearInterval(postGeoId ?? 0);
     }
     if (matchingInfo?.statusType === MATCHING_STATUS_TYPE.진행중) {
@@ -87,6 +87,14 @@ const Matching = () => {
       setPostGeoId(interverId);
     }
   }, [postGeoId, matchingInfo]);
+
+  if (!matchingInfo?._id) {
+    return (
+      <Layout>
+        <ClientText>매칭이 존재하지 않습니다</ClientText>
+      </Layout>
+    );
+  }
 
   return (
     <Layout>
@@ -149,10 +157,10 @@ const MatchingInfoList = ({
   matchingInfo: ClientMatchingInfoInterface;
 }) => {
   const infoList = [
-    { title: "구매 날짜", content: matchingInfo.preferTime ?? "" },
-    { title: "구매 장소", content: matchingInfo.preferPlace ?? "" },
-    { title: "구매 목적", content: matchingInfo.clothesType ?? "" },
-    { title: "코디네이터 성별", content: matchingInfo.preferGender ?? "" },
+    { title: "구매 날짜", content: matchingInfo?.preferTime ?? "" },
+    { title: "구매 장소", content: matchingInfo?.preferPlace ?? "" },
+    { title: "구매 목적", content: matchingInfo?.clothesType ?? "" },
+    { title: "코디네이터 성별", content: matchingInfo?.preferGender ?? "" },
   ];
 
   return (

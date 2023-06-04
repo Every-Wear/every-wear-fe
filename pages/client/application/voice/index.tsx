@@ -1,135 +1,190 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import styled from "styled-components";
+import SpeechRecognition, {
+  useSpeechRecognition,
+} from "react-speech-recognition";
 
-import { HistoryBackButton } from "@/components/clientComponents";
+import { post_matching } from "@/api/modules/matching";
+
 import {
-  ApplicationPage,
-  ApplicationButton,
-  CustomInput,
-} from "@/pages/client/application/index.styled";
+  Layout,
+  BottomButtonLayout,
+  ClientButton,
+  ClientText,
+  MatchingFormList,
+} from "@/components/clientComponents";
 
-const STATUS_TYPE = {
-  날짜: "날짜",
-  장소: "장소",
-  목적: "목적",
-} as const;
-type StatusType = keyof typeof STATUS_TYPE;
-
-const FORM_TYPE = {
-  date: "date",
-  text: "text",
-} as const;
-type FormType = keyof typeof FORM_TYPE;
+import { clientFonts, colors } from "@/styles/theme";
 
 interface FormInterface {
-  title: StatusType;
-  inputType: FormType;
+  title: string;
   value: string;
   setValue: (state: string) => void;
+  placeHolder?: string;
 }
 
-const Application = () => {
+const Voice = () => {
   const router = useRouter();
 
   const [currentFormIndex, setCurrentFormIndex] = useState<number>(0);
   const [time, setTime] = useState<string>("");
   const [location, setLocation] = useState<string>("");
-  const [usage, setUsage] = useState<string>("");
+  const [purpose, setPurpose] = useState<string>("");
+  const [gender, setGender] = useState<string>("");
 
   const formList: FormInterface[] = [
     {
-      title: STATUS_TYPE["날짜"],
-      inputType: FORM_TYPE["date"],
+      title: "언제 의상을 살까요?",
       value: time,
       setValue: setTime,
+      placeHolder: "####년 ##월 ##일",
     },
     {
-      title: STATUS_TYPE["장소"],
-      inputType: FORM_TYPE["text"],
+      title: "어디서 의상을 살까요?",
       value: location,
       setValue: setLocation,
+      placeHolder: "지역입력 (예:강남)",
     },
     {
-      title: STATUS_TYPE["목적"],
-      inputType: FORM_TYPE["text"],
-      value: usage,
-      setValue: setUsage,
+      title: `의상 구매 목적이 무엇인가요?`,
+      value: purpose,
+      setValue: setPurpose,
+    },
+    {
+      title: "선호하는 코디네이터 성별은 무엇인가요?",
+      value: gender,
+      setValue: setGender,
     },
   ];
 
   const lastFormindex = formList.length - 1;
 
-  const goToNextForm = (status: number) => {
-    setCurrentFormIndex(status + 1);
+  const goToNextForm = () => {
+    setCurrentFormIndex(currentFormIndex + 1);
   };
 
-  const submitApplication = (time: string, location: string, usage: string) => {
-    alert(`신청 API호출 시간 : ${time} / 지역 : ${location} / 용도 : ${usage}`);
-    router.push("/client/matching");
-  };
-
-  const submitButtonHandler = (currentIndex: number) => {
-    if (currentIndex === lastFormindex) {
-      submitApplication(time, location, usage);
-    } else {
-      goToNextForm(currentIndex);
+  const submitApplication = async () => {
+    try {
+      await post_matching(time, location, purpose, gender);
+      alert(
+        `신청 API호출 시간 : ${time} / 지역 : ${location} / 용도 : ${purpose} / 코디성별 : ${gender}`,
+      );
+      router.push("/client/matching");
+    } catch (err) {
+      alert("신청서 제출에 실패했습니다");
+      return new Error();
     }
   };
 
+  if (currentFormIndex > lastFormindex) {
+    return (
+      <Layout>
+        <MatchingFormList
+          time={time}
+          location={location}
+          purpose={purpose}
+          gender={gender}
+        />
+        <ClientButton
+          bgColor="white"
+          fontColor="black"
+          onClickHandler={submitApplication}
+          label="다음"
+        >
+          신청
+        </ClientButton>
+      </Layout>
+    );
+  }
+
   return (
-    <ApplicationPage>
-      {formList.map((form, idx) => {
-        return (
-          <ApplicationForm
+    <Layout>
+      {formList.map((form, idx) => (
+        <div key={idx}>
+          <ApplicationInputForm
             form={form}
             key={form.title}
             formIndex={idx}
-            lastFormIndex={formList.length - 1}
             currentFormIndex={currentFormIndex}
-            buttonHandler={submitButtonHandler}
+            placeHolder={form.placeHolder}
           />
-        );
-      })}
-      <HistoryBackButton />
-    </ApplicationPage>
+          <BottomButtonLayout>
+            <ClientButton
+              bgColor="white"
+              fontColor="black"
+              onClickHandler={goToNextForm}
+              label="다음"
+            >
+              다음
+            </ClientButton>
+          </BottomButtonLayout>
+        </div>
+      ))}
+    </Layout>
   );
 };
 
-// ------------------------------ ApplicationForm Comonent ---------------------------------
+// ------------------------------ ApplicationInputForm Comonent ---------------------------------
 interface ApplicationFormInterface {
   form: FormInterface;
-  formIndex: number;
-  lastFormIndex: number;
-  currentFormIndex: number;
-  buttonHandler: (index: number) => void;
+  formIndex?: number;
+  currentFormIndex?: number;
+  placeHolder: string | undefined;
 }
 
-const ApplicationForm = ({
+const FormWrap = styled.div`
+  width: 100%;
+  padding: 50px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  padding-bottom: 150px;
+`;
+
+const ChoiceInput = styled.input`
+  width: 100%;
+  background-color: #303239;
+  padding: 26px 24px;
+  font-weight: bold;
+  color: ${colors.white};
+  font-size: ${clientFonts.md};
+
+  &:focus {
+    border: 2px solid ${colors.blue};
+    outline: none;
+  }
+`;
+
+const ApplicationInputForm = ({
   form,
   formIndex,
-  lastFormIndex,
   currentFormIndex,
-  buttonHandler,
+  placeHolder = "입력",
 }: ApplicationFormInterface): JSX.Element | null => {
-  const AplicationButtonText =
-    currentFormIndex === lastFormIndex ? "신청" : "다음";
+  const { transcript, listening, resetTranscript } = useSpeechRecognition();
+  const content = transcript;
+
+  useEffect(() => {
+    if (currentFormIndex !== formIndex) return;
+    console.log(content);
+    form.setValue(content);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [content]);
+  console.log(form);
 
   if (currentFormIndex !== formIndex) return null;
+
   return (
-    <div key={form.title}>
-      <h2>{form.title}를 입력해주세요</h2>
-      <CustomInput
-        type={form.inputType}
-        value={form.value}
-        onChange={(e: React.FormEvent<HTMLInputElement>) =>
-          form.setValue(e.currentTarget.value)
-        }
-      />
-      <ApplicationButton onClick={() => buttonHandler(currentFormIndex)}>
-        {AplicationButtonText}
-      </ApplicationButton>
-    </div>
+    <FormWrap key={form.title}>
+      <ClientText>{form.title}</ClientText>
+      <p style={{ color: "#fff" }}>Microphone: {listening ? "on" : "off"}</p>
+      <button onClick={SpeechRecognition.startListening}>Start</button>
+      <button onClick={SpeechRecognition.stopListening}>Stop</button>
+      <button onClick={resetTranscript}>Reset</button>
+      <p style={{ color: "#fff" }}>{transcript}</p>
+    </FormWrap>
   );
 };
 
-export default Application;
+export default Voice;
