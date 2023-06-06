@@ -45,8 +45,9 @@ interface MatchingListInterface {
 }
 
 export default function MatchingList({ list }: MatchingListInterface) {
-  const createTime = list.createdAt.split(".")[0].split(":")[0];
-  const currentTime = new Date().toISOString().split(".")[0].split(":")[0];
+  const createTime = new Date(list.createdAt);
+  const currentTime = new Date();
+  const createAfter30Minutes = new Date(createTime.getTime() + 30 * 60000);
 
   return (
     <Link
@@ -58,7 +59,9 @@ export default function MatchingList({ list }: MatchingListInterface) {
     >
       <BadgeWrapper>
         <MatchingBadge>대기중</MatchingBadge>
-        {createTime === currentTime && <NewBadge>NEW</NewBadge>}
+        {createTime < currentTime && currentTime < createAfter30Minutes && (
+          <NewBadge>NEW</NewBadge>
+        )}
       </BadgeWrapper>
       <MatchingTitle>
         {list.preferPlace}에서
