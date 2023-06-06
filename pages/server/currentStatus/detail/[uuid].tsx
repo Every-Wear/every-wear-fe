@@ -11,11 +11,7 @@ export default function CurrentStatusOngoing() {
   const router = useRouter();
   const { uuid } = router.query;
   const detailInfo = useGetDetail(uuid);
-  const [files, setFiles] = useState<{
-    clothesPictures: File;
-    billingPictures: File;
-    otherPictures: File;
-  }>({});
+  const [files, setFiles] = useState<any>({});
 
   const handleSubmit = async (uuid?: string | string[]) => {
     const formData = new FormData();
