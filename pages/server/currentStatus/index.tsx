@@ -14,7 +14,7 @@ export default function CurrentStatus() {
 
   const getCurrentStatusList = async () => {
     const { data } = await get_my_matching();
-    if (!data.matching) return;
+    if (!data) return;
     setCurrentStatusList(data.matching);
   };
 
@@ -30,15 +30,16 @@ export default function CurrentStatus() {
         currentStatusList.map((list, idx) => {
           return (
             <ul key={idx}>
+              {list.statusType}
               <li>지역 : {list.preferPlace}</li>
               <li>날짜 : 2023/05/21</li>
               <li>시간 : 오후 3시</li>
               <Link
                 href={{
-                  pathname: `/currentStatus/detail`,
+                  pathname: `/server/currentStatus/detail`,
                   query: { uuid: list.uuid },
                 }}
-                as={`/server/detail`}
+                as={`/server/currentStatus/detail`}
               >
                 더보기
               </Link>
