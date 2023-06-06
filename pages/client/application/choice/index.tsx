@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import styled from "styled-components";
 import { useRouter } from "next/router";
 import { isAxiosError } from "axios";
 
@@ -12,58 +11,19 @@ import {
   ClientText,
   MatchingFormList,
   HistoryBackButton,
+  ClientSubText,
 } from "@/components/clientComponents";
+import {
+  FormWrap,
+  ChoiceInput,
+  ApplicationButton,
+  PurposeButtonWrap,
+  GenderButtonWrap,
+} from "@/styles/client/choiceStyled";
 
 import { changeButtonText } from "@/utils/stringFormat";
 
-import { clientFonts, colors } from "@/styles/theme";
-
-const FormWrap = styled.div`
-  width: 100%;
-  padding: 50px 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 30px;
-  padding-bottom: 250px;
-`;
-
-const ChoiceInput = styled.input`
-  width: 100%;
-  background-color: #303239;
-  padding: 26px 24px;
-  font-weight: bold;
-  color: ${colors.white};
-  font-size: ${clientFonts.md};
-
-  &:focus {
-    border: 2px solid ${colors.blue};
-    outline: none;
-  }
-`;
-
-const ApplicationButton = styled.button`
-  width: 100%;
-  padding: 32px 0;
-  text-align: center;
-  font-weight: bold;
-  font-size: ${clientFonts.md};
-  color: ${colors.white};
-`;
-
-const PurposeButtonWrap = styled.div`
-  width: 100%;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr 1fr 1fr;
-  gap: 10px;
-`;
-
-const GenderButtonWrap = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-`;
+import { colors } from "@/styles/theme";
 
 interface FormInterface {
   title: string;
@@ -149,6 +109,11 @@ const Choice = () => {
           setCurrentFormIndex(currentFormIndex + 1);
         };
 
+        const prevNextForm = () => {
+          if (currentFormIndex <= 0) return;
+          setCurrentFormIndex(currentFormIndex - 1);
+        };
+
         return (
           <div key={idx}>
             {form.placeHolder ? (
@@ -162,7 +127,7 @@ const Choice = () => {
             ) : (
               <ApplicationButtonForm
                 form={form}
-                key={form.title}
+                key={form.value}
                 formIndex={idx}
                 currentFormIndex={currentFormIndex}
                 placeHolder={form.placeHolder}
@@ -178,7 +143,18 @@ const Choice = () => {
               >
                 다음
               </ClientButton>
-              <HistoryBackButton />
+              {currentFormIndex > lastFormindex || currentFormIndex <= 0 ? (
+                <HistoryBackButton />
+              ) : (
+                <ClientButton
+                  bgColor="black"
+                  fontColor="white"
+                  onClickHandler={prevNextForm}
+                  label="이전"
+                >
+                  이전 단계
+                </ClientButton>
+              )}
             </BottomButtonLayout>
           </div>
         );
@@ -232,7 +208,7 @@ const ApplicationButtonList = ({
   buttonList,
 }: ApplicationButtonInterface) => {
   const buttons = buttonList.map(form => {
-    const onAcitve = value === form;
+    const onAcitve = value.split(",").includes(form);
 
     return (
       <ApplicationButton
@@ -240,7 +216,25 @@ const ApplicationButtonList = ({
         value={form}
         style={{ background: onAcitve ? colors.blue : colors.gray }}
         onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
-          onClickHandler(e.currentTarget.value);
+          if (buttonList.length === 2) {
+            return onClickHandler(e.currentTarget.value);
+          }
+
+          let currentText = value.split(",");
+
+          if (value.includes(e.currentTarget.value)) {
+            currentText = currentText.filter(x => {
+              if (x !== e.currentTarget.value) return x;
+            });
+          } else {
+            currentText.push(e.currentTarget.value);
+          }
+
+          currentText = currentText.filter(x => {
+            if (x !== "") return x;
+          });
+
+          onClickHandler(currentText.join(","));
         }}
       >
         {changeButtonText(form)}
@@ -275,6 +269,7 @@ const ApplicationButtonForm = ({
   return (
     <FormWrap key={form.title}>
       <ClientText>{form.title}</ClientText>
+      <ClientSubText>중복선택 가능</ClientSubText>
       <ApplicationButtonList
         type={type}
         value={form.value}

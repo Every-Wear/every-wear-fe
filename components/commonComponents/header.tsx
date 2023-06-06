@@ -7,6 +7,10 @@ const HeaderWrap = styled.header`
   width: 100%;
   background: ${colors.blue};
   padding: 55px 0 20px 0;
+  position: fixed;
+  top: 0;
+  left: 0;
+  max-height: 110px;
 `;
 
 const Logo = styled.h1`
