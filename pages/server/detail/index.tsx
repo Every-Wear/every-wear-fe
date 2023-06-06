@@ -17,7 +17,7 @@ export default function HomeDetail() {
 
   const getDetail = async (uuid: string) => {
     const { data } = await get_matching_detail(uuid);
-    if (!data.matching) return;
+    if (!data) return;
     setMatchingInfo(data.matching);
   };
 

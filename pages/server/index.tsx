@@ -16,7 +16,7 @@ export default function ServerHome() {
   const getMatchingLists = async () => {
     const { data } = await get_matchings(MATCHING_STATUS_TYPE.매칭대기중);
     const temp: ServerMatchingInfoInterface[] = [];
-    if (data.matching.length === 0) return;
+    if (!data) return;
     data.matchings.forEach((list: ServerMatchingInfoInterface) => {
       temp.push(list);
     });

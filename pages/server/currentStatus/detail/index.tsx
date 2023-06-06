@@ -1,16 +1,50 @@
+import { get_matching_detail } from "@/api/modules/matching";
+import { change_matching_to_complete } from "@/api/modules/matchingStatus";
 import { Layout } from "@/components/serverComponents/index";
+import { ServerMatchingInfoInterface } from "@/types/serverType";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 
 export default function CurrentStatusDetail() {
+  const router = useRouter();
+  const [currentStatusInfo, setCurrentStatusInfo] =
+    useState<ServerMatchingInfoInterface>();
+  const [matchingId, setMatchingId] = useState<string>("");
+
+  const getDetail = async (uuid: string) => {
+    const { data } = await get_matching_detail(uuid);
+    if (!data) return;
+    setCurrentStatusInfo(data.matching);
+  };
+
+  const confirmMatching = async () => {
+    try {
+      if (currentStatusInfo) {
+        const data = await change_matching_to_complete(
+          matchingId,
+          currentStatusInfo,
+        );
+      }
+    } catch (e) {
+      return alert("매칭 오류");
+    }
+  };
+
+  useEffect(() => {
+    const { uuid } = router.query;
+    if (!uuid) router.push("/server");
+    if (typeof uuid === "string") {
+      getDetail(uuid);
+      setMatchingId(uuid);
+    }
+  }, [router]);
+
   return (
     <Layout>
       <div>
-        <ul>
-          <li>지역: 서울</li>
-          <li>날짜: 2023/05/28</li>
-          <li>시간: 오후 3시</li>
-          <li>용도: 패션</li>
-          <li>성별: 여자</li>
-        </ul>
+        {currentStatusInfo?.preferPlace}
+        <button>전화</button>
+        <button onClick={confirmMatching}>매칭 확정</button>
       </div>
     </Layout>
   );
