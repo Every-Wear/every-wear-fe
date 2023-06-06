@@ -9,7 +9,7 @@ interface LayoutType {
 }
 
 const LayoutWrapper = styled.div`
-  background-color: ${colors.black};
+  /* background-color: ${colors.black}; */
   height: 100vh;
 `;
 

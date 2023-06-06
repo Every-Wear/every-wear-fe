@@ -9,7 +9,8 @@ export interface ServerMatchingInfoInterface {
   preferPlace: string;
   preferStyle: string; // 만약 백엔드 enum이 있다면 상수로 교체
   preferGender: "woman" | "man";
-  remark: string;
+  preferTime?: string;
+  remark?: string;
   uuid: string;
   createdAt: string;
   qrCodeValue: string;

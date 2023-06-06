@@ -7,6 +7,7 @@ import { colors, serverFonts } from "@/styles/theme";
 import MatchingList from "@/components/serverComponents/matchingList";
 import { ServerMatchingInfoInterface } from "@/types/serverType";
 import { MATCHING_STATUS_TYPE } from "@/types/types";
+import { isAxiosError } from "axios";
 
 export default function ServerHome() {
   const [matchingLists, setMatchingLists] = useState<
@@ -14,13 +15,19 @@ export default function ServerHome() {
   >([]);
 
   const getMatchingLists = async () => {
-    const { data } = await get_matchings(MATCHING_STATUS_TYPE.매칭대기중);
-    const temp: ServerMatchingInfoInterface[] = [];
-    if (data.matching.length === 0) return;
-    data.matchings.forEach((list: ServerMatchingInfoInterface) => {
-      temp.push(list);
-    });
-    setMatchingLists(temp);
+    try {
+      const { data } = await get_matchings(MATCHING_STATUS_TYPE.매칭대기중);
+      const temp: ServerMatchingInfoInterface[] = [];
+      if (!data) return;
+      data.matchings.forEach((list: ServerMatchingInfoInterface) => {
+        temp.push(list);
+      });
+      setMatchingLists(temp);
+    } catch (err) {
+      if (isAxiosError(err)) {
+        alert(err.response?.data.error);
+      }
+    }
   };
 
   useEffect(() => {
