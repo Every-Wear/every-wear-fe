@@ -7,7 +7,7 @@ import axios, {
 import { getCookie } from "@/utils/cookie";
 
 const instance: AxiosInstance = axios.create({
-  baseURL: `http://localhost:3000/api/`,
+  baseURL: `http://localhost/api/`,
   timeout: 8000,
   headers: {
     "content-type": "application/json;charset=UTF-8",
