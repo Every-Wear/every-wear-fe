@@ -1,22 +1,24 @@
 import { instance } from "@/api/instance";
 import { MatchingStatusType } from "@/types/types";
 
-const post_matching = async (
-  time: string,
-  location: string,
-  purpose: string,
-  gender: string,
-) => {
+interface MatchingDocInterface {
+  time: string;
+  location: string;
+  purpose: string;
+  gender: string;
+}
+
+const post_matching = async (res: MatchingDocInterface) => {
   const response = await instance({
     method: "post",
     url: `matching`,
     data: {
       clothesType: "상의, 하의",
       limitPrice: 0,
-      preferPlace: location,
-      preferTime: time,
-      preferStyle: purpose,
-      preferGender: gender,
+      preferPlace: res.location,
+      preferTime: res.time,
+      preferStyle: res.purpose,
+      preferGender: res.gender,
       remark: "비고",
     },
   });

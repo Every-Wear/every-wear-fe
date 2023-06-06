@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import styled from "styled-components";
 import { useRouter } from "next/router";
 import { isAxiosError } from "axios";
 
@@ -12,16 +13,57 @@ import {
   MatchingFormList,
   HistoryBackButton,
 } from "@/components/clientComponents";
-import {
-  FormWrap,
-  ChoiceInput,
-  ApplicationButton,
-  PurposeButtonWrap,
-  GenderButtonWrap,
-} from "./index.styled";
 
-import { colors } from "@/styles/theme";
 import { changeButtonText } from "@/utils/stringFormat";
+
+import { clientFonts, colors } from "@/styles/theme";
+
+const FormWrap = styled.div`
+  width: 100%;
+  padding: 50px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  padding-bottom: 250px;
+`;
+
+const ChoiceInput = styled.input`
+  width: 100%;
+  background-color: #303239;
+  padding: 26px 24px;
+  font-weight: bold;
+  color: ${colors.white};
+  font-size: ${clientFonts.md};
+
+  &:focus {
+    border: 2px solid ${colors.blue};
+    outline: none;
+  }
+`;
+
+const ApplicationButton = styled.button`
+  width: 100%;
+  padding: 32px 0;
+  text-align: center;
+  font-weight: bold;
+  font-size: ${clientFonts.md};
+  color: ${colors.white};
+`;
+
+const PurposeButtonWrap = styled.div`
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
+  gap: 10px;
+`;
+
+const GenderButtonWrap = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+`;
 
 interface FormInterface {
   title: string;
@@ -53,7 +95,7 @@ const Choice = () => {
       placeHolder: "지역입력 (예:강남)",
     },
     {
-      title: `의상 구매 목적이 무엇인가요?`,
+      title: "의상 구매 목적이 무엇인가요?",
       value: purpose,
       setValue: setPurpose,
     },
@@ -68,7 +110,7 @@ const Choice = () => {
 
   const submitApplicationHandler = async () => {
     try {
-      await post_matching(time, location, purpose, gender);
+      await post_matching({ time, location, purpose, gender });
       router.push("/client/matching");
     } catch (err) {
       if (isAxiosError(err)) alert(err.response?.data.error);
@@ -99,8 +141,8 @@ const Choice = () => {
 
   return (
     <Layout>
-      {formList.map((form, idx): any => {
-        if (currentFormIndex !== idx) return null;
+      {formList.map((form, idx) => {
+        if (currentFormIndex !== idx) return <></>;
 
         const goToNextForm = () => {
           if (form.value === "") return alert("정보를 입력해주세요");

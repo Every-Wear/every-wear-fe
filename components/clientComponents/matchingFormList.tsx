@@ -1,9 +1,6 @@
 import { ClientText, ClientSubText } from "@/components/clientComponents";
 
-import {
-  MatchingInfoListWrap,
-  InfoText,
-} from "@/pages/client/matching/index.styled";
+import { MatchingInfoListWrap, InfoText } from "@/pages/client/matching/index";
 import { changeButtonText } from "@/utils/stringFormat";
 
 interface MatchingFormListInterface {

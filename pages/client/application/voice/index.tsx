@@ -46,7 +46,7 @@ const Voice = () => {
       placeHolder: "지역입력 (예:강남)",
     },
     {
-      title: `의상 구매 목적이 무엇인가요?`,
+      title: "의상 구매 목적이 무엇인가요?",
       value: purpose,
       setValue: setPurpose,
     },
@@ -65,7 +65,7 @@ const Voice = () => {
 
   const submitApplication = async () => {
     try {
-      await post_matching(time, location, purpose, gender);
+      await post_matching({ time, location, purpose, gender });
       router.push("/client/matching");
     } catch (err) {
       alert("신청서 제출에 실패했습니다");
