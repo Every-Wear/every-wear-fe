@@ -1,21 +1,25 @@
 import { get_my_matching } from "@/api/modules/matching";
 import { Layout } from "@/components/serverComponents/index";
 import { ServerMatchingInfoInterface } from "@/types/serverType";
+import { isAxiosError } from "axios";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 export default function CurrentStatus() {
-  const router = useRouter();
-
   const [currentStatusList, setCurrentStatusList] = useState<
     ServerMatchingInfoInterface[]
   >([]);
 
   const getCurrentStatusList = async () => {
-    const { data } = await get_my_matching();
-    if (!data) return;
-    setCurrentStatusList(data.matching);
+    try {
+      const { data } = await get_my_matching();
+      if (data) setCurrentStatusList(data.matching);
+    } catch (err) {
+      if (isAxiosError(err)) {
+        alert(err.response?.data.error);
+      }
+    }
   };
 
   useEffect(() => {

@@ -1,19 +1,28 @@
 import { get_matching_detail } from "@/api/modules/matching";
 import { ServerMatchingInfoInterface } from "@/types/serverType";
+import { isAxiosError } from "axios";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 export default function useGetDetail(uuid?: string | string[]) {
+  const router = useRouter();
   const [detailInfo, setDetailInfo] = useState<ServerMatchingInfoInterface>();
 
   useEffect(() => {
     (async () => {
       if (typeof uuid === "string") {
-        const { data } = await get_matching_detail(uuid);
-        if (!data) return;
-        setDetailInfo(data.matching);
+        try {
+          const { data } = await get_matching_detail(uuid);
+          if (data) setDetailInfo(data.matching);
+        } catch (err) {
+          if (isAxiosError(err)) {
+            alert(err.response?.data.error);
+            router.push("/server");
+          }
+        }
       }
     })();
-  }, [uuid]);
+  }, [uuid, router]);
 
   return detailInfo;
 }

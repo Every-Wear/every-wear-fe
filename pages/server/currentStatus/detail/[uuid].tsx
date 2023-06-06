@@ -4,18 +4,14 @@ import {
 } from "@/api/modules/matchingStatus";
 import { Layout } from "@/components/serverComponents";
 import useGetDetail from "@/hooks/useGetDetail";
+import useSetMatchingId from "@/hooks/useSetMatchingId";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
 
 export default function CurrentStatusOngoing() {
-  const router = useRouter();
-  const { uuid } = router.query;
-  const detailInfo = useGetDetail(uuid);
-  const [files, setFiles] = useState<{
-    clothesPictures: File;
-    billingPictures: File;
-    otherPictures: File;
-  }>({});
+  const matchingId = useSetMatchingId();
+  const detailInfo = useGetDetail(matchingId);
+  const [files, setFiles] = useState<any>({}); //임시
 
   const handleSubmit = async (uuid?: string | string[]) => {
     const formData = new FormData();
@@ -25,7 +21,7 @@ export default function CurrentStatusOngoing() {
     formData.append("billingPictures", files.billingPictures);
     formData.append("otherPictures", files.otherPictures);
     if (typeof uuid === "string") {
-      const data = await change_ongoing_to_finish(uuid, formData);
+      const data = await change_ongoing_to_finish(matchingId, formData);
       console.log(data);
     }
   };
@@ -47,14 +43,12 @@ export default function CurrentStatusOngoing() {
   useEffect(() => {
     (async () => {
       try {
-        if (typeof uuid === "string") {
-          const data = await change_complete_to_ongoing(uuid);
-        }
+        await change_complete_to_ongoing(matchingId);
       } catch (e) {
         return alert("매칭 오류");
       }
     })();
-  }, [uuid]);
+  }, [matchingId]);
 
   return (
     <Layout>
@@ -63,7 +57,7 @@ export default function CurrentStatusOngoing() {
       <input name="clothesPictures" type="file" onChange={onUploadImage} />
       <input name="billingPictures" type="file" onChange={onUploadImage} />
       <input name="otherPictures" type="file" onChange={onUploadImage} />
-      <button onClick={() => handleSubmit(uuid)}>코디 종료</button>
+      <button onClick={() => handleSubmit(matchingId)}>코디 종료</button>
     </Layout>
   );
 }
