@@ -10,6 +10,7 @@ export interface ColorType {
 }
 
 export interface FontType {
+  xsm: string;
   sm: string;
   md: string;
   lg: string;

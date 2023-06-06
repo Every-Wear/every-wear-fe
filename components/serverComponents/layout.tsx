@@ -9,16 +9,21 @@ interface LayoutType {
 }
 
 const LayoutWrapper = styled.div`
-  /* background-color: ${colors.black}; */
-  height: 100vh;
+  background-color: ${colors.black};
+  padding-top: 110px;
+  min-height: calc(100vh - 110px);
+  height: 100%;
+  padding-bottom: 70px;
 `;
 
 export default function Layout({ children }: LayoutType) {
   return (
-    <LayoutWrapper>
+    <>
       <Header />
-      {children}
-      <BottomNavBar />
-    </LayoutWrapper>
+      <LayoutWrapper>
+        {children}
+        <BottomNavBar />
+      </LayoutWrapper>
+    </>
   );
 }

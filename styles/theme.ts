@@ -12,6 +12,7 @@ export const colors: ColorType = {
 };
 
 export const serverFonts: FontType = {
+  xsm: "0.750rem",
   sm: "0.875rem",
   md: "1rem",
   lg: "1.125rem",
@@ -19,6 +20,7 @@ export const serverFonts: FontType = {
 };
 
 export const clientFonts: FontType = {
+  xsm: "1.5rem",
   sm: "1.5rem",
   md: "2rem",
   lg: "2rem",

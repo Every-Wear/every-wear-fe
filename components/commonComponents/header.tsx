@@ -11,6 +11,7 @@ const HeaderWrap = styled.header`
   top: 0;
   left: 0;
   max-height: 110px;
+  z-index: 10;
 `;
 
 const Logo = styled.h1`
