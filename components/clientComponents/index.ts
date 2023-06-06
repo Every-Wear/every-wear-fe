@@ -5,6 +5,7 @@ import IntroLabel from "./introLabel";
 import BottomButtonLayout from "./bottomButtonLayout";
 import ClientText from "./clientText";
 import ClientSubText from "./clientSubText";
+import MatchingFormList from "./matchingFormList";
 
 export {
   HistoryBackButton,
@@ -14,4 +15,5 @@ export {
   BottomButtonLayout,
   ClientText,
   ClientSubText,
+  MatchingFormList,
 };

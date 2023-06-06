@@ -1,6 +1,31 @@
 import { instance } from "@/api/instance";
 import { MatchingStatusType } from "@/types/types";
 
+interface MatchingDocInterface {
+  time: string;
+  location: string;
+  purpose: string;
+  gender: string;
+}
+
+const post_matching = async (res: MatchingDocInterface) => {
+  const response = await instance({
+    method: "post",
+    url: `matching`,
+    data: {
+      clothesType: "상의, 하의",
+      limitPrice: 0,
+      preferPlace: res.location,
+      preferTime: res.time,
+      preferStyle: res.purpose,
+      preferGender: res.gender,
+      remark: "비고",
+    },
+  });
+
+  return response;
+};
+
 const get_matchings = async (matchingsStatus: MatchingStatusType) => {
   const response = await instance({
     method: "get",
@@ -18,6 +43,17 @@ const get_matching_detail = async (uuid: string) => {
   return response;
 };
 
+const delete_matching_detail = async (uuid: string, reason: string) => {
+  const response = await instance({
+    method: "delete",
+    url: `matching/${uuid}`,
+    data: {
+      reason: reason,
+    },
+  });
+  return response;
+};
+
 const get_my_matching = async () => {
   const response = await instance({
     method: "get",
@@ -27,4 +63,10 @@ const get_my_matching = async () => {
   return response;
 };
 
-export { get_matchings, get_matching_detail, get_my_matching };
+export {
+  post_matching,
+  get_matchings,
+  get_matching_detail,
+  get_my_matching,
+  delete_matching_detail,
+};

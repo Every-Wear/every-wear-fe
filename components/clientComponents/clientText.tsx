@@ -4,12 +4,14 @@ import { clientFonts, colors } from "@/styles/theme";
 
 interface ClientTextInterface {
   center?: boolean;
-  children: string | string[];
+  children: string | string[] | React.ReactNode;
 }
 
 const ClientTextWrap = styled.p`
   width: 100%;
   font-weight: 700;
+  word-break: keep-all;
+  line-height: 1.2;
   color: ${colors.white};
   font-size: ${clientFonts.md};
   text-align: ${(props: { center: boolean }) =>
