@@ -1,5 +1,14 @@
 import { ColorType } from "@/styles/styledType";
 import { MatchingStatusType } from "./types";
+
+export const STATUS_TYPE = {
+  날짜: "날짜",
+  장소: "장소",
+  성별: "성별",
+  목적: "목적",
+} as const;
+export type StatusType = keyof typeof STATUS_TYPE;
+
 export interface ClientButtonInterface {
   title: string;
   onClick: () => void;
@@ -14,6 +23,7 @@ export interface ClientMatchingInfoInterface {
   clothesType?: string;
   limitPrice?: number;
   preferPlace?: string;
+  preferTime?: string;
   preferStyle?: string;
   preferGender?: "woman" | "man";
   remark?: string;

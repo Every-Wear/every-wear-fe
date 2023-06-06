@@ -4,13 +4,14 @@ import { clientFonts, colors } from "@/styles/theme";
 
 interface ClientSubTextInterface {
   center?: boolean;
-  children: string | string[];
+  children: string | string[] | React.ReactNode;
 }
 
 const ClientSubTextWrap = styled.span`
   width: 100%;
   font-weight: 500;
   display: block;
+  word-break: keep-all;
   color: ${colors.sub_white};
   font-size: ${clientFonts.sm};
   text-align: ${(props: { center: boolean }) =>

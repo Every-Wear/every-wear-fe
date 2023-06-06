@@ -5,6 +5,8 @@ import {
   BottomButtonLayout,
   ClientButton,
   IntroLabel,
+  ClientText,
+  HistoryBackButton,
 } from "@/components/clientComponents/index";
 
 import { ClientButtonInterface } from "@/types/clientType";
@@ -29,19 +31,28 @@ const Application = () => {
 
   return (
     <Layout>
-      <IntroLabel labelText="코디네이터 매칭 신청 방법을 아래 버튼을 통해 음성인식 또는 직접 입력 페이지로 이동" />
+      <div style={{ marginTop: "100px" }}>
+        <ClientText center>
+          매칭방법을 <br />
+          선택해주세요
+        </ClientText>
+      </div>
+      <IntroLabel labelText="코디네이터 매칭 신청 방법을 아래 버튼을 통해 음성인식 또는 직접 입력 페이지로 이동해주세요" />
       <BottomButtonLayout>
-        {clientPageButtonList.map(button => (
-          <ClientButton
-            bgColor={button.bgColor}
-            key={button.title}
-            onClickHandler={button.onClick}
-            label={button.label}
-            fontColor="black"
-          >
-            {button.title}
-          </ClientButton>
-        ))}
+        <div>
+          {clientPageButtonList.map(button => (
+            <ClientButton
+              bgColor={button.bgColor}
+              key={button.title}
+              onClickHandler={button.onClick}
+              label={button.label}
+              fontColor="black"
+            >
+              {button.title}
+            </ClientButton>
+          ))}
+        </div>
+        <HistoryBackButton />
       </BottomButtonLayout>
     </Layout>
   );
