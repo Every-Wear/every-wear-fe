@@ -10,14 +10,13 @@ export default function useGetDetail(uuid?: string | string[]) {
 
   useEffect(() => {
     (async () => {
-      if (typeof uuid === "string") {
+      if (uuid !== "" && typeof uuid === "string") {
         try {
           const { data } = await get_matching_detail(uuid);
           if (data) setDetailInfo(data.matching);
         } catch (err) {
           if (isAxiosError(err)) {
             alert(err.response?.data.error);
-            router.push("/server");
           }
         }
       }

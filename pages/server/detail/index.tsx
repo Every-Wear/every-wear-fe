@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/router";
 import { change_waiting_to_matching } from "@/api/modules/matchingStatus";
 import { Layout, Modal } from "@/components/serverComponents";
