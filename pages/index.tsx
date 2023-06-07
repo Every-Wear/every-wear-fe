@@ -2,6 +2,7 @@ import { useRouter } from "next/router";
 import { isAxiosError } from "axios";
 import { SubmitHandler, useForm } from "react-hook-form";
 import styled from "styled-components";
+import Image from "next/image";
 
 import { post_login } from "@/api/modules/user";
 import { Layout, IntroLabel } from "@/components/clientComponents";
@@ -48,6 +49,29 @@ const LoginWrap = styled.form`
   }
 `;
 
+const Splash = styled.div`
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: ${colors.blue};
+  z-index: 99;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: ripple 450ms ease-in-out;
+  animation-delay: 500ms;
+  animation-fill-mode: forwards;
+
+  @keyframes ripple {
+    to {
+      transform: translateX(100%);
+    }
+  }
+`;
+
 export default function Home() {
   const router = useRouter();
   const { register, handleSubmit } = useForm<FormValues>();
@@ -74,27 +98,38 @@ export default function Home() {
   };
 
   return (
-    <Layout>
-      <IntroLabel labelText="모두를 위한 코디네이터 매칭 플랫폼 에브리웨어 입니다 아이디와 비밀번호를 입력후 제출해주세요" />
-      <LoginWrap onSubmit={handleSubmit(onSubmit)}>
-        <div>
-          <label>아이디</label>
-          <input
-            type="text"
-            placeholder="아이디를 입력하세요"
-            {...register("id")}
-          />
-        </div>
-        <div>
-          <label>비밀번호</label>
-          <input
-            type="password"
-            placeholder="비밀번호를 입력하세요"
-            {...register("password")}
-          />
-        </div>
-        <input id="submit-button" type="submit" />
-      </LoginWrap>
-    </Layout>
+    <div>
+      <Splash>
+        <Image
+          src={"/assets/logo.svg"}
+          alt="에브리웨어"
+          width={201}
+          height={30}
+          aria-label="안녕하세요 에브리웨어입니다."
+        />
+      </Splash>
+      <Layout>
+        <IntroLabel labelText="모두를 위한 코디네이터 매칭 플랫폼 에브리웨어 입니다 아이디와 비밀번호를 입력후 제출해주세요" />
+        <LoginWrap onSubmit={handleSubmit(onSubmit)}>
+          <div>
+            <label>아이디</label>
+            <input
+              type="text"
+              placeholder="아이디를 입력하세요"
+              {...register("id")}
+            />
+          </div>
+          <div>
+            <label>비밀번호</label>
+            <input
+              type="password"
+              placeholder="비밀번호를 입력하세요"
+              {...register("password")}
+            />
+          </div>
+          <input id="submit-button" type="submit" />
+        </LoginWrap>
+      </Layout>
+    </div>
   );
 }

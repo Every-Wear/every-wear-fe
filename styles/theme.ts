@@ -9,9 +9,11 @@ export const colors: ColorType = {
   gray: "#303239",
   gray100: "#A5ADBC",
   gray200: "#B1B5B7",
+  gray300: "#DFE3E9",
 };
 
 export const serverFonts: FontType = {
+  xsm: "0.750rem",
   sm: "0.875rem",
   md: "1rem",
   lg: "1.125rem",
@@ -19,6 +21,7 @@ export const serverFonts: FontType = {
 };
 
 export const clientFonts: FontType = {
+  xsm: "1.5rem",
   sm: "1.5rem",
   md: "2rem",
   lg: "2rem",

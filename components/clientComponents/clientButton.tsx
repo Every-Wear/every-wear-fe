@@ -16,6 +16,7 @@ interface ClientButtonInterface {
 const ClientButtonWrap = styled.button`
   width: 100%;
   padding: 32px 0;
+  border-radius: 3px;
   text-align: center;
   font-weight: bold;
   font-size: ${clientFonts.md};

@@ -27,7 +27,7 @@ const Client = () => {
     {
       title: "매칭 내역",
       onClick: () => router.push("/client/mypage"),
-      label: "코디네이터 매칭 내역 및 이력 확인 페이지 이동 버튼",
+      label: "매칭 내역 이동 버튼",
     },
   ];
 

@@ -31,7 +31,7 @@ export default function BottomNavBar() {
     display: flex;
     justify-content: space-evenly;
     position: fixed;
-    bottom: 10px;
+    bottom: 0px;
     padding-top: 10px;
     background-color: ${colors.black};
     border-top: 1px solid ${colors.gray};
