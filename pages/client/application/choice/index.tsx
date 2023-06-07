@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import styled from "styled-components";
 import { useRouter } from "next/router";
 import { isAxiosError } from "axios";
+import styled from "styled-components";
 
 import { post_matching } from "@/api/modules/matching";
 

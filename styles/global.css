@@ -248,3 +248,7 @@ div.react-datepicker__day-name:first-child {
 div.react-datepicker__day-name:last-child {
   color: rgba(31, 87, 231, 1);
 }
+
+div.picker-item picker-item-selected {
+  color: white;
+}

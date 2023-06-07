@@ -71,7 +71,7 @@ export default function BottomNavBar() {
         onClick={() => router.push("/server/mypage")}
       >
         <MyPageIcon color={changeColor("mypage")} />
-        마이페이지
+        매칭내역
       </NavButton>
     </NavContainer>
   );
