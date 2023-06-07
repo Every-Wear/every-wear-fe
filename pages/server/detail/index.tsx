@@ -62,14 +62,16 @@ export default function HomeDetail() {
         )}
         {isMatchingModalOpen && (
           <Modal
-            message="매칭 하시겠습니까?"
+            title="매칭확인"
+            message={["매칭 하시겠습니까?"]}
             confirmHandler={confirmMatching}
             cancelHandler={matchingModalHandler}
           />
         )}
         {isCurrentStatusModalOpen && (
           <Modal
-            message="매칭 현황 페이지로 이동할까요?"
+            title="매칭확인"
+            message={["매칭 현황 페이지로 이동할까요?"]}
             confirmHandler={confirmGoToCurrentStatus}
             cancelHandler={closeStatusModal}
           />

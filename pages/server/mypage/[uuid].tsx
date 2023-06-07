@@ -4,7 +4,6 @@ import Image from "next/image";
 import styled from "styled-components";
 
 import { Layout } from "@/components/serverComponents";
-import { colors } from "@/styles/theme";
 import { getRandomNumImg } from "@/utils/randomImg";
 import { get_matching_detail } from "@/api/modules/matching";
 import { ServerMatchingInfoInterface } from "@/types/serverType";
