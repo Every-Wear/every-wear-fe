@@ -141,3 +141,110 @@ span {
 button {
   cursor: pointer;
 }
+
+div.react-datepicker {
+  width: 100vw;
+  height: 80vw;
+  padding: 8px;
+  border: none;
+  background-color: transparent;
+}
+
+div.react-datepicker__month-container {
+  width: 100%;
+  height: 100%;
+}
+div.react-datepicker__month {
+  height: 100%;
+}
+div.react-datepicker__week {
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: 15%;
+}
+
+div.react-datepicker__day {
+  width: 48px;
+  color: rgba(224, 224, 224, 1);
+  &:hover {
+    background-color: transparent;
+  }
+}
+
+div.react-datepicker__day:first-child {
+  color: rgba(255, 59, 48, 1);
+}
+
+div.react-datepicker__day:last-child {
+  color: rgba(31, 87, 231, 1);
+}
+
+.react-datepicker__day--disabled {
+  opacity: 0.3;
+}
+
+.react-datepicker__day--outside-month {
+  color: transparent !important;
+  pointer-events: none;
+  cursor: default;
+  visibility: hidden;
+}
+
+div.selectedDay {
+  padding: 10px 0px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background-color: rgba(31, 87, 231, 1);
+  &:hover {
+    padding: 10px 0px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background-color: rgba(31, 87, 231, 1);
+  }
+}
+
+div.unselectedDay {
+  background-color: transparent;
+}
+
+.react-datepicker__day--today {
+  padding: 10px 0px !important;
+  border-radius: 50% !important;
+  background-color: #424242 !important;
+  &:hover {
+    background-color: white;
+  }
+}
+
+div.react-datepicker__header {
+  background-color: transparent;
+  color: white;
+  font-size: 15px;
+}
+
+div.react-datepicker__day-names {
+  display: flex;
+  justify-content: space-between;
+  padding: 13px;
+}
+
+div.react-datepicker__day-name {
+  color: rgba(224, 224, 224, 1);
+  font-size: 15px;
+  font-weight: bold;
+}
+
+div.react-datepicker__day-name:first-child {
+  color: rgba(255, 59, 48, 1);
+}
+
+div.react-datepicker__day-name:last-child {
+  color: rgba(31, 87, 231, 1);
+}

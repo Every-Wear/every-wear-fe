@@ -13,10 +13,12 @@
     "@types/react": "18.2.6",
     "@types/react-dom": "18.2.4",
     "axios": "^1.4.0",
+    "date-fns": "^2.30.0",
     "eslint": "8.41.0",
     "eslint-config-next": "13.4.3",
     "next": "13.4.3",
     "react": "18.2.0",
+    "react-datepicker": "^4.12.0",
     "react-dom": "18.2.0",
     "react-hook-form": "^7.44.3",
     "react-speech-recognition": "^3.10.0",
@@ -25,6 +27,7 @@
     "typescript": "5.0.4"
   },
   "devDependencies": {
+    "@types/react-datepicker": "^4.11.2",
     "babel-plugin-styled-components": "^2.1.3"
   }
 }
