@@ -68,6 +68,7 @@ export default function ServerHome() {
   const MatchingTextWrapper = styled.div`
     display: flex;
     justify-content: space-between;
+    margin-bottom: 20px;
   `;
 
   const MatchingTotalText = styled.div`
@@ -75,10 +76,19 @@ export default function ServerHome() {
     font-size: ${serverFonts.md};
     font-weight: bold;
   `;
+
   const MatchingOrderText = styled.div`
     color: ${colors.gray200};
     font-size: ${serverFonts.sm};
   `;
+
+  const MatchingListWrapper = styled.div`
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-column-gap: 16px;
+    grid-row-gap: 36px;
+  `;
+
   return (
     <Layout>
       <WelcomeCardWrapper>
@@ -103,10 +113,12 @@ export default function ServerHome() {
           <MatchingTotalText>{matchingLists.length}개 의뢰</MatchingTotalText>
           <MatchingOrderText>최신 신청순</MatchingOrderText>
         </MatchingTextWrapper>
-        {matchingLists.map((list, idx) => {
-          if (!matchingLists) return <div>현재 매칭 리스트가 없습니다.</div>;
-          return <MatchingList list={list} key={idx} />;
-        })}
+        <MatchingListWrapper>
+          {matchingLists.reverse().map((list, idx) => {
+            if (!matchingLists) return <div>현재 매칭 리스트가 없습니다.</div>;
+            return <MatchingList list={list} key={idx} />;
+          })}
+        </MatchingListWrapper>
       </MatchingSection>
     </Layout>
   );

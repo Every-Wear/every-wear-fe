@@ -17,7 +17,9 @@ const BackButton = styled.button`
 const HistoryBackButton = () => {
   const router = useRouter();
 
-  return <BackButton onClick={() => router.back()}>뒤로가기</BackButton>;
+  return (
+    <BackButton onClick={() => router.push("/client")}>뒤로가기</BackButton>
+  );
 };
 
 export default HistoryBackButton;

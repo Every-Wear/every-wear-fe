@@ -90,6 +90,7 @@ const Voice = () => {
         >
           신청
         </ClientButton>
+        <HistoryBackButton />
       </Layout>
     );
   }
@@ -144,11 +145,18 @@ const ApplicationInputForm = ({
   formIndex,
   currentFormIndex,
 }: ApplicationFormInterface): JSX.Element | null => {
-  const { transcript, listening, resetTranscript } = useSpeechRecognition();
-  const content = transcript;
+  const { transcript, listening } = useSpeechRecognition();
+  const [contnet, setContent] = useState([
+    { contnet: "" },
+    { contnet: "" },
+    { contnet: "" },
+    { contnet: "" },
+  ]);
 
   useEffect(() => {
     if (currentFormIndex !== formIndex) return;
+    contnet[formIndex ?? 0].contnet = transcript;
+    setContent([...contnet]);
     form.setValue(transcript);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -159,18 +167,16 @@ const ApplicationInputForm = ({
   return (
     <FormWrap key={form.title}>
       <ClientText>{form.title}</ClientText>
-      <ClientButton
-        onClickHandler={SpeechRecognition.startListening}
-        label="녹음하기 버튼을 클릭후 말씀해주세요"
-      >
-        녹음하기
-      </ClientButton>
-      <ClientButton
-        onClickHandler={SpeechRecognition.resetTranscript}
-        label="리셋하기"
-      >
-        리셋하기
-      </ClientButton>
+      <ClientText>{contnet[formIndex ?? 0].contnet}</ClientText>
+      <div style={{ opacity: listening ? 0.5 : 1 }}>
+        <ClientButton
+          bgColor="gray"
+          onClickHandler={SpeechRecognition.startListening}
+          label="녹음하기 버튼을 클릭후 말씀해주세요 다시 녹음하시려면 버튼을 다시 클릭해주세요"
+        >
+          녹음하기
+        </ClientButton>
+      </div>
     </FormWrap>
   );
 };

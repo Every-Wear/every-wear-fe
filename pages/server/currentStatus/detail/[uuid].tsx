@@ -5,7 +5,6 @@ import {
 import { Layout } from "@/components/serverComponents";
 import useGetDetail from "@/hooks/useGetDetail";
 import useSetMatchingId from "@/hooks/useSetMatchingId";
-import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
 
 export default function CurrentStatusOngoing() {

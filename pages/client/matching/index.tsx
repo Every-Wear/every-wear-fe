@@ -99,7 +99,6 @@ const Matching = () => {
 
   useEffect(() => {
     if (matchingInfo?.statusType === MATCHING_STATUS_TYPE.진행완료) {
-      console.log("1");
       clearInterval(getInfoId ?? 0);
     }
     if (
