@@ -1,85 +1,98 @@
 import { change_matching_to_complete } from "@/api/modules/matchingStatus";
 import BottomButton from "@/components/serverComponents/bottomButton";
 import Calendar from "@/components/serverComponents/calendar";
-import { Layout } from "@/components/serverComponents/index";
-import TimePicker from "@/components/serverComponents/timePicker";
+import { Layout, Modal } from "@/components/serverComponents/index";
+import ProfileList from "@/components/serverComponents/profileList";
 import useGetDetail from "@/hooks/useGetDetail";
 import useSetMatchingId from "@/hooks/useSetMatchingId";
-import { colors } from "@/styles/theme";
-import { getRandomNumImg } from "@/utils/randomImg";
+import {
+  BadgeWrapper,
+  DetailText,
+  DetailTitle,
+  DetailWrapper,
+  MatchingBadge,
+} from "@/styles/server/serverStyled";
+import { colors, serverFonts } from "@/styles/theme";
 import Image from "next/image";
 import { useState } from "react";
 import styled from "styled-components";
+import dynamic from "next/dynamic";
+import MemoTextarea from "@/components/serverComponents/memoTextarea";
+import { formattingTime } from "@/utils/formatting";
+import DaumPostcode from "react-daum-postcode";
+import { MATCHING_STATUS_TYPE } from "@/types/types";
+import { get_matching_detail } from "@/api/modules/matching";
+
+const PixiComponentWithNoSSR = dynamic(
+  () => import("@/components/serverComponents/timePicker"),
+  {
+    ssr: false,
+  },
+);
 
 export default function CurrentStatusDetail() {
   const CURRENT_STATUS_STEP = {
     DETAIL: "DETAIL",
     CALENDAR: "CALENDAR",
     TIME: "TIME",
+    MEMO: "MEMO",
+    ADDRESS: "ADDRESS",
   };
   const matchingId = useSetMatchingId();
-  const currentStatusInfo = useGetDetail(matchingId);
-  const [curresntStatusStep, setCurrentStatusStep] = useState<string>(
+  const { detailInfo: currentStatusInfo, setDetailInfo: setCurrentStatusInfo } =
+    useGetDetail(matchingId);
+  const [currentStatusStep, setCurrentStatusStep] = useState<string>(
     CURRENT_STATUS_STEP.DETAIL,
   );
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+  const [textValue, setTextValue] = useState<string>("");
+  const [valueGroups, setValueGroups] = useState<{
+    hour: string;
+    minutes: string;
+  }>({
+    hour: "12",
+    minutes: "00",
+  });
+  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState<boolean>(false);
+  const handleChange = (name: string, value: string) => {
+    setValueGroups({
+      ...valueGroups,
+      [name]: value,
+    });
+  };
+
   const confirmMatching = async () => {
     try {
       if (currentStatusInfo) {
         await change_matching_to_complete(matchingId, currentStatusInfo);
+        const { data } = await get_matching_detail(matchingId);
+        if (data) setCurrentStatusInfo(data.matching);
       }
     } catch (e) {
       return alert("매칭 오류");
     }
   };
 
-  const DetailWrapper = styled.div`
-    padding-bottom: 80px;
-    > hr.bold {
-      border: 4px solid rgba(44, 44, 44, 1);
-    }
-    > hr {
-      border: 1px solid rgba(44, 44, 44, 1);
-    }
-  `;
+  const changeMatchingInfo = (name: string, value: string, type: string) => {
+    currentStatusInfo &&
+      setCurrentStatusInfo({
+        ...currentStatusInfo,
+        [name]: value,
+      });
+    setCurrentStatusStep(type);
+  };
 
-  const StatusLabel = styled.div`
-    background: #3290ff;
-    color: ${colors.white};
-    font-weight: bold;
-    font-size: 14px;
-    width: 55px;
-    height: 25px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 26px 16px;
-  `;
+  const onCompletePost = (data: any) => {
+    changeMatchingInfo("preferPlace", data.address, CURRENT_STATUS_STEP.DETAIL);
+  };
 
-  const Profile = styled.div`
-    display: flex;
-    margin-left: 16px;
-    margin-bottom: 36px;
-  `;
+  const confirmModalHandler = () => {
+    setIsConfirmModalOpen(!isConfirmModalOpen);
+  };
 
-  const ProfileTextWrapper = styled.div`
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-    margin: 3px 16px;
-  `;
-
-  const UserInfoText = styled.span`
-    color: ${colors.gray100};
-    font-size: 14px;
-    font-weight: bold;
-  `;
-
-  const ProfileTitleText = styled.span`
-    color: ${colors.white};
-    font-size: 18px;
-    font-weight: bold;
-  `;
+  const callUser = () => {
+    location.href = "tel:" + "000-0000-0000"; // 임시 번호
+  };
 
   const SelectTitle = styled.h3`
     padding: 30px 0px 8px 16px;
@@ -92,97 +105,110 @@ export default function CurrentStatusDetail() {
     color: ${colors.gray100};
   `;
 
-  const DetailTitle = styled.div`
-    margin: 24px 16px 8px 16px;
-    display: flex;
-    justify-content: space-between;
-    font-size: 16px;
-    color: ${colors.gray100};
-  `;
-
-  const DetailText = styled.div`
-    color: ${colors.white};
-    font-weight: ${colors.white};
-    font-size: 16px;
-    font-weight: bold;
-    margin: 0px 16px 24px 16px;
-    display: flex;
-    justify-content: space-between;
-  `;
+  selectedDate?.setHours(Number(valueGroups.hour));
+  selectedDate?.setMinutes(Number(valueGroups.minutes));
 
   return (
-    <Layout noNavBar>
+    <Layout
+      noPadding={currentStatusStep === CURRENT_STATUS_STEP.ADDRESS}
+      noNavBar
+    >
       <>
-        {curresntStatusStep === CURRENT_STATUS_STEP.DETAIL && (
-          <>
-            <DetailWrapper>
-              <StatusLabel>매칭중</StatusLabel>
-              <Profile>
-                <Image
-                  src={`/assets/random-profile${getRandomNumImg()}.png`}
-                  alt="요청한 시각장애인의 프로필사진"
-                  width={48}
-                  height={48}
+        {currentStatusStep === CURRENT_STATUS_STEP.DETAIL &&
+          currentStatusInfo && (
+            <>
+              <DetailWrapper>
+                <BadgeWrapper margin="26px 0px 0px 16px">
+                  <MatchingBadge>{currentStatusInfo.statusType}</MatchingBadge>
+                </BadgeWrapper>
+                <ProfileList profile={currentStatusInfo} />
+                <hr className="bold" />
+                <DetailTitle>구매 예정 일시</DetailTitle>
+                <DetailText>
+                  {formattingTime(currentStatusInfo.preferTime)}
+                  {currentStatusInfo.statusType ===
+                    MATCHING_STATUS_TYPE.매칭중 && (
+                    <Image
+                      src="/assets/calendarIcon.svg"
+                      alt="캘린더 버튼"
+                      width={24}
+                      height={24}
+                      onClick={() =>
+                        setCurrentStatusStep(CURRENT_STATUS_STEP.CALENDAR)
+                      }
+                    />
+                  )}
+                </DetailText>
+                <hr />
+                <DetailTitle>구매 장소</DetailTitle>
+                <DetailText>
+                  {currentStatusInfo.preferPlace}
+                  {currentStatusInfo.statusType ===
+                    MATCHING_STATUS_TYPE.매칭중 && (
+                    <Image
+                      src="/assets/locationIcon.svg"
+                      alt="장소 버튼"
+                      width={24}
+                      height={24}
+                      onClick={() =>
+                        setCurrentStatusStep(CURRENT_STATUS_STEP.ADDRESS)
+                      }
+                    />
+                  )}
+                </DetailText>
+                <DetailTitle style={{ marginTop: 48 }}>구매 목적</DetailTitle>
+                <DetailText>{currentStatusInfo.clothesType}</DetailText>
+                <hr />
+                <DetailTitle>
+                  메모
+                  {currentStatusInfo.statusType ===
+                    MATCHING_STATUS_TYPE.매칭중 && (
+                    <Image
+                      src="/assets/editIcon.svg"
+                      alt="메모 버튼"
+                      width={24}
+                      height={24}
+                      onClick={() =>
+                        setCurrentStatusStep(CURRENT_STATUS_STEP.MEMO)
+                      }
+                    />
+                  )}
+                </DetailTitle>
+                <DetailText>{currentStatusInfo?.remark}</DetailText>
+                {/* <button onClick={confirmMatching}>매칭 확정</button> */}
+              </DetailWrapper>
+              {currentStatusInfo.statusType === MATCHING_STATUS_TYPE.매칭중 && (
+                <BottomButton
+                  type="twoButton"
+                  text={["전화", "매칭 확정"]}
+                  onClick={[callUser, confirmModalHandler]}
                 />
-                <ProfileTextWrapper>
-                  <UserInfoText>
-                    OO대{" "}
-                    {currentStatusInfo?.preferGender === "woman"
-                      ? "여성"
-                      : "남성"}
-                  </UserInfoText>
-                  <ProfileTitleText>
-                    {currentStatusInfo?.preferPlace}에서{" "}
-                    {currentStatusInfo?.clothesType}을 구해요
-                  </ProfileTitleText>
-                </ProfileTextWrapper>
-              </Profile>
-              <hr className="bold" />
-              <DetailTitle>구매 예정 일시</DetailTitle>
-              <DetailText>
-                {currentStatusInfo?.preferTime}
-                <Image
-                  src="/assets/calendarIcon.svg"
-                  alt="캘린더 버튼"
-                  width={24}
-                  height={24}
-                  onClick={() =>
-                    setCurrentStatusStep(CURRENT_STATUS_STEP.CALENDAR)
-                  }
+              )}
+              {currentStatusInfo.statusType ===
+                MATCHING_STATUS_TYPE.매칭완료 && (
+                <BottomButton
+                  type="oneButton"
+                  text="전화하기"
+                  onClick={callUser}
                 />
-              </DetailText>
-              <hr />
-              <DetailTitle>구매 장소</DetailTitle>
-              <DetailText>
-                {currentStatusInfo?.preferPlace}
-                <Image
-                  src="/assets/locationIcon.svg"
-                  alt="장소 버튼"
-                  style={{
-                    marginBottom: 24,
-                  }}
-                  width={24}
-                  height={24}
+              )}
+              {isConfirmModalOpen && (
+                <Modal
+                  title="매칭 확정"
+                  message={[
+                    `[일시]${formattingTime(currentStatusInfo.preferTime)}`,
+                    `[장소]${currentStatusInfo.preferPlace}`,
+                    `의뢰자와 매칭을 확정하시겠습니까?`,
+                  ]}
+                  confirmText="확정"
+                  cancelText="아니요"
+                  confirmHandler={confirmMatching}
+                  cancelHandler={confirmModalHandler}
                 />
-              </DetailText>
-              <DetailTitle>구매 목적</DetailTitle>
-              <DetailText>{currentStatusInfo?.clothesType}</DetailText>
-              <hr />
-              <DetailTitle>
-                메모
-                <Image
-                  src="/assets/editIcon.svg"
-                  alt="메모 버튼"
-                  width={24}
-                  height={24}
-                />
-              </DetailTitle>
-              {/* <button onClick={confirmMatching}>매칭 확정</button> */}
-            </DetailWrapper>
-            <BottomButton type="twoButton" text={["전화", "매칭 확정"]} />
-          </>
-        )}
-        {curresntStatusStep === CURRENT_STATUS_STEP.CALENDAR && (
+              )}
+            </>
+          )}
+        {currentStatusStep === CURRENT_STATUS_STEP.CALENDAR && (
           <>
             <SelectTitle>구매 날짜 선택</SelectTitle>
             <SelectSubText>
@@ -202,14 +228,69 @@ export default function CurrentStatusDetail() {
             />
           </>
         )}
-        {curresntStatusStep === CURRENT_STATUS_STEP.TIME && (
+        {currentStatusStep === CURRENT_STATUS_STEP.TIME && (
           <>
             <SelectTitle>구매 시간 선택</SelectTitle>
             <SelectSubText>
               의뢰인과 협의하여 결정한
               <br /> 의상 구매 시작 시간을 선택해주세요.
             </SelectSubText>
-            <TimePicker />
+            <PixiComponentWithNoSSR
+              valueGroups={valueGroups}
+              handleChange={handleChange}
+            />
+            <BottomButton
+              type="oneButton"
+              color={colors.yellow}
+              text="완료"
+              onClick={() =>
+                changeMatchingInfo(
+                  "preferTime",
+                  String(selectedDate),
+                  CURRENT_STATUS_STEP.DETAIL,
+                )
+              }
+            />
+          </>
+        )}
+        {currentStatusStep === CURRENT_STATUS_STEP.ADDRESS && (
+          <>
+            <DaumPostcode
+              autoClose={false}
+              style={{
+                width: "100%",
+                height: "calc(100vh - 110px)",
+              }}
+              // style={postCodeStyle}
+              onComplete={onCompletePost}
+            ></DaumPostcode>
+          </>
+        )}
+        {currentStatusStep === CURRENT_STATUS_STEP.MEMO && (
+          <>
+            <SelectTitle>메모</SelectTitle>
+            <SelectSubText>
+              의뢰인과 협의하여 결정한
+              <br /> 예산, 스타일, 요구사항, 소요시간 등을
+              <br /> 작성해주시면 의상 구매에 큰 도움이 됩니다.
+            </SelectSubText>
+            <MemoTextarea
+              textValue={textValue}
+              onChange={e => setTextValue(e.target.value)}
+            />
+            <BottomButton
+              type="oneButton"
+              color={colors.yellow}
+              disabled={textValue.length === 0}
+              text="작성완료"
+              onClick={() =>
+                changeMatchingInfo(
+                  "remark",
+                  textValue,
+                  CURRENT_STATUS_STEP.DETAIL,
+                )
+              }
+            />
           </>
         )}
       </>
