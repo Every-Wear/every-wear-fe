@@ -52,7 +52,6 @@ const Application = () => {
             </ClientButton>
           ))}
         </div>
-        <HistoryBackButton />
       </BottomButtonLayout>
     </Layout>
   );

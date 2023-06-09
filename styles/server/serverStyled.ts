@@ -14,7 +14,7 @@ export const NewBadge = styled.div<{ size?: string }>`
   font-size: ${(props: { size: string }) => (props.size === "sm" ? 5 : 12)}px;
   font-weight: 500;
   padding: 3px 8px;
-  line-height: 1.2;
+  line-height: 1.5;
   font-weight: bold;
 `;
 

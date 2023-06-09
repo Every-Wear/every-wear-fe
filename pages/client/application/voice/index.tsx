@@ -14,6 +14,7 @@ import {
   ClientText,
   MatchingFormList,
   HistoryBackButton,
+  ClientSubText,
 } from "@/components/clientComponents";
 
 interface FormInterface {
@@ -106,7 +107,8 @@ const Voice = () => {
             currentFormIndex={currentFormIndex}
             placeHolder={form.placeHolder}
           />
-          <BottomButtonLayout>
+          <BottomButtonLayout grid={true}>
+            <HistoryBackButton border={false} text="뒤로" />
             <ClientButton
               bgColor="white"
               fontColor="black"
@@ -115,7 +117,6 @@ const Voice = () => {
             >
               다음
             </ClientButton>
-            <HistoryBackButton />
           </BottomButtonLayout>
         </div>
       ))}
@@ -136,7 +137,6 @@ const FormWrap = styled.div`
   padding: 50px 16px;
   display: flex;
   flex-direction: column;
-  gap: 30px;
   padding-bottom: 250px;
 `;
 
@@ -167,14 +167,31 @@ const ApplicationInputForm = ({
   return (
     <FormWrap key={form.title}>
       <ClientText>{form.title}</ClientText>
-      <ClientText>{contnet[formIndex ?? 0].contnet}</ClientText>
-      <div style={{ opacity: listening ? 0.5 : 1 }}>
+      {contnet[formIndex ?? 0].contnet && (
+        <ClientSubText>
+          {contnet[formIndex ?? 0].contnet} 이 맞습니까?
+        </ClientSubText>
+      )}
+      {contnet[formIndex ?? 0].contnet && (
+        <ClientSubText>맞다면 다음 버튼을 눌러주세요.</ClientSubText>
+      )}
+      <div
+        style={{
+          opacity: listening ? 0.5 : 1,
+          position: "fixed",
+          width: "100%",
+          bottom: "109px",
+          left: "0px",
+          zIndex: "99",
+        }}
+      >
         <ClientButton
-          bgColor="gray"
+          bgColor="yellow"
+          fontColor="black"
           onClickHandler={SpeechRecognition.startListening}
           label="녹음하기 버튼을 클릭후 말씀해주세요 다시 녹음하시려면 버튼을 다시 클릭해주세요"
         >
-          녹음하기
+          {contnet[formIndex ?? 0].contnet ? "재녹음하기" : "녹음하기"}
         </ClientButton>
       </div>
     </FormWrap>

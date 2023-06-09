@@ -5,20 +5,30 @@ import { colors, clientFonts } from "@/styles/theme";
 
 const BackButton = styled.button`
   width: 100%;
-  padding: 32px 0;
+  height: 110px;
+  box-sizing: border-box;
   text-align: center;
   font-weight: bold;
   font-size: ${clientFonts.md};
-  background-color: ${colors.black};
+  background-color: ${colors.gray};
   color: ${colors.white};
-  border-top: 1px solid ${colors.white};
+  border-top: ${(props: { border: boolean }) =>
+    props.border && `1px solid ${colors.white}`};
 `;
 
-const HistoryBackButton = () => {
+const HistoryBackButton = ({
+  border = true,
+  text = "뒤로가기",
+}: {
+  border?: boolean;
+  text?: string;
+}) => {
   const router = useRouter();
 
   return (
-    <BackButton onClick={() => router.push("/client")}>뒤로가기</BackButton>
+    <BackButton border={border} onClick={() => router.push("/client")}>
+      {text}
+    </BackButton>
   );
 };
 

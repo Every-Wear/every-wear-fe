@@ -1,3 +1,4 @@
 import Header from "./header";
+import ServerHeader from "./serverHeader";
 
-export { Header };
+export { Header, ServerHeader };
