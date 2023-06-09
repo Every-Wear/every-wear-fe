@@ -6,6 +6,7 @@ import {
   DetailWrapper,
   MatchingBadge,
   NewBadge,
+  NoMatchingListTitle,
 } from "@/styles/server/serverStyled";
 import { ServerMatchingInfoInterface } from "@/types/serverType";
 import { MATCHING_STATUS_TYPE } from "@/types/types";
@@ -95,7 +96,11 @@ export default function CurrentStatus() {
   return (
     <Layout>
       <DetailWrapper>
-        {currentStatusList.length === 0 && <div>매칭 현황이 없습니다</div>}
+        {currentStatusList.length === 0 && (
+          <NoMatchingListTitle style={{ marginTop: 100 }}>
+            매칭 현황이 존재하지 않습니다.
+          </NoMatchingListTitle>
+        )}
         {curretStatusListTemplate(matchingList, MATCHING_STATUS_TYPE.매칭중)}
         {curretStatusListTemplate(completeList, MATCHING_STATUS_TYPE.매칭완료)}
         {curretStatusListTemplate(ongoingList, MATCHING_STATUS_TYPE.진행중)}

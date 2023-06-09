@@ -76,3 +76,9 @@ export const TextLength = styled.div`
   margin-bottom: 120px;
   font-size: ${serverFonts.sm};
 `;
+
+export const NoMatchingListTitle = styled.div`
+  color: ${colors.gray200};
+  font-size: ${serverFonts.md};
+  text-align: center;
+`;

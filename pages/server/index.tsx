@@ -8,6 +8,7 @@ import MatchingList from "@/components/serverComponents/matchingList";
 import { ServerMatchingInfoInterface } from "@/types/serverType";
 import { MATCHING_STATUS_TYPE } from "@/types/types";
 import { isAxiosError } from "axios";
+import { NoMatchingListTitle } from "@/styles/server/serverStyled";
 
 export default function ServerHome() {
   const [matchingLists, setMatchingLists] = useState<
@@ -109,16 +110,27 @@ export default function ServerHome() {
         />
       </WelcomeCardWrapper>
       <MatchingSection>
-        <MatchingTextWrapper>
-          <MatchingTotalText>{matchingLists.length}개 의뢰</MatchingTotalText>
-          <MatchingOrderText>최신 신청순</MatchingOrderText>
-        </MatchingTextWrapper>
-        <MatchingListWrapper>
-          {matchingLists.reverse().map((list, idx) => {
-            if (!matchingLists) return <div>현재 매칭 리스트가 없습니다.</div>;
-            return <MatchingList list={list} key={idx} />;
-          })}
-        </MatchingListWrapper>
+        {matchingLists.length === 0 ? (
+          <NoMatchingListTitle>
+            매칭 요청이 존재하지 않습니다.
+          </NoMatchingListTitle>
+        ) : (
+          <>
+            <MatchingTextWrapper>
+              <MatchingTotalText>
+                {matchingLists.length}개 의뢰
+              </MatchingTotalText>
+              <MatchingOrderText>최신 신청순</MatchingOrderText>
+            </MatchingTextWrapper>
+            <MatchingListWrapper>
+              {matchingLists.reverse().map((list, idx) => {
+                if (!matchingLists)
+                  return <div>현재 매칭 리스트가 없습니다.</div>;
+                return <MatchingList list={list} key={idx} />;
+              })}
+            </MatchingListWrapper>
+          </>
+        )}
       </MatchingSection>
     </Layout>
   );

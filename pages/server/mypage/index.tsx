@@ -11,6 +11,7 @@ import {
   BadgeWrapper,
   DetailWrapper,
   NewBadge,
+  NoMatchingListTitle,
 } from "@/styles/server/serverStyled";
 import ProfileList from "@/components/serverComponents/profileList";
 import { ServerMatchingInfoInterface } from "@/types/serverType";
@@ -68,24 +69,31 @@ export default function Mypage() {
   return (
     <Layout>
       <DetailWrapper>
-        <PaddingDiv marginPx="1.2rem 0 0 1rem">
-          <BadgeWrapper>
-            <NewBadge>코디완료 {matchedList.length}</NewBadge>
-          </BadgeWrapper>
-        </PaddingDiv>
-        {matchedList.length > 0 &&
-          matchedList.map(
-            (matched: ServerMatchingInfoInterface, idx: number) => (
-              <>
-                <ProfileList
-                  profile={matched}
-                  onClick={() => handleClick(matched.uuid)}
-                  key={idx}
-                />
-                <hr />
-              </>
-            ),
-          )}
+        {matchedList.length === 0 ? (
+          <NoMatchingListTitle style={{ marginTop: 100 }}>
+            매칭 내역이 존재하지 않습니다.
+          </NoMatchingListTitle>
+        ) : (
+          <>
+            <PaddingDiv marginPx="1.2rem 0 0 1rem">
+              <BadgeWrapper>
+                <NewBadge>코디완료 {matchedList.length}</NewBadge>
+              </BadgeWrapper>
+            </PaddingDiv>
+            {matchedList.map(
+              (matched: ServerMatchingInfoInterface, idx: number) => (
+                <>
+                  <ProfileList
+                    profile={matched}
+                    onClick={() => handleClick(matched.uuid)}
+                    key={idx}
+                  />
+                  <hr />
+                </>
+              ),
+            )}
+          </>
+        )}
       </DetailWrapper>
     </Layout>
   );
