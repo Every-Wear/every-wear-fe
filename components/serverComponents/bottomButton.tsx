@@ -22,7 +22,9 @@ const OneButtonContainer = styled.button`
   font-size: 18px;
   font-weight: bold;
   filter: ${(props: { disabled: boolean }) =>
-    props.disabled ? `brightness(1.9)` : `brightness(1)`};
+    props.disabled ? "brightness(1.9)" : "brightness(1)"};
+  cursor: ${(props: { disabled: boolean }) =>
+    props.disabled ? "default" : "pointer"};
 `;
 
 const TwoButtonContainer = styled.button`
@@ -53,7 +55,9 @@ export default function BottomButton({
         <>
           <ButtonWrapper>
             <TwoButtonContainer first>{text[0]}</TwoButtonContainer>
-            <TwoButtonContainer>{text[1]}</TwoButtonContainer>
+            <TwoButtonContainer onClick={onClick[1]}>
+              {text[1]}
+            </TwoButtonContainer>
           </ButtonWrapper>
         </>
       )}

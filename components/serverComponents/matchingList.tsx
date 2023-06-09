@@ -1,5 +1,11 @@
+import {
+  BadgeWrapper,
+  MatchingBadge,
+  NewBadge,
+} from "@/styles/server/serverStyled";
 import { colors, serverFonts } from "@/styles/theme";
 import { ServerMatchingInfoInterface } from "@/types/serverType";
+import { changeWord } from "@/utils/formatting";
 import Link from "next/link";
 import styled from "styled-components";
 
@@ -13,31 +19,12 @@ const MatchingTitle = styled.div`
 const SubTextWrapper = styled.div`
   display: flex;
   justify-content: space-between;
+  margin-bottom: 4px;
 `;
 
 const SubText = styled.div`
   font-size: ${serverFonts.xsm};
   color: ${colors.gray200};
-`;
-
-const BadgeWrapper = styled.div`
-  width: 100;
-  display: flex;
-  flex-direction: row;
-  gap: 10px;
-`;
-
-const NewBadge = styled.div`
-  background: #ffc700;
-  color: #000;
-  font-size: 10px;
-  font-weight: 500;
-  padding: 3px 8px;
-  line-height: 1.2;
-`;
-const MatchingBadge = styled(NewBadge)`
-  background: #3290ff;
-  color: #fff;
 `;
 
 interface MatchingListInterface {
@@ -52,13 +39,11 @@ export default function MatchingList({ list }: MatchingListInterface) {
   return (
     <Link
       href={{
-        pathname: `/server/detail`,
-        query: { uuid: list.uuid },
+        pathname: `/server/detail/${list.uuid}`,
       }}
-      as={`/server/detail`}
     >
       <BadgeWrapper>
-        <MatchingBadge>대기중</MatchingBadge>
+        <MatchingBadge size="sm">대기중</MatchingBadge>
         {createTime < currentTime && currentTime < createAfter30Minutes && (
           <NewBadge>NEW</NewBadge>
         )}
@@ -69,15 +54,13 @@ export default function MatchingList({ list }: MatchingListInterface) {
       </MatchingTitle>
       <SubTextWrapper>
         <SubText>코디 의뢰자</SubText>
-        <SubText>{list.publishUserId}</SubText>
+        <SubText>
+          {list.publishUserId} {changeWord(list.preferGender)}
+        </SubText>
       </SubTextWrapper>
       <SubTextWrapper>
         <SubText>구매 예정일</SubText>
         <SubText>{list.preferTime}</SubText>
-      </SubTextWrapper>
-      <SubTextWrapper>
-        <SubText>선호 성별:</SubText>
-        <SubText>{list.preferGender}</SubText>
       </SubTextWrapper>
     </Link>
   );

@@ -1,13 +1,19 @@
 import { useEffect, useState } from "react";
-import { useRouter } from 'next/router';
-import Image from 'next/image';
+import { useRouter } from "next/router";
+import Image from "next/image";
 import styled from "styled-components";
 
 import { get_matchings } from "@/api/modules/matching";
 import { Layout } from "@/components/serverComponents";
 import { MATCHING_STATUS_TYPE } from "@/types/types";
 import { colors } from "@/styles/theme";
-import { getRandomNumImg } from "@/utils/randomImg";
+import {
+  BadgeWrapper,
+  DetailWrapper,
+  NewBadge,
+} from "@/styles/server/serverStyled";
+import ProfileList from "@/components/serverComponents/profileList";
+import { ServerMatchingInfoInterface } from "@/types/serverType";
 
 interface PaddingDivProps {
   marginPx?: string;
@@ -30,7 +36,7 @@ const MatchedList = styled.div`
   padding: 32px 16px;
   gap: 5px;
   align-items: center;
-  border-bottom: 1px solid ${colors.white};
+  border-bottom: 1px solid ${colors.gray100};
 `;
 
 const MatchedItem = styled.div`
@@ -38,16 +44,13 @@ const MatchedItem = styled.div`
   margin-left: 0.3rem;
 `;
 
-
 export default function Mypage() {
   const router = useRouter();
   const handleClick = (uuid: string) => {
     router.push(`/server/mypage/${uuid}`);
   };
 
-  const [matchedList, setMatchedList] = useState<any[]>(
-    [],
-  );
+  const [matchedList, setMatchedList] = useState<any[]>([]);
 
   const getAllMatching = async () => {
     try {
@@ -64,20 +67,26 @@ export default function Mypage() {
 
   return (
     <Layout>
-      <PaddingDiv marginPx="1.2rem 0 0 0"></PaddingDiv>
-      <MatchedInfoDiv>코디완료 {matchedList.length}</MatchedInfoDiv>
-      <div>
+      <DetailWrapper>
+        <PaddingDiv marginPx="1.2rem 0 0 1rem">
+          <BadgeWrapper>
+            <NewBadge>코디완료 {matchedList.length}</NewBadge>
+          </BadgeWrapper>
+        </PaddingDiv>
         {matchedList.length > 0 &&
-          matchedList.map(matched => (
-            <MatchedList key={matched._id} onClick={() => handleClick(matched.uuid)} >
-              <Image src={`/assets/random-profile${getRandomNumImg()}.png`} alt="요청한 시각장애인의 프로필사진" width={50} height={50} />
-              <MatchedItem>
-                {matched.preferPlace} {matched.preferTime} <br />
-                <b>{matched.preferStyle} / {matched.clothesType}</b> 코디를 진행했어요.
-              </MatchedItem>
-            </MatchedList>
-          ))}
-      </div>
+          matchedList.map(
+            (matched: ServerMatchingInfoInterface, idx: number) => (
+              <>
+                <ProfileList
+                  profile={matched}
+                  onClick={() => handleClick(matched.uuid)}
+                  key={idx}
+                />
+                <hr />
+              </>
+            ),
+          )}
+      </DetailWrapper>
     </Layout>
   );
 }

@@ -23,5 +23,5 @@ export default function useGetDetail(uuid?: string | string[]) {
     })();
   }, [uuid, router]);
 
-  return detailInfo;
+  return { detailInfo, setDetailInfo };
 }

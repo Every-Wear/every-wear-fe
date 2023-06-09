@@ -8,7 +8,7 @@ export interface ServerMatchingInfoInterface {
   limitPrice: number;
   preferPlace: string;
   preferStyle: string; // 만약 백엔드 enum이 있다면 상수로 교체
-  preferGender: "woman" | "man";
+  preferGender: string;
   preferTime?: string;
   remark?: string;
   uuid: string;

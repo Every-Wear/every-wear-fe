@@ -190,6 +190,10 @@ div.react-datepicker__day:last-child {
   color: rgba(31, 87, 231, 1);
 }
 
+div.react-datepicker__day--selected {
+  color: white !important;
+}
+
 .react-datepicker__day--disabled {
   opacity: 0.3;
 }
@@ -257,6 +261,26 @@ div.react-datepicker__day-name:last-child {
   color: rgba(31, 87, 231, 1);
 }
 
-div.picker-item picker-item-selected {
-  color: white;
+.picker-container .picker-inner {
+  margin-top: 70px;
+  display: flex;
+  -webkit-mask-box-image: none;
+}
+
+.picker-highlight {
+  display: none;
+}
+
+.picker-container .picker-column .picker-item {
+  color: rgba(48, 50, 57, 1) !important;
+  font-size: 50px;
+  font-weight: bold;
+}
+
+.picker-container .picker-column .picker-item.picker-item-selected {
+  color: white !important;
+}
+
+div.picker-inner {
+  margin: 70px 40px;
 }

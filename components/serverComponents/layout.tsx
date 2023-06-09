@@ -8,6 +8,7 @@ import BottomButton from "./bottomButton";
 interface LayoutType {
   children: ReactElement | ReactElement[];
   noNavBar?: boolean;
+  noPadding?: boolean;
 }
 
 const LayoutWrapper = styled.div`
@@ -15,12 +16,13 @@ const LayoutWrapper = styled.div`
   padding-top: 110px;
   min-height: calc(100vh - 110px);
   height: 100%;
-  padding-bottom: 70px;
+  padding-bottom: ${(props: { noPadding?: boolean }) =>
+    props.noPadding ? "0px" : "70px"};
 `;
 
-export default function Layout({ children, noNavBar }: LayoutType) {
+export default function Layout({ children, noNavBar, noPadding }: LayoutType) {
   return (
-    <LayoutWrapper>
+    <LayoutWrapper noPadding={noPadding}>
       <Header />
       {children}
       {!noNavBar && <BottomNavBar />}

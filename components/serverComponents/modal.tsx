@@ -55,6 +55,7 @@ const ButtonWrapper = styled.div`
 
 const ModalButton = styled.button`
   width: 100%;
+  font-size: ${serverFonts.md};
   padding: 12px 24px;
   font-weight: 700;
   background-color: ${(props: { type: string }) =>
