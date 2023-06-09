@@ -167,6 +167,8 @@ export default function Mypage() {
             />
           </ImageDiv>
         </ImageWrapper>
+        <DetailTitle>후기</DetailTitle>
+        <DetailText>{matchedDetail.matchingDetail?.epilogue}</DetailText>
       </DetailWrapper>
 
       {/* {Object.entries(matchedDetail.matchingDetail).map(([key, value]) => {
