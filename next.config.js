@@ -2,7 +2,7 @@
 const nextConfig = {
   reactStrictMode: false,
   images: {
-    domains: ['every-wear.kro.kr', 'localhost']
+    domains: ["everywear.kro.kr", "localhost", "api-everywear.kro.kr"]
   },
 
 };
