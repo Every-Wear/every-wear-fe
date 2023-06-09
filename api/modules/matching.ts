@@ -43,6 +43,14 @@ const get_matching_detail = async (uuid: string) => {
   return response;
 };
 
+const get_finish_matching_detail = async (uuid: string) => {
+  const response = await instance({
+    method: "get",
+    url: `matching-detail/${uuid}`,
+  });
+  return response;
+};
+
 const delete_matching_detail = async (uuid: string, reason: string) => {
   const response = await instance({
     method: "delete",
@@ -69,4 +77,5 @@ export {
   get_matching_detail,
   get_my_matching,
   delete_matching_detail,
+  get_finish_matching_detail,
 };

@@ -4,8 +4,8 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 import HomeIcon from "./homeIcon";
 import CurrentStatusIcon from "./currentStatusIcon";
-import MyPageIcon from "./myPageIcon";
 import { ColorInterface } from "@/types/serverType";
+import HistoryIcon from "./historyIcon";
 
 export default function BottomNavBar() {
   const router = useRouter();
@@ -70,7 +70,7 @@ export default function BottomNavBar() {
         color={changeColor("mypage")}
         onClick={() => router.push("/server/mypage")}
       >
-        <MyPageIcon color={changeColor("mypage")} />
+        <HistoryIcon color={changeColor("mypage")} />
         매칭내역
       </NavButton>
     </NavContainer>

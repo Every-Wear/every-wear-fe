@@ -69,10 +69,16 @@ export default function CurrentStatus() {
               <>
                 <Link
                   href={{
-                    pathname: `/server/currentStatus/detail`,
+                    pathname: `/server/currentStatus/detail${
+                      type === MATCHING_STATUS_TYPE.진행중
+                        ? `/${list.uuid}`
+                        : ""
+                    }`,
                     query: { uuid: list.uuid },
                   }}
-                  as={`/server/currentStatus/detail`}
+                  as={`/server/currentStatus/detail${
+                    type === MATCHING_STATUS_TYPE.진행중 ? `/${list.uuid}` : ""
+                  }`}
                   key={idx}
                 >
                   <ProfileList profile={list} />

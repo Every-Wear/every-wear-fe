@@ -54,7 +54,9 @@ export default function BottomButton({
       ) : (
         <>
           <ButtonWrapper>
-            <TwoButtonContainer first>{text[0]}</TwoButtonContainer>
+            <TwoButtonContainer onClick={onClick[0]} first>
+              {text[0]}
+            </TwoButtonContainer>
             <TwoButtonContainer onClick={onClick[1]}>
               {text[1]}
             </TwoButtonContainer>

@@ -38,7 +38,9 @@ export default function HomeDetail() {
   const confirmMatching = async () => {
     matchingModalHandler();
     try {
-      await change_waiting_to_matching(matchingId);
+      if (typeof matchingId === "string") {
+        await change_waiting_to_matching(matchingId);
+      }
     } catch (e) {
       return alert("매칭 오류");
     }
@@ -47,7 +49,7 @@ export default function HomeDetail() {
 
   const confirmGoToCurrentStatus = () => {
     confirmMatching();
-    router.push("currentStatus");
+    router.push("/server/currentStatus");
   };
 
   const CustomBadgeWrapper = styled(BadgeWrapper)`

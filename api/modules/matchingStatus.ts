@@ -2,7 +2,7 @@ import { MATCHING_STATUS_TYPE } from "@/types/types";
 import { instance } from "../instance";
 import { ServerMatchingInfoInterface } from "@/types/serverType";
 
-const change_waiting_to_matching = async (uuid?: string | string[]) => {
+const change_waiting_to_matching = async (uuid: string) => {
   const response = await instance({
     method: "patch",
     url: `matching/${uuid}?status=${MATCHING_STATUS_TYPE.매칭중}`,
