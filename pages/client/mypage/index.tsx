@@ -68,7 +68,7 @@ const Mypage = () => {
           ))}
       </div>
       <BottomButtonLayout>
-        <HistoryBackButton />
+        <HistoryBackButton border={false} text="홈으로" />
       </BottomButtonLayout>
     </Layout>
   );

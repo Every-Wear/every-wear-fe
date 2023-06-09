@@ -14,6 +14,7 @@ import {
   ClientSubText,
   IntroLabel,
   HistoryBackButton,
+  BottomButtonLayout,
 } from "@/components/clientComponents";
 
 import { postGeoLocationData } from "@/utils/geoLocation";
@@ -75,11 +76,15 @@ const Matching = () => {
   const getCurrentMatching = async (
     matchingInfo: ClientMatchingInfoInterface,
   ) => {
-    const { data } = await get_my_matching();
-    setMatchingInfo(data?.matching);
+    try {
+      const { data } = await get_my_matching();
+      setMatchingInfo(data?.matching);
 
-    if (matchingInfo?._id) return;
-    setQrCodeSrc(data?.matching.qrCodeValue);
+      if (matchingInfo?._id) return;
+      setQrCodeSrc(data?.matching.qrCodeValue);
+    } catch (err) {
+      return;
+    }
   };
 
   const currentMatchingCancelHandler = async () => {
@@ -102,6 +107,7 @@ const Matching = () => {
       clearInterval(getInfoId ?? 0);
     }
     if (
+      matchingInfo._id &&
       !getInfoId &&
       matchingInfo?.statusType !== MATCHING_STATUS_TYPE.진행완료
     ) {
@@ -121,7 +127,7 @@ const Matching = () => {
       !postGeoId &&
       matchingInfo?.statusType === MATCHING_STATUS_TYPE.진행중
     ) {
-      const interverId = setInterval(() => postGeoLocationData(uuid), 30000);
+      const interverId = setInterval(() => postGeoLocationData(uuid), 10000);
       setPostGeoId(interverId);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -130,7 +136,17 @@ const Matching = () => {
   if (!matchingInfo?._id) {
     return (
       <Layout>
-        <ClientText>매칭이 존재하지 않습니다</ClientText>
+        <div style={{ marginTop: "60px", textAlign: "center" }}>
+          <ClientSubText>
+            매칭이 존재하지 않습니다
+            <br />
+            홈으로 이동해주세요
+          </ClientSubText>
+
+          <BottomButtonLayout>
+            <HistoryBackButton border={false} text="홈으로" />
+          </BottomButtonLayout>
+        </div>
       </Layout>
     );
   }
@@ -174,7 +190,7 @@ const MatchingProgressTitle = ({
       {(currentProgress === "매칭대기중" || currentProgress === "매칭중") && (
         <ClientSubText>
           코디네이터와 통화 후 <br />
-          예약이 확정되요
+          예약이 확정돼요
         </ClientSubText>
       )}
       {currentProgress === "매칭완료" && (

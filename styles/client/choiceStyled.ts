@@ -15,7 +15,8 @@ export const ChoiceInput = styled.input`
   background-color: #303239;
   padding: 26px 24px;
   font-weight: bold;
-  color: ${colors.white};
+  color: ${(props: { numberColor: string }) =>
+    props.numberColor === "number" ? "#303239" : colors.white};
   font-size: ${clientFonts.md};
 
   &:focus {
@@ -46,4 +47,63 @@ export const GenderButtonWrap = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
+`;
+
+export const CustomAltText = styled.div`
+  position: absolute;
+  top: 22px;
+  left: 24px;
+  color: #fff;
+  font-size: ${clientFonts.md};
+  display: flex;
+
+  span {
+    width: 100%;
+    width: 1px;
+    background: #fff;
+    height: 40px;
+    content: "";
+    display: inline-block;
+    margin-left: 1px;
+    margin-top: 4px;
+
+    animation: flicker 1000ms linear infinite;
+
+    @keyframes flicker {
+      0% {
+        width: 0;
+      }
+      50% {
+        width: 0;
+      }
+      10% {
+        width: 0;
+      }
+    }
+  }
+`;
+
+export const CustomCursor = styled.span`
+  width: 100%;
+  width: 1px;
+  background: #fff;
+  height: 40px;
+  content: "";
+  display: inline-block;
+  margin-left: 1px;
+  margin-top: 4px;
+
+  animation: flicker 1000ms linear infinite;
+
+  @keyframes flicker {
+    0% {
+      width: 0;
+    }
+    50% {
+      width: 0;
+    }
+    10% {
+      width: 0;
+    }
+  }
 `;

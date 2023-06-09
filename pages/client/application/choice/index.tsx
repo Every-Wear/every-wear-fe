@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useRouter } from "next/router";
 import { isAxiosError } from "axios";
-import styled from "styled-components";
 
 import { post_matching } from "@/api/modules/matching";
 
@@ -20,17 +19,20 @@ import {
   ApplicationButton,
   PurposeButtonWrap,
   GenderButtonWrap,
+  CustomCursor,
+  CustomAltText,
 } from "@/styles/client/choiceStyled";
 
 import { changeButtonText } from "@/utils/stringFormat";
 
-import { colors } from "@/styles/theme";
+import { clientFonts, colors } from "@/styles/theme";
 
 interface FormInterface {
   title: string;
   value: string;
   setValue: (state: string) => void;
   placeHolder?: string;
+  iunputType?: string;
 }
 
 const Choice = () => {
@@ -48,22 +50,26 @@ const Choice = () => {
       value: time,
       setValue: setTime,
       placeHolder: "####년 ##월 ##일",
+      iunputType: "number",
     },
     {
       title: "어디서 의상을 살까요?",
       value: location,
       setValue: setLocation,
       placeHolder: "지역입력 (예:강남)",
+      iunputType: "text",
     },
     {
       title: "의상 구매 목적이 무엇인가요?",
       value: purpose,
       setValue: setPurpose,
+      iunputType: "text",
     },
     {
       title: "선호하는 코디네이터 성별은 무엇인가요?",
       value: gender,
       setValue: setGender,
+      iunputType: "text",
     },
   ];
 
@@ -134,7 +140,19 @@ const Choice = () => {
                 placeHolder={form.placeHolder}
               />
             )}
-            <BottomButtonLayout>
+            <BottomButtonLayout grid={true}>
+              {currentFormIndex > lastFormindex || currentFormIndex <= 0 ? (
+                <HistoryBackButton border={false} text="뒤로" />
+              ) : (
+                <ClientButton
+                  bgColor="gray"
+                  fontColor="white"
+                  onClickHandler={prevNextForm}
+                  label="이전"
+                >
+                  뒤로
+                </ClientButton>
+              )}
               <ClientButton
                 disable={form.value === ""}
                 bgColor="white"
@@ -144,18 +162,6 @@ const Choice = () => {
               >
                 다음
               </ClientButton>
-              {currentFormIndex > lastFormindex || currentFormIndex <= 0 ? (
-                <HistoryBackButton />
-              ) : (
-                <ClientButton
-                  bgColor="black"
-                  fontColor="white"
-                  onClickHandler={prevNextForm}
-                  label="이전"
-                >
-                  이전 단계
-                </ClientButton>
-              )}
             </BottomButtonLayout>
           </div>
         );
@@ -178,18 +184,53 @@ const ApplicationInputForm = ({
   currentFormIndex,
   placeHolder = "입력",
 }: ApplicationFormInterface): JSX.Element | null => {
+  const changedAltText = (value: string) => {
+    if (value.length > 7) {
+      return (
+        value.slice(0, 4) +
+        "년 " +
+        value.slice(4, 6) +
+        "월 " +
+        value.slice(6, 8) +
+        "일"
+      );
+    } else if (value.length > 6) {
+      return (
+        value.slice(0, 4) + "년 " + value.slice(4, 6) + "월" + value.slice(6, 7)
+      );
+    } else if (value.length > 5) {
+      return value.slice(0, 4) + "년 " + value.slice(4, 6) + "월";
+    } else if (value.length > 4) {
+      return value.slice(0, 4) + "년 " + value.slice(4, 5);
+    } else if (value.length > 3) {
+      return value.slice(0, 4) + "년 ";
+    } else {
+      return value;
+    }
+  };
+
   if (currentFormIndex !== formIndex) return null;
   return (
     <FormWrap key={form.title}>
       <ClientText>{form.title}</ClientText>
-      <ChoiceInput
-        type="text"
-        value={form.value}
-        placeholder={placeHolder}
-        onChange={(e: React.FormEvent<HTMLInputElement>) =>
-          form.setValue(e.currentTarget.value)
-        }
-      />
+      <div style={{ position: "relative" }}>
+        <ChoiceInput
+          onFocus={(e: any) => console.log(e)}
+          type={form.iunputType}
+          numberColor={form.iunputType}
+          value={form.value}
+          placeholder={placeHolder}
+          onChange={(e: React.FormEvent<HTMLInputElement>) => {
+            form.setValue(e.currentTarget.value);
+          }}
+        />
+        {form.iunputType === "number" && (
+          <CustomAltText>
+            <p style={{ fontWeight: "bold" }}>{changedAltText(form.value)}</p>
+            <CustomCursor></CustomCursor>
+          </CustomAltText>
+        )}
+      </div>
     </FormWrap>
   );
 };
@@ -270,7 +311,7 @@ const ApplicationButtonForm = ({
   return (
     <FormWrap key={form.title}>
       <ClientText>{form.title}</ClientText>
-      <ClientSubText>중복선택 가능</ClientSubText>
+      {type && <ClientSubText>중복선택 가능</ClientSubText>}
       <ApplicationButtonList
         type={type}
         value={form.value}

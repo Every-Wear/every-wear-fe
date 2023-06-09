@@ -11,7 +11,7 @@ interface LayoutType {
 const LayoutWrap = styled.div`
   background-color: ${colors.black};
   padding-top: 110px;
-  min-height: calc(100vh - 110px);
+  min-height: calc(100vh);
   height: 100%;
 `;
 

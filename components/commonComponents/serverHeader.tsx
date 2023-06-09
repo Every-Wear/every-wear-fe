@@ -10,7 +10,7 @@ const HeaderWrap = styled.header`
   position: fixed;
   top: 0;
   left: 0;
-  height: 110px;
+  height: 64px;
   z-index: 10;
   display: flex;
   justify-content: center;
@@ -22,7 +22,7 @@ const Logo = styled.h1`
   line-height: 0;
 `;
 
-const Header = () => {
+const ServerHeader = () => {
   const router = useRouter();
 
   return (
@@ -32,8 +32,8 @@ const Header = () => {
           onClick={() => router.push("/client")}
           src={"/assets/logo.svg"}
           alt="에브리웨어"
-          width={256}
-          height={24}
+          width={151}
+          height={20}
           aria-label="안녕하세요 에브리웨어입니다. 홈으로 되돌아 가시려면 클릭해주세요."
         />
       </Logo>
@@ -41,4 +41,4 @@ const Header = () => {
   );
 };
 
-export default Header;
+export default ServerHeader;
