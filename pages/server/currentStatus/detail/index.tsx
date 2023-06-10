@@ -71,6 +71,7 @@ export default function CurrentStatusDetail() {
     } catch (e) {
       return alert("매칭 오류");
     }
+    window.scrollTo(0, 0);
   };
 
   const changeMatchingInfo = (name: string, value: string, type: string) => {
@@ -91,7 +92,7 @@ export default function CurrentStatusDetail() {
   };
 
   const callUser = () => {
-    location.href = "tel:" + "000-0000-0000"; // 임시 번호
+    location.href = "tel:" + "01031829254"; // 임시 번호
   };
 
   const SelectTitle = styled.h3`
@@ -104,6 +105,11 @@ export default function CurrentStatusDetail() {
     padding-left: 16px;
     color: ${colors.gray100};
   `;
+
+  const goToCurrentStatusStep = (step: string) => {
+    setCurrentStatusStep(step);
+    window.scrollTo(0, 0);
+  };
 
   selectedDate?.setHours(Number(valueGroups.hour));
   selectedDate?.setMinutes(Number(valueGroups.minutes));
@@ -134,7 +140,7 @@ export default function CurrentStatusDetail() {
                       width={24}
                       height={24}
                       onClick={() =>
-                        setCurrentStatusStep(CURRENT_STATUS_STEP.CALENDAR)
+                        goToCurrentStatusStep(CURRENT_STATUS_STEP.CALENDAR)
                       }
                     />
                   )}
@@ -151,7 +157,7 @@ export default function CurrentStatusDetail() {
                       width={24}
                       height={24}
                       onClick={() =>
-                        setCurrentStatusStep(CURRENT_STATUS_STEP.ADDRESS)
+                        goToCurrentStatusStep(CURRENT_STATUS_STEP.ADDRESS)
                       }
                     />
                   )}
@@ -169,13 +175,12 @@ export default function CurrentStatusDetail() {
                       width={24}
                       height={24}
                       onClick={() =>
-                        setCurrentStatusStep(CURRENT_STATUS_STEP.MEMO)
+                        goToCurrentStatusStep(CURRENT_STATUS_STEP.MEMO)
                       }
                     />
                   )}
                 </DetailTitle>
                 <DetailText>{currentStatusInfo?.remark}</DetailText>
-                {/* <button onClick={confirmMatching}>매칭 확정</button> */}
               </DetailWrapper>
               {currentStatusInfo.statusType === MATCHING_STATUS_TYPE.매칭중 && (
                 <BottomButton
@@ -261,7 +266,6 @@ export default function CurrentStatusDetail() {
                 width: "100%",
                 height: "calc(100vh - 110px)",
               }}
-              // style={postCodeStyle}
               onComplete={onCompletePost}
             ></DaumPostcode>
           </>

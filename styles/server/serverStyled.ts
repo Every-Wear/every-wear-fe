@@ -16,6 +16,8 @@ export const NewBadge = styled.div<{ size?: string }>`
   padding: 3px 8px;
   line-height: 1.5;
   font-weight: bold;
+  display: flex;
+  align-items: center;
 `;
 
 export const MatchingBadge = styled(NewBadge)`
