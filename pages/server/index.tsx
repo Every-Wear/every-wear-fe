@@ -90,6 +90,10 @@ export default function ServerHome() {
     grid-row-gap: 36px;
   `;
 
+  const guideClick = () => {
+    document.location.href = "https://nuung.notion.site/2eb3b28423f3407c90f8d46291e87c1b?pvs=4";
+  }
+
   return (
     <Layout>
       <WelcomeCardWrapper>
@@ -106,6 +110,7 @@ export default function ServerHome() {
             bottom: "14px",
             right: "24px",
           }}
+          onClick={guideClick}
           alt="코디네이터 지침가이드 버튼"
         />
       </WelcomeCardWrapper>
