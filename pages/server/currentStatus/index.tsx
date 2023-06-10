@@ -23,7 +23,13 @@ export default function CurrentStatus() {
   const getCurrentStatusList = async () => {
     try {
       const { data } = await get_my_matching();
-      if (data) setCurrentStatusList(data.matching);
+      if (data) {
+        const exceptFinish = data.matching.filter(
+          (list: ServerMatchingInfoInterface) =>
+            list.statusType !== MATCHING_STATUS_TYPE.진행완료,
+        );
+        setCurrentStatusList(exceptFinish);
+      }
     } catch (err) {
       if (isAxiosError(err)) {
         alert(err.response?.data.error);
