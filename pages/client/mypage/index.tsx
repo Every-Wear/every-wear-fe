@@ -8,6 +8,7 @@ import {
   HistoryBackButton,
   ClientText,
   BottomButtonLayout,
+  IntroLabel,
 } from "@/components/clientComponents/index";
 
 import { ClientMatchingInfoInterface } from "@/types/clientType";
@@ -52,6 +53,7 @@ const Mypage = () => {
 
   return (
     <Layout>
+      <IntroLabel labelText="에브리웨어 이전 매칭 내역입니다. 스크롤을 이동하여 예전 매칭내역을 확인하실수 있습니다." />
       <MypageTitle>
         <ClientText>
           이전 매칭 내역을

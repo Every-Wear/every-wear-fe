@@ -29,7 +29,7 @@ const ServerHeader = () => {
     <HeaderWrap>
       <Logo>
         <Image
-          onClick={() => router.push("/client")}
+          onClick={() => router.push("/server")}
           src={"/assets/logo.svg"}
           alt="에브리웨어"
           width={151}

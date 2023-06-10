@@ -15,6 +15,7 @@ import {
   MatchingFormList,
   HistoryBackButton,
   ClientSubText,
+  IntroLabel,
 } from "@/components/clientComponents";
 
 interface FormInterface {
@@ -98,28 +99,31 @@ const Voice = () => {
 
   return (
     <Layout>
-      {formList.map((form, idx) => (
-        <div key={idx}>
-          <ApplicationInputForm
-            form={form}
-            key={form.title}
-            formIndex={idx}
-            currentFormIndex={currentFormIndex}
-            placeHolder={form.placeHolder}
-          />
-          <BottomButtonLayout grid={true}>
-            <HistoryBackButton border={false} text="뒤로" />
-            <ClientButton
-              bgColor="white"
-              fontColor="black"
-              onClickHandler={goToNextForm}
-              label="다음"
-            >
-              다음
-            </ClientButton>
-          </BottomButtonLayout>
-        </div>
-      ))}
+      <div>
+        <IntroLabel labelText="녹음하기 버튼을 이용해 정보를 입력하고 다음버튼을 이용해 진행해주세요. 재녹음하시려면 재녹음하기 버튼을 클릭해주세요." />
+        {formList.map((form, idx) => (
+          <div key={idx}>
+            <ApplicationInputForm
+              form={form}
+              key={form.title}
+              formIndex={idx}
+              currentFormIndex={currentFormIndex}
+              placeHolder={form.placeHolder}
+            />
+            <BottomButtonLayout grid={true}>
+              <HistoryBackButton border={false} text="뒤로" />
+              <ClientButton
+                bgColor="white"
+                fontColor="black"
+                onClickHandler={goToNextForm}
+                label="다음"
+              >
+                다음
+              </ClientButton>
+            </BottomButtonLayout>
+          </div>
+        ))}
+      </div>
     </Layout>
   );
 };

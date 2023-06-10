@@ -12,6 +12,7 @@ import {
   MatchingFormList,
   HistoryBackButton,
   ClientSubText,
+  IntroLabel,
 } from "@/components/clientComponents";
 import {
   FormWrap,
@@ -108,64 +109,67 @@ const Choice = () => {
 
   return (
     <Layout>
-      {formList.map((form, idx) => {
-        if (currentFormIndex !== idx) return <></>;
+      <div>
+        <IntroLabel labelText="직접 입력을 통해 코디네이팅 신청을 위한 필수정보를 입력해주세요. 다음버턴을 눌러 진행해주세요" />
+        {formList.map((form, idx) => {
+          if (currentFormIndex !== idx) return <></>;
 
-        const goToNextForm = () => {
-          if (form.value === "") return alert("정보를 입력해주세요");
-          setCurrentFormIndex(currentFormIndex + 1);
-        };
+          const goToNextForm = () => {
+            if (form.value === "") return alert("정보를 입력해주세요");
+            setCurrentFormIndex(currentFormIndex + 1);
+          };
 
-        const prevNextForm = () => {
-          if (currentFormIndex <= 0) return;
-          setCurrentFormIndex(currentFormIndex - 1);
-        };
+          const prevNextForm = () => {
+            if (currentFormIndex <= 0) return;
+            setCurrentFormIndex(currentFormIndex - 1);
+          };
 
-        return (
-          <div key={idx}>
-            {form.placeHolder ? (
-              <ApplicationInputForm
-                form={form}
-                key={form.title}
-                formIndex={idx}
-                currentFormIndex={currentFormIndex}
-                placeHolder={form.placeHolder}
-              />
-            ) : (
-              <ApplicationButtonForm
-                form={form}
-                key={form.value}
-                formIndex={idx}
-                currentFormIndex={currentFormIndex}
-                placeHolder={form.placeHolder}
-              />
-            )}
-            <BottomButtonLayout grid={true}>
-              {currentFormIndex > lastFormindex || currentFormIndex <= 0 ? (
-                <HistoryBackButton border={false} text="뒤로" />
+          return (
+            <div key={idx}>
+              {form.placeHolder ? (
+                <ApplicationInputForm
+                  form={form}
+                  key={form.title}
+                  formIndex={idx}
+                  currentFormIndex={currentFormIndex}
+                  placeHolder={form.placeHolder}
+                />
               ) : (
-                <ClientButton
-                  bgColor="gray"
-                  fontColor="white"
-                  onClickHandler={prevNextForm}
-                  label="이전"
-                >
-                  뒤로
-                </ClientButton>
+                <ApplicationButtonForm
+                  form={form}
+                  key={form.value}
+                  formIndex={idx}
+                  currentFormIndex={currentFormIndex}
+                  placeHolder={form.placeHolder}
+                />
               )}
-              <ClientButton
-                disable={form.value === ""}
-                bgColor="white"
-                fontColor="black"
-                onClickHandler={goToNextForm}
-                label="다음"
-              >
-                다음
-              </ClientButton>
-            </BottomButtonLayout>
-          </div>
-        );
-      })}
+              <BottomButtonLayout grid={true}>
+                {currentFormIndex > lastFormindex || currentFormIndex <= 0 ? (
+                  <HistoryBackButton border={false} text="뒤로" />
+                ) : (
+                  <ClientButton
+                    bgColor="gray"
+                    fontColor="white"
+                    onClickHandler={prevNextForm}
+                    label="이전"
+                  >
+                    뒤로
+                  </ClientButton>
+                )}
+                <ClientButton
+                  disable={form.value === ""}
+                  bgColor="white"
+                  fontColor="black"
+                  onClickHandler={goToNextForm}
+                  label="다음"
+                >
+                  다음
+                </ClientButton>
+              </BottomButtonLayout>
+            </div>
+          );
+        })}
+      </div>
     </Layout>
   );
 };

@@ -117,6 +117,9 @@ const Matching = () => {
       );
       setGetInfoId(interverId);
     }
+
+    return () => clearInterval(getInfoId ?? 0);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [getInfoId, matchingInfo]);
 
   useEffect(() => {
@@ -130,12 +133,15 @@ const Matching = () => {
       const interverId = setInterval(() => postGeoLocationData(uuid), 10000);
       setPostGeoId(interverId);
     }
+
+    return () => clearInterval(postGeoId ?? 0);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [postGeoId, matchingInfo]);
 
   if (!matchingInfo?._id) {
     return (
       <Layout>
+        <IntroLabel labelText="매칭내역이 존재하지 않습니다. 홈으로 이동해주세요" />
         <div style={{ marginTop: "60px", textAlign: "center" }}>
           <ClientSubText>
             매칭이 존재하지 않습니다
@@ -153,7 +159,7 @@ const Matching = () => {
 
   return (
     <Layout>
-      <IntroLabel labelText="매칭현황 페이지 내용확인과 신청취소를 원한다면 아래 버튼 클릭" />
+      <IntroLabel labelText="매칭현황 페이지 내용확인과 신청취소를 원한다면 아래 버튼 클릭해주세요" />
       <MatchingProgressTitle
         currentProgress={currentProgress}
         qrCodeSrc={qrCodeSrc}
