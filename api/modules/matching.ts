@@ -2,7 +2,7 @@ import { instance } from "@/api/instance";
 import { MatchingStatusType } from "@/types/types";
 
 interface MatchingDocInterface {
-  time: string;
+  timeString: string;
   location: string;
   purpose: string;
   gender: string;
@@ -16,7 +16,7 @@ const post_matching = async (res: MatchingDocInterface) => {
       clothesType: "상의, 하의",
       limitPrice: 0,
       preferPlace: res.location,
-      preferTime: res.time,
+      preferTime: res.timeString,
       preferStyle: res.purpose,
       preferGender: res.gender,
       remark: "비고",

@@ -83,6 +83,7 @@ const Matching = () => {
       if (matchingInfo?._id) return;
       setQrCodeSrc(data?.matching.qrCodeValue);
     } catch (err) {
+      setMatchingInfo({});
       return;
     }
   };
@@ -103,7 +104,10 @@ const Matching = () => {
   }, []);
 
   useEffect(() => {
-    if (matchingInfo?.statusType === MATCHING_STATUS_TYPE.진행완료) {
+    if (
+      matchingInfo?.statusType === MATCHING_STATUS_TYPE.진행완료 ||
+      !matchingInfo?._id
+    ) {
       clearInterval(getInfoId ?? 0);
     }
     if (
@@ -113,17 +117,19 @@ const Matching = () => {
     ) {
       const interverId = setInterval(
         () => getCurrentMatching(matchingInfo),
-        5000,
+        2000,
       );
       setGetInfoId(interverId);
     }
 
-    return () => clearInterval(getInfoId ?? 0);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [getInfoId, matchingInfo]);
 
   useEffect(() => {
-    if (matchingInfo?.statusType === MATCHING_STATUS_TYPE.진행완료) {
+    if (
+      matchingInfo?.statusType === MATCHING_STATUS_TYPE.진행완료 ||
+      !matchingInfo?._id
+    ) {
       clearInterval(postGeoId ?? 0);
     }
     if (
@@ -134,7 +140,6 @@ const Matching = () => {
       setPostGeoId(interverId);
     }
 
-    return () => clearInterval(postGeoId ?? 0);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [postGeoId, matchingInfo]);
 

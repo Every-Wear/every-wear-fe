@@ -78,7 +78,15 @@ const Choice = () => {
 
   const submitApplicationHandler = async () => {
     try {
-      await post_matching({ time, location, purpose, gender });
+      const timeString =
+        time.slice(0, 4) +
+        "년 " +
+        time.slice(4, 6) +
+        "월 " +
+        time.slice(6, 8) +
+        "일";
+
+      await post_matching({ timeString, location, purpose, gender });
       router.push("/client/matching");
     } catch (err) {
       if (isAxiosError(err)) alert(err.response?.data.error);

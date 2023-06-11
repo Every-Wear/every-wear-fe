@@ -33,7 +33,17 @@ const MatchingFormList = ({
   gender,
 }: MatchingFormListInterface) => {
   const matchingList = [
-    { title: "구매 날짜", content: time ?? "" },
+    {
+      title: "구매 날짜",
+      content: time.includes("일")
+        ? time
+        : time.slice(0, 4) +
+            "년 " +
+            time.slice(4, 6) +
+            "월 " +
+            time.slice(6, 8) +
+            "일" ?? "",
+    },
     { title: "구매 장소", content: location ?? "" },
     { title: "구매 목적", content: purpose ?? "" },
     { title: "코디네이터 성별", content: gender ?? "" },

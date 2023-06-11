@@ -66,8 +66,9 @@ const Voice = () => {
   };
 
   const submitApplication = async () => {
+    const timeString = time;
     try {
-      await post_matching({ time, location, purpose, gender });
+      await post_matching({ timeString, location, purpose, gender });
       router.push("/client/matching");
     } catch (err) {
       alert("신청서 제출에 실패했습니다");
