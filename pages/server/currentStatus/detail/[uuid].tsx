@@ -31,7 +31,11 @@ export default function CurrentStatusOngoing() {
     clothesPictures: string;
     billingPictures: string;
     otherPictures: string;
-  }>({ clothesPictures: "", billingPictures: "", otherPictures: "" });
+  }>({
+    clothesPictures: "",
+    billingPictures: "",
+    otherPictures: "",
+  });
 
   const finishModalHandler = () => {
     setIsFinishModalOpen(!isFinishModalOpen);
@@ -39,7 +43,6 @@ export default function CurrentStatusOngoing() {
 
   const handleSubmit = async () => {
     const formData = new FormData();
-    console.log(files);
     formData.append("is_buy", String(checked));
     formData.append("epilogue", "테스트테스트");
     formData.append("clothesPictures", files.clothesPictures);

@@ -22,17 +22,21 @@ export default function TimePicker({ valueGroups, handleChange }: Props) {
     minutesArr.push(String(i).padStart(2, "0"));
   }
 
+  const TimePickerWrapper = styled.div`
+    position: relative;
+  `;
+
   const Contour = styled.div`
     color: ${colors.white};
     font-size: 50px;
     font-weight: bold;
     position: absolute;
-    top: 372px;
+    top: 90px;
     left: 49%;
     font-family: serif;
   `;
   return (
-    <>
+    <TimePickerWrapper>
       <Picker
         optionGroups={{
           hour: hourArr,
@@ -42,8 +46,8 @@ export default function TimePicker({ valueGroups, handleChange }: Props) {
         height={253}
         valueGroups={valueGroups}
         onChange={handleChange}
-      />
+      ></Picker>
       <Contour>:</Contour>
-    </>
+    </TimePickerWrapper>
   );
 }

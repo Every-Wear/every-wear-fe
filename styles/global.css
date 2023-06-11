@@ -264,7 +264,7 @@ div.react-datepicker__day-name:last-child {
 .picker-container .picker-inner {
   margin-top: 70px;
   display: flex;
-  -webkit-mask-box-image: none;
+  -webkit-mask-box-image: none !important;
 }
 
 .picker-highlight {

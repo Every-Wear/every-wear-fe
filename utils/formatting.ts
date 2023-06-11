@@ -3,7 +3,7 @@ export const changeWord = (text: string) => {
   return "여성";
 };
 
-export const formattingTime = (preferTime?: string) => {
+export const formattingTime = (preferTime?: string | Date | null) => {
   if (!preferTime) return;
   const date = new Date(preferTime);
   if (Number.isNaN(date.valueOf())) return preferTime;

@@ -251,7 +251,7 @@ export default function CurrentStatusDetail() {
               onClick={() =>
                 changeMatchingInfo(
                   "preferTime",
-                  String(selectedDate),
+                  String(formattingTime(selectedDate)),
                   CURRENT_STATUS_STEP.DETAIL,
                 )
               }
