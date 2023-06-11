@@ -1,0 +1,34 @@
+name: Deploy Dev
+
+on:
+  push:
+    branches:
+      - dev
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: "18"
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Build Next.js app
+        run: yarn build
+
+      - name: Deploy to server
+        uses: appleboy/scp-action@master
+        with:
+          host: 158.180.92.143
+          username: ubuntu
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          source: .next # .next 디렉토리를 전송합니다.
+          target: /home/ubuntu/every-wear-fe
