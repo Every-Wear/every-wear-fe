@@ -1,3 +1,12 @@
+[![Deploy Dev](https://github.com/Every-Wear/every-wear-fe/actions/workflows/dev-depoly.yml/badge.svg?branch=dev)](https://github.com/Every-Wear/every-wear-fe/actions/workflows/dev-depoly.yml)
+
+# Every Wear Application Frontend
+
+> 시각장애인 의류 쇼핑 인프라 개선, 코디네이터 매칭 플랫폼 <br/>
+> https://everywear.kro.kr
+
+
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
