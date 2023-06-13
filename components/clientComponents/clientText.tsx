@@ -5,6 +5,7 @@ import { clientFonts, colors } from "@/styles/theme";
 interface ClientTextInterface {
   center?: boolean;
   children: string | string[] | React.ReactNode;
+  label?: string;
 }
 
 const ClientTextWrap = styled.p`
@@ -18,8 +19,16 @@ const ClientTextWrap = styled.p`
     props.center ? "center" : null};
 `;
 
-const ClientText = ({ children, center = false }: ClientTextInterface) => {
-  return <ClientTextWrap center={center}>{children}</ClientTextWrap>;
+const ClientText = ({
+  children,
+  center = false,
+  label,
+}: ClientTextInterface) => {
+  return (
+    <ClientTextWrap aria-label={label} center={center}>
+      {children}
+    </ClientTextWrap>
+  );
 };
 
 export default ClientText;

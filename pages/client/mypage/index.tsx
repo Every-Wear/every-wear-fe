@@ -56,20 +56,17 @@ const Mypage = () => {
       <div style={{ paddingBottom: "110px" }}>
         <IntroLabel labelText="에브리웨어 이전 매칭 내역입니다. 스크롤을 이동하여 예전 매칭내역을 확인하실수 있습니다." />
         <MypageTitle>
-          <ClientText>
-            이전 매칭 내역을
-            <br /> 확인하세요
-          </ClientText>
+          <ClientText>이전 매칭 내역을 확인하세요</ClientText>
         </MypageTitle>
-        <div>
-          {matchedList.length > 0 &&
-            matchedList.map(matched => (
-              <MatchedList key={matched._id}>
-                {matched.preferStyle} <br /> {matched.clothesType} 들을 <br />
-                구매 했었어요
-              </MatchedList>
-            ))}
-        </div>
+        {matchedList.length > 0 &&
+          matchedList.map(matched => (
+            <MatchedList
+              key={matched._id}
+              aria-label={`${matched.preferStyle} ${matched.clothesType} 들을 구매 했었어요`}
+            >
+              {matched.preferStyle} {matched.clothesType} 들을 구매 했었어요
+            </MatchedList>
+          ))}
       </div>
       <BottomButtonLayout>
         <HistoryBackButton border={false} text="홈으로" />

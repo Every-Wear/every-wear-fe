@@ -146,9 +146,8 @@ const Matching = () => {
   if (!matchingInfo?._id) {
     return (
       <Layout>
-        <IntroLabel labelText="매칭내역이 존재하지 않습니다. 홈으로 이동해주세요" />
         <div style={{ marginTop: "60px", textAlign: "center" }}>
-          <ClientSubText>
+          <ClientSubText label="매칭내역이 존재하지 않습니다. 홈으로 이동해주세요">
             매칭이 존재하지 않습니다
             <br />
             홈으로 이동해주세요
@@ -199,13 +198,13 @@ const MatchingProgressTitle = ({
     <MatchingProgressTitleWrap>
       <ClientText>{currentProgress}</ClientText>
       {(currentProgress === "매칭대기중" || currentProgress === "매칭중") && (
-        <ClientSubText>
+        <ClientSubText label="코디네이터와 통화 후 예약이 확정되요">
           코디네이터와 통화 후 <br />
           예약이 확정돼요
         </ClientSubText>
       )}
       {currentProgress === "매칭완료" && (
-        <ClientSubText>
+        <ClientSubText label="코디네이터에게 화면 상단에 QR코드를 보여주세요">
           코디네이터에게 <br />
           QR코드를 보여주세요
         </ClientSubText>

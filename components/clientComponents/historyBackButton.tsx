@@ -26,7 +26,11 @@ const HistoryBackButton = ({
   const router = useRouter();
 
   return (
-    <BackButton border={border} onClick={() => router.push("/client")}>
+    <BackButton
+      border={border}
+      onClick={() => router.push("/client")}
+      aria-label="홈으로 이동하시려면 버튼을 클릭해주세요"
+    >
       {text}
     </BackButton>
   );

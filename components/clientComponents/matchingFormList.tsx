@@ -1,6 +1,7 @@
 import { ClientText, ClientSubText } from "@/components/clientComponents";
 import styled from "styled-components";
 
+import { IntroLabel } from "@/components/clientComponents";
 import { changeButtonText } from "@/utils/stringFormat";
 
 export const MatchingInfoListWrap = styled.section`
@@ -51,6 +52,7 @@ const MatchingFormList = ({
 
   return (
     <MatchingInfoListWrap>
+      <IntroLabel labelText="매칭신청서입니다. 아래로 스크롤을 통해 정보를 확인해주신후 맞다면 제출해주세요" />
       {matchingList.map(matching => (
         <InfoText key={matching.title}>
           <ClientSubText>{matching.title}</ClientSubText>
