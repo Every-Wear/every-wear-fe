@@ -26,7 +26,7 @@ import {
 
 import { changeButtonText } from "@/utils/stringFormat";
 
-import { clientFonts, colors } from "@/styles/theme";
+import { colors } from "@/styles/theme";
 
 interface FormInterface {
   title: string;
@@ -34,6 +34,7 @@ interface FormInterface {
   setValue: (state: string) => void;
   placeHolder?: string;
   iunputType?: string;
+  label?: string;
 }
 
 const Choice = () => {
@@ -51,6 +52,8 @@ const Choice = () => {
       value: time,
       setValue: setTime,
       placeHolder: "####년 ##월 ##일",
+      label:
+        "숫자키패드를 이용해 4자리 연도 2자리 월 2자리 일 수를 입력해주세요 예시 2023년 공일월 공일일 이후 아래 다음 버튼을 클릭해주세요",
       iunputType: "number",
     },
     {
@@ -58,6 +61,8 @@ const Choice = () => {
       value: location,
       setValue: setLocation,
       placeHolder: "지역입력 (예:강남)",
+      label:
+        "의상을 구매하고 싶은 지역을 시,군,구 까지만 입력해주세요 이후 아래 다음버튼을 클릭해주세요",
       iunputType: "text",
     },
     {
@@ -159,7 +164,7 @@ const Choice = () => {
                     bgColor="gray"
                     fontColor="white"
                     onClickHandler={prevNextForm}
-                    label="이전"
+                    label="이전단계로 이동하기"
                   >
                     뒤로
                   </ClientButton>
@@ -188,6 +193,7 @@ interface ApplicationFormInterface {
   formIndex?: number;
   currentFormIndex?: number;
   placeHolder: string | undefined;
+  label?: string;
 }
 
 const ApplicationInputForm = ({
@@ -235,6 +241,7 @@ const ApplicationInputForm = ({
           onChange={(e: React.FormEvent<HTMLInputElement>) => {
             form.setValue(e.currentTarget.value);
           }}
+          aria-label={form.label}
         />
         {form.iunputType === "number" && (
           <CustomAltText>

@@ -112,22 +112,32 @@ export default function Home() {
         <IntroLabel labelText="모두를 위한 코디네이터 매칭 플랫폼 에브리웨어 입니다 아이디와 비밀번호를 입력후 제출해주세요" />
         <LoginWrap onSubmit={handleSubmit(onSubmit)}>
           <div>
-            <label>아이디</label>
+            <label aria-label="아래 수정창에 아이디를 입력해주세요">
+              아이디
+            </label>
             <input
               type="text"
               placeholder="아이디를 입력하세요"
+              aria-label="아이디를 입력후 아래 비밀번호를 입력해주세요"
               {...register("id")}
             />
           </div>
           <div>
-            <label>비밀번호</label>
+            <label aria-label="아래 수정창에 비밀번호를 입력해주세요">
+              비밀번호
+            </label>
             <input
               type="password"
+              aria-label="비밀번호를 입력후 아래 제출버튼을 통해 로그인을 해주세요"
               placeholder="비밀번호를 입력하세요"
               {...register("password")}
             />
           </div>
-          <input id="submit-button" type="submit" />
+          <input
+            id="submit-button"
+            type="submit"
+            aria-label="버튼을 클릭해 로그인을 해주세요"
+          />
         </LoginWrap>
       </Layout>
     </div>

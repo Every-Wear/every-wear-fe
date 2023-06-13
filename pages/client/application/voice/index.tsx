@@ -61,10 +61,6 @@ const Voice = () => {
 
   const lastFormindex = formList.length - 1;
 
-  const goToNextForm = () => {
-    setCurrentFormIndex(currentFormIndex + 1);
-  };
-
   const submitApplication = async () => {
     const timeString = time;
     try {
@@ -89,7 +85,7 @@ const Voice = () => {
           bgColor="white"
           fontColor="black"
           onClickHandler={submitApplication}
-          label="다음"
+          label="입력하신 정보가 맞다면 신청하기 버튼을 눌러 신청서를 제출해주세요"
         >
           신청
         </ClientButton>
@@ -102,28 +98,49 @@ const Voice = () => {
     <Layout>
       <div>
         <IntroLabel labelText="녹음하기 버튼을 이용해 정보를 입력하고 다음버튼을 이용해 진행해주세요. 재녹음하시려면 재녹음하기 버튼을 클릭해주세요." />
-        {formList.map((form, idx) => (
-          <div key={idx}>
-            <ApplicationInputForm
-              form={form}
-              key={form.title}
-              formIndex={idx}
-              currentFormIndex={currentFormIndex}
-              placeHolder={form.placeHolder}
-            />
-            <BottomButtonLayout grid={true}>
-              <HistoryBackButton border={false} text="뒤로" />
-              <ClientButton
-                bgColor="white"
-                fontColor="black"
-                onClickHandler={goToNextForm}
-                label="다음"
-              >
-                다음
-              </ClientButton>
-            </BottomButtonLayout>
-          </div>
-        ))}
+        {formList.map((form, idx) => {
+          const goToNextForm = () => {
+            setCurrentFormIndex(currentFormIndex + 1);
+          };
+
+          const prevNextForm = () => {
+            setCurrentFormIndex(currentFormIndex - 1);
+          };
+
+          return (
+            <div key={idx}>
+              <ApplicationInputForm
+                form={form}
+                key={form.title}
+                formIndex={idx}
+                currentFormIndex={currentFormIndex}
+                placeHolder={form.placeHolder}
+              />
+              <BottomButtonLayout grid={true}>
+                {currentFormIndex > lastFormindex || currentFormIndex <= 0 ? (
+                  <HistoryBackButton border={false} text="뒤로" />
+                ) : (
+                  <ClientButton
+                    bgColor="gray"
+                    fontColor="white"
+                    onClickHandler={prevNextForm}
+                    label="이전단계로 이동하기"
+                  >
+                    뒤로
+                  </ClientButton>
+                )}
+                <ClientButton
+                  bgColor="white"
+                  fontColor="black"
+                  onClickHandler={goToNextForm}
+                  label="다음"
+                >
+                  다음
+                </ClientButton>
+              </BottomButtonLayout>
+            </div>
+          );
+        })}
       </div>
     </Layout>
   );
@@ -171,15 +188,21 @@ const ApplicationInputForm = ({
 
   return (
     <FormWrap key={form.title}>
+      <IntroLabel
+        labelText={`${form.title} 아래 녹음버튼을 눌러 답변을 저장해주세요`}
+      />
       <ClientText>{form.title}</ClientText>
       {contnet[formIndex ?? 0].contnet && (
-        <ClientSubText>
-          {contnet[formIndex ?? 0].contnet} 이 맞습니까?
+        <ClientSubText
+          label={` ${
+            contnet[formIndex ?? 0].contnet
+          } 이 맞습니까?맞다면 다음 버튼을 눌러주세요.`}
+        >
+          {contnet[formIndex ?? 0].contnet} 이 맞습니까? <br />
+          맞다면 다음 버튼을 눌러주세요.
         </ClientSubText>
       )}
-      {contnet[formIndex ?? 0].contnet && (
-        <ClientSubText>맞다면 다음 버튼을 눌러주세요.</ClientSubText>
-      )}
+
       <div
         style={{
           opacity: listening ? 0.5 : 1,
@@ -194,7 +217,7 @@ const ApplicationInputForm = ({
           bgColor="yellow"
           fontColor="black"
           onClickHandler={SpeechRecognition.startListening}
-          label="녹음하기 버튼을 클릭후 말씀해주세요 다시 녹음하시려면 버튼을 다시 클릭해주세요"
+          label="녹음하기 버튼을 클릭후 말씀해주세요 다시 녹음하시려면 버튼을 다시 클릭해주세요 녹음후 위 답변을 확인후주세요"
         >
           {contnet[formIndex ?? 0].contnet ? "재녹음하기" : "녹음하기"}
         </ClientButton>

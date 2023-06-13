@@ -5,6 +5,7 @@ import { clientFonts, colors } from "@/styles/theme";
 interface ClientSubTextInterface {
   center?: boolean;
   children: string | string[] | React.ReactNode;
+  label?: string;
 }
 
 const ClientSubTextWrap = styled.span`
@@ -21,8 +22,13 @@ const ClientSubTextWrap = styled.span`
 const ClientSubText = ({
   children,
   center = false,
+  label,
 }: ClientSubTextInterface) => {
-  return <ClientSubTextWrap center={center}>{children}</ClientSubTextWrap>;
+  return (
+    <ClientSubTextWrap aria-label={label} center={center}>
+      {children}
+    </ClientSubTextWrap>
+  );
 };
 
 export default ClientSubText;
