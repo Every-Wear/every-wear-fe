@@ -5,6 +5,7 @@ import {
   ClientButton,
   IntroLabel,
   BottomButtonLayout,
+  ClientText,
 } from "@/components/clientComponents/index";
 
 import { ClientButtonInterface } from "@/types/clientType";
@@ -24,15 +25,24 @@ const Client = () => {
       label: "코디네이터 매칭현황 확인 페이지 이동 버튼",
     },
     {
-      title: "마이페이지",
+      title: "매칭 내역",
       onClick: () => router.push("/client/mypage"),
-      label: "마이페이지 이동 버튼",
+      label: "매칭 내역 이동 버튼",
     },
   ];
 
   return (
     <Layout>
       <IntroLabel labelText="에브리웨어 메인페이지입니다. 버튼을 통해 원하시는 페이지로 이동해주세요" />
+      <div style={{ marginTop: "100px" }}>
+        <ClientText
+          center
+          label="안녕하세요 에브리웨어 메인페이지입니다. 버튼을 통해 원하시는 페이지로 이동해주세요"
+        >
+          안녕하세요 <br />
+          에브리웨어입니다
+        </ClientText>
+      </div>
       <BottomButtonLayout>
         {clientPageButtonList.map(button => (
           <ClientButton

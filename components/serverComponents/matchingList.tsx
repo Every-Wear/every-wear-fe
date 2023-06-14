@@ -1,5 +1,11 @@
+import {
+  BadgeWrapper,
+  MatchingBadge,
+  NewBadge,
+} from "@/styles/server/serverStyled";
 import { colors, serverFonts } from "@/styles/theme";
 import { ServerMatchingInfoInterface } from "@/types/serverType";
+import { changeWord } from "@/utils/formatting";
 import Link from "next/link";
 import styled from "styled-components";
 
@@ -10,8 +16,14 @@ const MatchingTitle = styled.div`
   margin: 10px 0;
 `;
 
+const SubTextWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 4px;
+`;
+
 const SubText = styled.div`
-  font-size: ${serverFonts.sm};
+  font-size: ${serverFonts.xsm};
   color: ${colors.gray200};
 `;
 
@@ -20,24 +32,36 @@ interface MatchingListInterface {
 }
 
 export default function MatchingList({ list }: MatchingListInterface) {
+  const createTime = new Date(list.createdAt);
+  const currentTime = new Date();
+  const createAfter30Minutes = new Date(createTime.getTime() + 30 * 60000);
+
   return (
-    <div>
+    <Link
+      href={{
+        pathname: `/server/detail/${list.uuid}`,
+      }}
+    >
+      <BadgeWrapper>
+        <MatchingBadge size="sm">대기중</MatchingBadge>
+        {createTime < currentTime && currentTime < createAfter30Minutes && (
+          <NewBadge>NEW</NewBadge>
+        )}
+      </BadgeWrapper>
       <MatchingTitle>
         {list.preferPlace}에서
         <br /> {list.clothesType}을 구해요
       </MatchingTitle>
-      <SubText>코디 의뢰자</SubText>
-      <SubText>구매 예정일</SubText>
-      <li>선호 성별: {list.preferGender}</li>
-      <Link
-        href={{
-          pathname: `/server/detail`,
-          query: { uuid: list.uuid },
-        }}
-        as={`/server/detail`}
-      >
-        더보기
-      </Link>
-    </div>
+      <SubTextWrapper>
+        <SubText>코디 의뢰자</SubText>
+        <SubText>
+          {list.publishUserId} {changeWord(list.preferGender)}
+        </SubText>
+      </SubTextWrapper>
+      <SubTextWrapper>
+        <SubText>구매 예정일</SubText>
+        <SubText>{list.preferTime}</SubText>
+      </SubTextWrapper>
+    </Link>
   );
 }

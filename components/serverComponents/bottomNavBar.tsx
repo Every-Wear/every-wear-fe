@@ -4,8 +4,8 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 import HomeIcon from "./homeIcon";
 import CurrentStatusIcon from "./currentStatusIcon";
-import MyPageIcon from "./myPageIcon";
 import { ColorInterface } from "@/types/serverType";
+import HistoryIcon from "./historyIcon";
 
 export default function BottomNavBar() {
   const router = useRouter();
@@ -31,17 +31,18 @@ export default function BottomNavBar() {
     display: flex;
     justify-content: space-evenly;
     position: fixed;
-    bottom: 10px;
+    bottom: 0px;
     padding-top: 10px;
     background-color: ${colors.black};
     border-top: 1px solid ${colors.gray};
+    z-index: 99;
   `;
 
   const NavButton = styled.button<{ props: ColorInterface }>`
     width: 100%;
     color: ${(props: ColorInterface) => props.color};
     border: 0;
-    background-color: transparent;
+    background-color: ${colors.black};
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -69,8 +70,8 @@ export default function BottomNavBar() {
         color={changeColor("mypage")}
         onClick={() => router.push("/server/mypage")}
       >
-        <MyPageIcon color={changeColor("mypage")} />
-        마이페이지
+        <HistoryIcon color={changeColor("mypage")} />
+        매칭내역
       </NavButton>
     </NavContainer>
   );

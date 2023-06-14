@@ -1,24 +1,58 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import styled from "styled-components";
 import Image from "next/image";
-import { get_my_matching } from "@/api/modules/matching";
+
+import {
+  get_my_matching,
+  delete_matching_detail,
+} from "@/api/modules/matching";
 import {
   Layout,
   ClientButton,
   ClientText,
   ClientSubText,
   IntroLabel,
+  HistoryBackButton,
+  BottomButtonLayout,
 } from "@/components/clientComponents";
-import {
-  MatchingProgressTitleWrap,
-  QRcodeBox,
-  MatchingInfoListWrap,
-  InfoText,
-} from "@/pages/client/matching/index.styled";
 
 import { postGeoLocationData } from "@/utils/geoLocation";
 import { MATCHING_STATUS_TYPE, MatchingStatusType } from "@/types/types";
 import { ClientMatchingInfoInterface } from "@/types/clientType";
+import { changeButtonText } from "@/utils/stringFormat";
+
+export const MatchingProgressTitleWrap = styled.section`
+  width: 100%;
+  padding: 50px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  border-bottom: 8px solid #2c2c2c;
+`;
+
+export const QRcodeBox = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 44px;
+`;
+
+export const MatchingInfoListWrap = styled.section`
+  width: 100%;
+`;
+
+export const InfoText = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 32px 16px;
+  gap: 5px;
+
+  &:not(:last-child) {
+    border-bottom: 1px solid #b3b3b3;
+  }
+`;
 
 const Matching = () => {
   const router = useRouter();
@@ -37,58 +71,99 @@ const Matching = () => {
     matchingInfo?.statusType === MATCHING_STATUS_TYPE.매칭대기중 ||
     matchingInfo?.statusType === MATCHING_STATUS_TYPE.매칭중;
 
+  const uuid: string = matchingInfo.uuid ?? "";
+
   const getCurrentMatching = async (
     matchingInfo: ClientMatchingInfoInterface,
   ) => {
-    const { data } = await get_my_matching();
-    setMatchingInfo(data.matching);
+    try {
+      const { data } = await get_my_matching();
+      setMatchingInfo(data?.matching);
 
-    if (matchingInfo._id !== undefined) return;
-    setQrCodeSrc(data.matching.qrCodeValue);
+      if (matchingInfo?._id) return;
+      setQrCodeSrc(data?.matching.qrCodeValue);
+    } catch (err) {
+      setMatchingInfo({});
+      return;
+    }
   };
 
-  const currentMatchingCancelHandler = () => {
-    if (confirm("취소하시겠습니까?")) {
-      alert("취소되었습니다.");
+  const currentMatchingCancelHandler = async () => {
+    try {
+      await delete_matching_detail(uuid, "죄송합니다");
+      alert("신청이 취소되었습니다.");
       router.push("/client");
+    } catch (err) {
+      throw new Error();
     }
   };
 
   useEffect(() => {
     getCurrentMatching(matchingInfo);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
-    if (getInfoId !== null) return;
-    if (matchingInfo?.statusType === MATCHING_STATUS_TYPE.매칭완료) {
+    if (
+      matchingInfo?.statusType === MATCHING_STATUS_TYPE.진행완료 ||
+      !matchingInfo?._id
+    ) {
       clearInterval(getInfoId ?? 0);
     }
-    if (matchingInfo?.statusType !== MATCHING_STATUS_TYPE.매칭완료) {
+    if (
+      matchingInfo._id &&
+      !getInfoId &&
+      matchingInfo?.statusType !== MATCHING_STATUS_TYPE.진행완료
+    ) {
       const interverId = setInterval(
         () => getCurrentMatching(matchingInfo),
         2000,
       );
       setGetInfoId(interverId);
     }
-  }, [getInfoId]);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [getInfoId, matchingInfo]);
 
   useEffect(() => {
-    if (postGeoId !== null) return;
-    if (matchingInfo?.statusType === MATCHING_STATUS_TYPE.매칭완료) {
+    if (
+      matchingInfo?.statusType === MATCHING_STATUS_TYPE.진행완료 ||
+      !matchingInfo?._id
+    ) {
       clearInterval(postGeoId ?? 0);
     }
-    if (matchingInfo?.statusType === MATCHING_STATUS_TYPE.진행중) {
-      const interverId = setInterval(
-        () => postGeoLocationData("4e07a102-b6c3-426f-9f6c-71fba2162942"),
-        2000,
-      );
+    if (
+      !postGeoId &&
+      matchingInfo?.statusType === MATCHING_STATUS_TYPE.진행중
+    ) {
+      const interverId = setInterval(() => postGeoLocationData(uuid), 10000);
       setPostGeoId(interverId);
     }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [postGeoId, matchingInfo]);
+
+  if (!matchingInfo?._id) {
+    return (
+      <Layout>
+        <div style={{ marginTop: "60px", textAlign: "center" }}>
+          <ClientSubText label="매칭내역이 존재하지 않습니다. 홈으로 이동해주세요">
+            매칭이 존재하지 않습니다
+            <br />
+            홈으로 이동해주세요
+          </ClientSubText>
+
+          <BottomButtonLayout>
+            <HistoryBackButton border={false} text="홈으로" />
+          </BottomButtonLayout>
+        </div>
+      </Layout>
+    );
+  }
 
   return (
     <Layout>
-      <IntroLabel labelText="매칭현황 페이지 내용확인과 신청취소를 원한다면 아래 버튼 클릭" />
+      <IntroLabel labelText="매칭현황 페이지 내용확인과 신청취소를 원한다면 아래 버튼 클릭해주세요" />
       <MatchingProgressTitle
         currentProgress={currentProgress}
         qrCodeSrc={qrCodeSrc}
@@ -106,6 +181,7 @@ const Matching = () => {
           </ClientButton>
         )}
       </div>
+      <HistoryBackButton />
     </Layout>
   );
 };
@@ -121,8 +197,18 @@ const MatchingProgressTitle = ({
   return (
     <MatchingProgressTitleWrap>
       <ClientText>{currentProgress}</ClientText>
-      <ClientSubText>코디네이터와 통화 후</ClientSubText>
-      <ClientSubText>예약이 확정되요</ClientSubText>
+      {(currentProgress === "매칭대기중" || currentProgress === "매칭중") && (
+        <ClientSubText label="코디네이터와 통화 후 예약이 확정되요">
+          코디네이터와 통화 후 <br />
+          예약이 확정돼요
+        </ClientSubText>
+      )}
+      {currentProgress === "매칭완료" && (
+        <ClientSubText label="코디네이터에게 화면 상단에 QR코드를 보여주세요">
+          코디네이터에게 <br />
+          QR코드를 보여주세요
+        </ClientSubText>
+      )}
       {currentProgress === "매칭완료" && (
         <QRcodeBox>
           <Image
@@ -145,10 +231,10 @@ const MatchingInfoList = ({
   matchingInfo: ClientMatchingInfoInterface;
 }) => {
   const infoList = [
-    { title: "구매 날짜", content: matchingInfo.createdAt ?? "" },
-    { title: "구매 장소", content: matchingInfo.preferPlace ?? "" },
-    { title: "구매 목적", content: matchingInfo.clothesType ?? "" },
-    { title: "코디네이터 성별", content: matchingInfo.preferGender ?? "" },
+    { title: "구매 날짜", content: matchingInfo?.preferTime ?? "" },
+    { title: "구매 장소", content: matchingInfo?.preferPlace ?? "" },
+    { title: "구매 목적", content: matchingInfo?.clothesType ?? "" },
+    { title: "코디네이터 성별", content: matchingInfo?.preferGender ?? "" },
   ];
 
   return (
@@ -156,7 +242,7 @@ const MatchingInfoList = ({
       {infoList.map(info => (
         <InfoText key={info.title}>
           <ClientSubText>{info.title}</ClientSubText>
-          <ClientText>{info.content}</ClientText>
+          <ClientText>{changeButtonText(info.content)}</ClientText>
         </InfoText>
       ))}
     </MatchingInfoListWrap>

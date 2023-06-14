@@ -10,11 +10,12 @@ interface ClientButtonInterface {
   bgColor?: keyof ColorType;
   fontColor?: keyof ColorType;
   label: string;
+  disable?: boolean;
 }
 
 const ClientButtonWrap = styled.button`
   width: 100%;
-  padding: 32px 0;
+  height: 110px;
   text-align: center;
   font-weight: bold;
   font-size: ${clientFonts.md};
@@ -29,13 +30,18 @@ const ClientButton = ({
   fontColor = "white",
   border = false,
   label,
+  disable = false,
 }: ClientButtonInterface) => {
   return (
     <ClientButtonWrap
       type="button"
       onClick={onClickHandler}
       border={border}
-      style={{ background: colors[bgColor], color: colors[fontColor] }}
+      disabled={disable}
+      style={{
+        background: disable ? colors.gray100 : colors[bgColor],
+        color: colors[fontColor],
+      }}
       aria-label={label}
     >
       {children}
