@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import { change_matching_to_complete } from "@/api/modules/matchingStatus";
 import BottomButton from "@/components/serverComponents/bottomButton";
 import Calendar from "@/components/serverComponents/calendar";
@@ -12,7 +13,7 @@ import {
   DetailWrapper,
   MatchingBadge,
 } from "@/styles/server/serverStyled";
-import { colors, serverFonts } from "@/styles/theme";
+import { colors } from "@/styles/theme";
 import Image from "next/image";
 import { useState } from "react";
 import styled from "styled-components";
@@ -111,6 +112,19 @@ export default function CurrentStatusDetail() {
     window.scrollTo(0, 0);
   };
 
+  const generateRandomNumbers = () => {
+    const numbers = [];
+
+    while (numbers.length < 3) {
+      const aa = Math.floor(Math.random() * 27) + 1;
+      if (numbers.indexOf(aa) === -1) {
+        numbers.push(aa);
+      }
+    }
+
+    return numbers;
+  };
+
   selectedDate?.setHours(Number(valueGroups.hour));
   selectedDate?.setMinutes(Number(valueGroups.minutes));
 
@@ -181,6 +195,36 @@ export default function CurrentStatusDetail() {
                   )}
                 </DetailTitle>
                 <DetailText>{currentStatusInfo?.remark}</DetailText>
+                {(currentStatusInfo.statusType ===
+                  MATCHING_STATUS_TYPE.매칭완료 ||
+                  currentStatusInfo.statusType ===
+                    MATCHING_STATUS_TYPE.진행중) && (
+                  <>
+                    <hr />
+                    <DetailTitle>추천의류</DetailTitle>
+                    <div
+                      style={{
+                        display: "grid",
+                        gridTemplateColumns: "1fr 1fr 1fr",
+                        gap: "10px",
+                        padding: "0 10px",
+                      }}
+                    >
+                      {generateRandomNumbers().map(img => (
+                        <div
+                          style={{ overflow: "hidden", borderRadius: "5px" }}
+                          key={img}
+                        >
+                          <img
+                            style={{ width: "100%", height: "100%" }}
+                            src={`/assets/img/clothes${img}.jpeg`}
+                            alt="에브리웨어"
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  </>
+                )}
               </DetailWrapper>
               {currentStatusInfo.statusType === MATCHING_STATUS_TYPE.매칭중 && (
                 <BottomButton
