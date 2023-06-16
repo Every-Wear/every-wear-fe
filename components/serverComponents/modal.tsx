@@ -60,6 +60,7 @@ const ModalButton = styled.button`
   font-weight: 700;
   background-color: ${(props: { type: string }) =>
     props.type === "confirm" ? colors.yellow : colors.gray300};
+  color: ${colors.black};
 `;
 
 export default function Modal({
